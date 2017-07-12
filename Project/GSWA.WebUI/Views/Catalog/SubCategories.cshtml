@@ -1,0 +1,31 @@
+﻿@model IEnumerable<GSWA.WebUI.Models.HomeIndexVM>
+
+@{
+    ViewBag.Title = "SubCategories";
+}
+
+<h2>SubCategories</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.categoryName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.categoryName)
+        </td>
+        <td>
+            @Html.ActionLink("GO TO", "PurposesList", "Catalog", new { id = item.categoryid , st = ""}, null) 
+        </td>
+    </tr>
+}
+
+</table>
