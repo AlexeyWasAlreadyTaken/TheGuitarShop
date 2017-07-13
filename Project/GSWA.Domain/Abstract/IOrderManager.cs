@@ -10,6 +10,6 @@ namespace GSWA.Domain.Abstract
     {
         Nullable<Guid> GetStatusIDByName(string name);
         IEnumerable<DeliveryType> GetDeliveryTypes();
-        void SaveOrder(Order order);
+        void SaveOrder(Order order ,IEnumerable<OrderItem> orderItemList);
     }
 }

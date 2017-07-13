@@ -12,12 +12,14 @@ namespace GSWA.Domain.Concrete
         private IRepository<Order> _order;
         private IRepository<status> _status;
         private IRepository<DeliveryType> _deliveryType;
+        private IRepository<OrderItem> _orderItems;
 
-        public OrderManager(IRepository<Order> orderRepo, IRepository<DeliveryType> deliveryTypeRepo, IRepository<status>statusTypeRepo)
+        public OrderManager(IRepository<Order> orderRepo, IRepository<DeliveryType> deliveryTypeRepo, IRepository<status>statusTypeRepo,IRepository<OrderItem> orderItems)
         {
             _order = orderRepo;
             _status = statusTypeRepo;
             _deliveryType = deliveryTypeRepo;
+            _orderItems = orderItems;
         }
 
         public IEnumerable<DeliveryType> GetDeliveryTypes()
@@ -30,10 +32,15 @@ namespace GSWA.Domain.Concrete
             return _status.Get(x => x.name == name).ToList().FirstOrDefault().id;
         }
 
-        public void SaveOrder(Order order)
+        public void SaveOrder(Order order, IEnumerable<OrderItem> orderItemsList)
         {
          
              _order.Create(order);
+            foreach (OrderItem r in orderItemsList)
+            {
+                _orderItems.Create(r);
+            }
+            
         }
         public void Dispose()
         {

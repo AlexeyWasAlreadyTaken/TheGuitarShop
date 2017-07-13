@@ -11,26 +11,9 @@ namespace GSWA.WebUI.Controllers
 {
     public class CartController : Controller
     {
-        private ICart _newCart; //TO DO
-
-        public CartController(ICart cart)
+        public ActionResult Index(ICart cart)
         {
-            _newCart = cart;
-        }
-        private ICart GetCart()
-        {
-            //***TO DO***
-            if (Session["cart"] == null)
-            {
-                Session["cart"] = _newCart;
-            }
-            return (ICart)Session["cart"];
-            //***TO DO***
-        }
-
-        public ActionResult Index()
-        {
-            var cartLines = GetCart().GetCartLines();
+            var cartLines = cart.GetCartLines();
             var CartIndexVMCollection = new List<CartIndexVM>();
             foreach (var cl in cartLines)
             {
@@ -49,19 +32,19 @@ namespace GSWA.WebUI.Controllers
             }
             return View(CartIndexVMCollection);
         }
-        public ActionResult AddPurpose(string purposeId)
+        public ActionResult AddPurpose(ICart cart, string purposeId)
         {
-            GetCart().AddPurpose(new Guid(purposeId), 1);
+            cart.AddPurpose(new Guid(purposeId), 1);
             return Redirect(Request.UrlReferrer.ToString());
         }
-        public ActionResult DeletePurpose(string purposeId)
+        public ActionResult DeletePurpose(ICart cart, string purposeId)
         {
-            GetCart().DeletePurpose(new Guid(purposeId), 1);
+            cart.DeletePurpose(new Guid(purposeId), 1);
             return Redirect(Request.UrlReferrer.ToString());
         }
-        public RedirectToRouteResult DeleteAll()
+        public RedirectToRouteResult DeleteAll(ICart cart)
         {
-            GetCart().DeleteAllPurposes();
+            cart.DeleteAllPurposes();
             return RedirectToAction("Index");
         }
     }

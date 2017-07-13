@@ -15,23 +15,23 @@ namespace GSWA.WebUI.Controllers
     {
         // GET: Order
 
-        IOrderManager order;
+        IOrderManager _order;
 
         public OrderController(IOrderManager ord)
         {
-            order = ord;
+            _order = ord;
         }
         public ActionResult Index()
         {
-            ViewBag.dtl = new SelectList(order.GetDeliveryTypes(), "id", "name");
+            ViewBag.dtl = new SelectList(_order.GetDeliveryTypes(), "id", "name");
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(OrderVM model)
+        public ActionResult Index(OrderVM model, ICart cart)
         {
             //DropDownListFor 
-            ViewBag.dtl = new SelectList(order.GetDeliveryTypes(), "id", "name");
+            ViewBag.dtl = new SelectList(_order.GetDeliveryTypes(), "id", "name");
             //Validation
             if (string.IsNullOrEmpty(model.Name))
                 ModelState.AddModelError("Name", "Fill your name");
@@ -43,35 +43,54 @@ namespace GSWA.WebUI.Controllers
                 ModelState.AddModelError("deliveryTypeID", "Select delivery type");
             if (string.IsNullOrEmpty(model.Adress))
                 ModelState.AddModelError("Adress", "Fill your adress");
-            if (model.email != null && !new Regex(@"\b[A-za-z0-9._]+@[A-za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(model.email))
+            if (model.email != null && !new Regex(@"\b[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(model.email))
                 ModelState.AddModelError("Adress", "Email empty or wrong");
 
             //Validation Check
             if (ModelState.IsValid)
             {
 
-                if (model.deliveryTypeID != null)
-                {
-                    // initialize order information 
-                    Order currentOrderInfo = new Order();
+                if (cart.GetCartLines().ToList().Count > 0)
+                    if (model.deliveryTypeID != null)
+                    {
+                        // initialize order information 
+                        Order currentOrderInfo = new Order();
 
-                    currentOrderInfo.Id = Guid.NewGuid();
-                    currentOrderInfo.Name = model.Name;
-                    currentOrderInfo.LastName = model.Lname;
-                    currentOrderInfo.Phone = model.Phone;
-                    currentOrderInfo.DeliveryTypeId = model.deliveryTypeID;
-                    currentOrderInfo.Address = model.Adress;
-                    currentOrderInfo.Comment = model.Comment;
-                    currentOrderInfo.Date = DateTime.Now;
-                    currentOrderInfo.StatusId = order.GetStatusIDByName("New");
-                    currentOrderInfo.email = model.email;
+                        currentOrderInfo.Id = Guid.NewGuid();
+                        currentOrderInfo.Name = model.Name;
+                        currentOrderInfo.LastName = model.Lname;
+                        currentOrderInfo.Phone = model.Phone;
+                        currentOrderInfo.DeliveryTypeId = model.deliveryTypeID;
+                        currentOrderInfo.Address = model.Adress;
+                        currentOrderInfo.Comment = model.Comment;
+                        currentOrderInfo.Date = DateTime.Now;
+                        currentOrderInfo.StatusId = _order.GetStatusIDByName("New");
+                        currentOrderInfo.email = model.email;
 
-                    order.SaveOrder(currentOrderInfo);
-                    // order object "currentOrderInfo" complete to write to base
-                    
-                }
+                        List<OrderItem> orlist = new List<OrderItem>();
+                        foreach (CartLine cl in cart.GetCartLines())
+                        {
+                            OrderItem _temp = new OrderItem();
+                            _temp.id = Guid.NewGuid();
+                            _temp.OrderId = currentOrderInfo.Id;
+                            _temp.ItemId = (Guid)cl.Purpose.ItemId; //??
+                            _temp.purposePriceId = cl.PurposePrice.id;
+                            _temp.purposeId = cl.Purpose.id;
+                            _temp.count = cl.Count;
 
-                return RedirectToActionPermanent("index","Home");
+                            orlist.Add(_temp);
+
+                        }
+
+
+                        _order.SaveOrder(currentOrderInfo,orlist);
+                        // order object "currentOrderInfo" complete to write to base=
+
+
+
+                    }
+
+                return RedirectToActionPermanent("index", "Home");
             }
             else
             {
@@ -79,7 +98,7 @@ namespace GSWA.WebUI.Controllers
             }
 
 
-            
+
         }
     }
 }

@@ -13,10 +13,14 @@ namespace GSWA.WebUI.Infrastructure
     {
         private IKernel kernel;
 
+        public static NinjectDependencyResolver Instance;
+
+
         public NinjectDependencyResolver(IKernel kernelParam)
         {
             kernel = kernelParam;
             AddBindings();
+            Instance = this;
         }
 
         public object GetService(Type serviceType)
