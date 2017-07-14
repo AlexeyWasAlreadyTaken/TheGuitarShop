@@ -19,6 +19,7 @@ namespace GSWA.WebUI.Controllers
 
         public ActionResult News()
         {
+            //news
             return View();
         }
         public ActionResult Delivery()
