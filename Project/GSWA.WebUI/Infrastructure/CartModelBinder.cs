@@ -21,7 +21,8 @@ namespace GSWA.WebUI.Infrastructure
             if (cart == null)
             {
 
-                cart = (ICart)NinjectDependencyResolver.Instance.GetService(typeof(ICart));
+                //cart = (ICart)NinjectDependencyResolver.Instance.GetService(typeof(ICart));
+                cart = (ICart)DependencyResolver.Current.GetService(typeof(ICart));
                 if (controllerContext.HttpContext.Session != null)
                 {
                     controllerContext.HttpContext.Session[cartKey] = cart;
