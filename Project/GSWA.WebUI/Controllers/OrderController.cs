@@ -84,6 +84,7 @@ namespace GSWA.WebUI.Controllers
 
 
                         _order.SaveOrder(currentOrderInfo,orlist);
+                        cart.DeleteAllPurposes();
                         // order object "currentOrderInfo" complete to write to base=
 
 
