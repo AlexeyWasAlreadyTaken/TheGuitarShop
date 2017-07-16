@@ -67,6 +67,17 @@
         </dd>
 
     </dl>
+    <br>
+
+
+    <hr>
+    <h3>Characteristics</h3>
+    <br>
+    @for (int i = 0; i < Model.charname.Count; i++)
+    {
+        <b>@Model.charname[i] :</b> @Model.charvalue[i] <br>
+    }
+    <br>
 </div>
 <p>
     @Html.ActionLink("ADD TO CART", "AddPurpose", "Cart", new { purposeId = Model.purposeID, returnUrl = "" }, null)

@@ -12,11 +12,14 @@ namespace GSWA.Domain.Concrete
         private IRepository<Category> _categoryRepository;
         private IRepository<Purpose> _purposeRepository;
         private IRepository<purposePrice> _purpPriceRepository;
-        public Catalog(IRepository<Category> categoryRepo, IRepository<Purpose> purpoaeRepo, IRepository<purposePrice> purpPriceRepo)
+        private IRepository<ItemCharacteristic> _itemCharacteristic;
+
+        public Catalog(IRepository<Category> categoryRepo, IRepository<Purpose> purpoaeRepo, IRepository<purposePrice> purpPriceRepo, IRepository<ItemCharacteristic> itemCharacteristic)
         {
             _categoryRepository = categoryRepo;
             _purposeRepository = purpoaeRepo;
             _purpPriceRepository = purpPriceRepo;
+            _itemCharacteristic = itemCharacteristic;
         }
 
         public IEnumerable<Category> GetGeneralCategoryList()
@@ -43,11 +46,22 @@ namespace GSWA.Domain.Concrete
             return curPurposePrice;
             
         }
+
+        public IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID)
+        {
+            return _itemCharacteristic.Get(x => x.ItemID == itemID);
+        }
+        public IEnumerable<Purpose> GetPurposesByCharacteristic(Guid categoryID,Guid charId)
+        {
+            var icWithNecessaryCharacteristics = _itemCharacteristic.Get(x => x.CharacteristicID == charId);
+            return null;
+        }
         public void Dispose()
         {
             _categoryRepository.Dispose();
             _purposeRepository.Dispose();
             _purpPriceRepository.Dispose();
+            _itemCharacteristic.Dispose();
         }
     }
 }

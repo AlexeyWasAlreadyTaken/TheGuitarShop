@@ -14,5 +14,7 @@ namespace GSWA.WebUI.Models
         public string Curency { get; set; }
         public string description { get; set; }
         public string Category { get; set; }
+        public List<string> charname { get; set; }
+        public List<string> charvalue { get; set; }
     }
 }

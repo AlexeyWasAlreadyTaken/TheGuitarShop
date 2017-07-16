@@ -196,7 +196,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Catalog\SubCategories.cshtml" />
     <Content Include="Views\Catalog\PurposesList.cshtml" />
-    <Content Include="Views\Purpose\GetPurpose.cshtml" />
     <Content Include="Views\Home\News.cshtml" />
     <Content Include="Views\Home\Delivery.cshtml" />
     <Content Include="Views\Home\Payment.cshtml" />
@@ -204,6 +203,7 @@
     <Content Include="Views\Home\GetHeader.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Purpose\GetPurpose.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
