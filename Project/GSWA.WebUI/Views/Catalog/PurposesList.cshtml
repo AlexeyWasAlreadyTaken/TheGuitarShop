@@ -11,6 +11,9 @@
     @Html.ActionLink("ByName", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByName" }, null) <span> | </span>
     @Html.ActionLink("ByPrice", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByPrice" }, null) <span> | </span>
     @Html.ActionLink("ByBrand", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByBrand" }, null)
+    <br>
+    <b>FILTER TYPE:</b>
+    @Html.Action("GetCharList", new { id = Model.ToList().FirstOrDefault().categoryID })
 </p>
 <table class="table">
     <tr>

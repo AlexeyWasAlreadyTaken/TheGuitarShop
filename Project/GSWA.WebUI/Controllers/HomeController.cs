@@ -19,7 +19,6 @@ namespace GSWA.WebUI.Controllers
 
         public ActionResult News()
         {
-            //news
             return View();
         }
         public ActionResult Delivery()
@@ -39,7 +38,6 @@ namespace GSWA.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult GetHeader()
         {
-
             return PartialView();
         }
     }

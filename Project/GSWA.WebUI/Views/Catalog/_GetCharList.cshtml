@@ -1,0 +1,12 @@
+﻿@model IEnumerable<GSWA.Domain.CategoryCharacteristic>
+
+
+
+
+@foreach (var item in Model) {
+
+            @Html.ActionLink(""+item.Characteristic.Name, "Edit", new { id=item.id }) <span> | </span>
+
+}
+
+

@@ -176,6 +176,7 @@
     <Compile Include="Models\CartIndexVM.cs" />
     <Compile Include="Models\CatalogPurposeVM.cs" />
     <Compile Include="Models\ConcretePurposeVM.cs" />
+    <Compile Include="Models\FiltersVM.cs" />
     <Compile Include="Models\HomeIndexVM.cs" />
     <Compile Include="Models\OrderVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -204,6 +205,7 @@
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Purpose\GetPurpose.cshtml" />
+    <Content Include="Views\Catalog\_GetCharList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

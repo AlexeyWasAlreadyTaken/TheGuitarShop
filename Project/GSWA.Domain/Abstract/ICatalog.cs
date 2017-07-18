@@ -12,7 +12,9 @@ namespace GSWA.Domain.Abstract
         IEnumerable<Category> GetChildCategoryByParentID(Guid parentID);
         IEnumerable<Purpose> GetPurposesByCategoryID(Guid categoryID);
         IEnumerable<Purpose> GetPurposeByID(Guid itemID);
+        Guid GetParentCategoryByChildID(Guid childCategoryId);
         purposePrice GetPurposePriceByPuposeID(Guid purposeID);
         IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID);
+        IEnumerable<CategoryCharacteristic> GetCharacterististicsByCategoryId(Guid categoryID);
     }   
 }

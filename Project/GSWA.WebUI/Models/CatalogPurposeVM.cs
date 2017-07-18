@@ -14,5 +14,7 @@ namespace GSWA.WebUI.Models
         public double? Price { get; set; }
         public string Curency { get; set; }
         public string Category { get; set; }
+        public List<string> filterCharName { get; set; }
+        public List<string> filterCharVal { get; set; }
     }
 }

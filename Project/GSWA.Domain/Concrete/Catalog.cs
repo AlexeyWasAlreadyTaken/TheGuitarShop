@@ -13,13 +13,15 @@ namespace GSWA.Domain.Concrete
         private IRepository<Purpose> _purposeRepository;
         private IRepository<purposePrice> _purpPriceRepository;
         private IRepository<ItemCharacteristic> _itemCharacteristic;
+        private IRepository<CategoryCharacteristic> _categoryCharacteristic;
 
-        public Catalog(IRepository<Category> categoryRepo, IRepository<Purpose> purpoaeRepo, IRepository<purposePrice> purpPriceRepo, IRepository<ItemCharacteristic> itemCharacteristic)
+        public Catalog(IRepository<Category> categoryRepo, IRepository<Purpose> purpoaeRepo, IRepository<purposePrice> purpPriceRepo, IRepository<ItemCharacteristic> itemCharacteristic, IRepository<CategoryCharacteristic> categoryCharacteristic)
         {
             _categoryRepository = categoryRepo;
             _purposeRepository = purpoaeRepo;
             _purpPriceRepository = purpPriceRepo;
             _itemCharacteristic = itemCharacteristic;
+            _categoryCharacteristic = categoryCharacteristic;
         }
 
         public IEnumerable<Category> GetGeneralCategoryList()
@@ -51,6 +53,32 @@ namespace GSWA.Domain.Concrete
         {
             return _itemCharacteristic.Get(x => x.ItemID == itemID);
         }
+
+        public IEnumerable<CategoryCharacteristic> GetCharacterististicsByCategoryId(Guid categoryID)
+        {
+            var l1 = _categoryCharacteristic.Get(x => x.CategoryID == categoryID);
+            var l2 = _categoryCharacteristic.Get(x => x.CategoryID == GetParentCategoryByChildID(categoryID));
+            var f = new List<CategoryCharacteristic>();
+            foreach (CategoryCharacteristic i in l1)
+            {
+                f.Add(i);
+            }
+            if (l2 != null)
+            {
+                foreach (CategoryCharacteristic i in l2)
+                {
+                    f.Add(i);
+                }
+            }
+            return f;
+        }
+        public Guid GetParentCategoryByChildID(Guid childCategoryId)
+        {
+            var currentChild = _categoryRepository.Get(x => x.id == childCategoryId).FirstOrDefault(); 
+            var parentCategory =_categoryRepository.Get(x => x.id == currentChild.ParentID).FirstOrDefault();
+            return parentCategory.id;
+        }
+
         public IEnumerable<Purpose> GetPurposesByCharacteristic(Guid categoryID,Guid charId)
         {
             var icWithNecessaryCharacteristics = _itemCharacteristic.Get(x => x.CharacteristicID == charId);
