@@ -12,14 +12,31 @@ namespace GSWA.WebUI.Controllers
 {
     public class HomeController : Controller
     {
+        private INewsManager _newsManager;
+
+        public HomeController(INewsManager newsManager)
+        {
+            _newsManager = newsManager;
+        }
+
         public ActionResult Index()
         {
             return View();            
         }
-
         public ActionResult News()
         {
-            return View();
+            var news = _newsManager.GetNews();
+            var homeNewsVMList = new List<HomeNewsVM>();
+            foreach (var n in news)
+            {
+                var homeNewsVM = new HomeNewsVM();
+                homeNewsVM.Id = n.id;
+                homeNewsVM.Name = n.name;
+                homeNewsVM.Description = n.description;
+                homeNewsVM.Date = n.date;
+                homeNewsVMList.Add(homeNewsVM);
+            }
+            return View(homeNewsVMList);
         }
         public ActionResult Delivery()
         {

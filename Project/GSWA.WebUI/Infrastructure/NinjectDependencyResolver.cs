@@ -40,6 +40,7 @@ namespace GSWA.WebUI.Infrastructure
             kernel.Bind<ICatalog>().To<Catalog>();
             kernel.Bind<ICart>().To<Cart>();
             kernel.Bind<IOrderManager>().To<OrderManager>();
+            kernel.Bind<INewsManager>().To<NewsManager>();
 
         }
     }
