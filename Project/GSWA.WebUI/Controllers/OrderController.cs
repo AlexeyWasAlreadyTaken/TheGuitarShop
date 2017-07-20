@@ -13,17 +13,15 @@ namespace GSWA.WebUI.Controllers
 {
     public class OrderController : Controller
     {
-        // GET: Order
+        IOrderManager _orderManager;
 
-        IOrderManager _order;
-
-        public OrderController(IOrderManager ord)
+        public OrderController(IOrderManager orderManager)
         {
-            _order = ord;
+            _orderManager = orderManager;
         }
         public ActionResult Index()
         {
-            ViewBag.dtl = new SelectList(_order.GetDeliveryTypes(), "id", "name");
+            ViewBag.dtl = new SelectList(_orderManager.GetDeliveryTypes(), "id", "name");
             return View();
         }
 
@@ -31,7 +29,7 @@ namespace GSWA.WebUI.Controllers
         public ActionResult Index(OrderVM model, ICart cart)
         {
             //DropDownListFor 
-            ViewBag.dtl = new SelectList(_order.GetDeliveryTypes(), "id", "name");
+            ViewBag.dtl = new SelectList(_orderManager.GetDeliveryTypes(), "id", "name");
             //Validation
             if (string.IsNullOrEmpty(model.Name))
                 ModelState.AddModelError("Name", "Fill your name");
@@ -49,57 +47,49 @@ namespace GSWA.WebUI.Controllers
             //Validation Check
             if (ModelState.IsValid)
             {
+                if (cart.GetOrderItems().ToList().Count > 0)
+                {
+                    // initialize order information 
+                    Order currentOrderInfo = new Order();
+                    currentOrderInfo.Id = Guid.NewGuid();
+                    currentOrderInfo.Name = model.Name;
+                    currentOrderInfo.LastName = model.Lname;
+                    currentOrderInfo.Phone = model.Phone;
+                    currentOrderInfo.DeliveryTypeId = model.deliveryTypeID;
+                    currentOrderInfo.Address = model.Adress;
+                    currentOrderInfo.Comment = model.Comment;
+                    currentOrderInfo.Date = DateTime.Now;
+                    currentOrderInfo.StatusId = _orderManager.GetStatusIDByName("New");
+                    currentOrderInfo.email = model.email;
 
-                if (cart.GetCartLines().ToList().Count > 0)
-                    if (model.deliveryTypeID != null)
+                    List<OrderItem> orderItemeList = new List<OrderItem>();
+                    foreach (var orderItem in cart.GetOrderItems())
                     {
-                        // initialize order information 
-                        Order currentOrderInfo = new Order();
-
-                        currentOrderInfo.Id = Guid.NewGuid();
-                        currentOrderInfo.Name = model.Name;
-                        currentOrderInfo.LastName = model.Lname;
-                        currentOrderInfo.Phone = model.Phone;
-                        currentOrderInfo.DeliveryTypeId = model.deliveryTypeID;
-                        currentOrderInfo.Address = model.Adress;
-                        currentOrderInfo.Comment = model.Comment;
-                        currentOrderInfo.Date = DateTime.Now;
-                        currentOrderInfo.StatusId = _order.GetStatusIDByName("New");
-                        currentOrderInfo.email = model.email;
-
-                        List<OrderItem> orlist = new List<OrderItem>();
-                        foreach (CartLine cl in cart.GetCartLines())
-                        {
-                            OrderItem _temp = new OrderItem();
-                            _temp.id = Guid.NewGuid();
-                            _temp.OrderId = currentOrderInfo.Id;
-                            _temp.ItemId = (Guid)cl.Purpose.ItemId; //??
-                            _temp.purposePriceId = cl.PurposePrice.id;
-                            _temp.purposeId = cl.Purpose.id;
-                            _temp.count = cl.Count;
-
-                            orlist.Add(_temp);
-
-                        }
-
-
-                        _order.SaveOrder(currentOrderInfo,orlist);
-                        cart.DeleteAllPurposes();
-                        // order object "currentOrderInfo" complete to write to base=
-
-
-
+                        var temp = new OrderItem();
+                        temp.id = Guid.NewGuid();
+                        temp.OrderId = currentOrderInfo.Id;
+                        temp.ItemId = orderItem.ItemId;
+                        temp.purposePriceId = orderItem.purposePrice.id;
+                        temp.purposeId = orderItem.Purpose.id;
+                        temp.count = orderItem.count;
+                        orderItemeList.Add(temp);
                     }
 
-                return RedirectToActionPermanent("index", "Home");
+                    _orderManager.SaveOrder(currentOrderInfo, orderItemeList);
+                    cart.DeleteAllPurposes();
+                    // order object "currentOrderInfo" complete to write to base=
+                    ViewBag.orderNumber = currentOrderInfo.Id;
+                    return View("OrderRegistered");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Cart");
+                }
             }
             else
             {
                 return View();
             }
-
-
-
         }
     }
 }

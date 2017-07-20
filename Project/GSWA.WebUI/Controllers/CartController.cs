@@ -13,24 +13,22 @@ namespace GSWA.WebUI.Controllers
     {
         public ActionResult Index(ICart cart)
         {
-            var cartLines = cart.GetCartLines();
-            var CartIndexVMCollection = new List<CartIndexVM>();
-            foreach (var cl in cartLines)
+            var orderItems = cart.GetOrderItems();
+            var CartIndexVMList = new List<CartIndexVM>();
+            foreach (var orderItem in orderItems)
             {
-                CartIndexVM cartIndexVM = new CartIndexVM
-                {
-                    PurposeId = cl.Purpose.id,
-                    ItemId = cl.Purpose.ItemId,
-                    BrandName = cl.Purpose.Item.Brand.Name,
-                    ItemName = cl.Purpose.Item.Name,
-                    IsPromo = cl.Purpose.IsPromo,
-                    Count = cl.Count,
-                    Price = cl.PurposePrice.price * cl.Count,
-                    Currency = cl.PurposePrice.Curency.Name
-                };
-                CartIndexVMCollection.Add(cartIndexVM);
+                CartIndexVM cartIndexVM = new CartIndexVM();
+                cartIndexVM.PurposeId = orderItem.Purpose.id;
+                cartIndexVM.ItemId = orderItem.ItemId;
+                cartIndexVM.BrandName = orderItem.Item.Brand.Name;
+                cartIndexVM.ItemName = orderItem.Item.Name;
+                cartIndexVM.IsPromo = orderItem.Purpose.IsPromo;
+                cartIndexVM.Count = orderItem.count;
+                cartIndexVM.Price = orderItem.purposePrice.price * orderItem.count;
+                cartIndexVM.Currency = orderItem.purposePrice.Curency.Name;
+                CartIndexVMList.Add(cartIndexVM);
             }
-            return View(CartIndexVMCollection);
+            return View(CartIndexVMList);
         }
         public ActionResult AddPurpose(ICart cart, string purposeId)
         {

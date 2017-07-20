@@ -12,7 +12,7 @@ namespace GSWA.Domain.Concrete
         private IRepository<Purpose> _purposeRepository;
         private IRepository<purposePrice> _purposePriceRepository;
 
-        private List<CartLine> _currentCartLineList;
+        private List<OrderItem> _currentOrderItemList;
         private double? _totalPrice;
         private const double _defaultTotalPrice = 0;
 
@@ -20,78 +20,78 @@ namespace GSWA.Domain.Concrete
         {
             _purposeRepository = purposeRepository;
             _purposePriceRepository = purposePriceRepository;
-            _currentCartLineList = new List<CartLine>();
+            _currentOrderItemList = new List<OrderItem>();
             RecalculateTotalPrice();
         }
 
         public void AddPurpose(Guid purposeId, int count)
         {
-            if (_currentCartLineList.Any(cl => cl.Purpose.id == purposeId))
+            if (_currentOrderItemList.Any(oi => oi.Purpose.id == purposeId))
             {
-                _currentCartLineList.Where(cl => cl.Purpose.id == purposeId).FirstOrDefault().Count += count;
+                _currentOrderItemList.Where(oi => oi.Purpose.id == purposeId).FirstOrDefault().count += count;
             }
             else
             {
-                var cartLine = new CartLine();
-                cartLine.Purpose = _purposeRepository.Get(p => p.id == purposeId).FirstOrDefault();
-                cartLine.PurposePrice = _purposePriceRepository.Get(pp => pp.purposeId == purposeId).OrderBy(pp => pp.date).FirstOrDefault();
-                cartLine.Count = count;
-                _currentCartLineList.Add(cartLine);
+                var orderItem = new OrderItem();
+                orderItem.Purpose = _purposeRepository.Get(p => p.id == purposeId).FirstOrDefault();
+                orderItem.purposeId = purposeId;
+                orderItem.Item = orderItem.Purpose.Item;
+                orderItem.ItemId = orderItem.Item.id;
+                orderItem.purposePrice = _purposePriceRepository.Get(pp => pp.purposeId == purposeId).OrderBy(pp => pp.date).FirstOrDefault();
+                orderItem.purposePriceId = orderItem.purposePrice.id;
+                orderItem.count = count;
+                _currentOrderItemList.Add(orderItem);
             }
             RecalculateTotalPrice();
         }
         public void DeletePurpose(Guid purposeId, int count)
         {
-            if (_currentCartLineList.Any(cl => cl.Purpose.id == purposeId))
+            if (_currentOrderItemList.Any(oi => oi.Purpose.id == purposeId))
             {
-                var cartLine = _currentCartLineList.Where(cl => cl.Purpose.id == purposeId).FirstOrDefault();
-                if (cartLine.Count <= count)
+                var orderItem = _currentOrderItemList.Where(oi => oi.Purpose.id == purposeId).FirstOrDefault();
+                if (orderItem.count <= count)
                 {
-                    _currentCartLineList.Remove(cartLine);
+                    _currentOrderItemList.Remove(orderItem);
                 }
                 else
                 {
-                    cartLine.Count -= count;
+                    orderItem.count -= count;
                 }
             }
             RecalculateTotalPrice();
         }
         public void DeleteAllPurposes()
         {
-            _currentCartLineList.Clear();
+            _currentOrderItemList.Clear();
             RecalculateTotalPrice();
         }
-        public IEnumerable<CartLine> GetCartLines()
+        public IEnumerable<OrderItem> GetOrderItems()
         {
-            return _currentCartLineList;
+            return _currentOrderItemList;
         }
         public double? GetTotalPrice()
         {
             return _totalPrice;
         }
-        public void Checkout() // Place an order
-        {
-            throw new NotImplementedException();
-        }
         private void RecalculateTotalPrice()
         {
             _totalPrice = _defaultTotalPrice;
-            if (_currentCartLineList == null || _currentCartLineList.Any())
+            if (_currentOrderItemList == null || _currentOrderItemList.Any())
             {
                 return;
             }
-            foreach (var cl in _currentCartLineList)
+            foreach (var orderItem in _currentOrderItemList)
             {
-                double? clPrice = cl.PurposePrice.price * cl.Count;
-                _totalPrice += clPrice;
+                double? orderItemPrice = orderItem.purposePrice.price * orderItem.count;
+                _totalPrice += orderItemPrice;
             }
         }
         public void Dispose()
         {
             _purposeRepository.Dispose();
             _purposePriceRepository.Dispose();
-            _currentCartLineList.Clear();
-            _currentCartLineList = null;
+            _currentOrderItemList.Clear();
+            _currentOrderItemList = null;
         }
     }
 }

@@ -10,10 +10,9 @@ namespace GSWA.Domain.Abstract
     public interface ICart : IDisposable
     {
         void AddPurpose(Guid purposeId, int count);
-        void Checkout();
         void DeleteAllPurposes();
         void DeletePurpose(Guid purposeId, int count);
-        IEnumerable<CartLine> GetCartLines();
+        IEnumerable<OrderItem> GetOrderItems();
         double? GetTotalPrice();
     }
 }
