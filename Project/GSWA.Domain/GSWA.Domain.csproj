@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Abstract\ICart.cs" />
     <Compile Include="Abstract\ICatalog.cs" />
+    <Compile Include="Abstract\INewsManager.cs" />
     <Compile Include="Abstract\IOrderManager.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="AvailabilityType.cs">
@@ -111,6 +112,7 @@
     <Compile Include="Concrete\CartLine.cs" />
     <Compile Include="Concrete\Catalog.cs" />
     <Compile Include="Concrete\EFRepository.cs" />
+    <Compile Include="Concrete\NewsManager.cs" />
     <Compile Include="Concrete\OrderManager.cs" />
     <Compile Include="Contact.cs">
       <DependentUpon>Model1.tt</DependentUpon>

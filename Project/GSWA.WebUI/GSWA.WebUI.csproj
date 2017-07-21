@@ -178,6 +178,7 @@
     <Compile Include="Models\ConcretePurposeVM.cs" />
     <Compile Include="Models\FiltersVM.cs" />
     <Compile Include="Models\HomeIndexVM.cs" />
+    <Compile Include="Models\HomeNewsVM.cs" />
     <Compile Include="Models\OrderVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -206,6 +207,7 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Purpose\GetPurpose.cshtml" />
     <Content Include="Views\Catalog\_GetCharList.cshtml" />
+    <Content Include="Views\Order\OrderRegistered.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
