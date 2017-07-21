@@ -63,13 +63,13 @@ namespace GSWA.WebUI.Controllers
             return View(H);
         }
 
-        public ActionResult PurposesList(Guid id,string st)
+        public ActionResult PurposesList(Guid id, string st)
         {
             x = id;
             IEnumerable<Purpose> C = catalog.GetPurposesByCategoryID(id);
             IEnumerable<CatalogPurposeVM> purposeList = Enumerable.Empty<CatalogPurposeVM>();
             List<CatalogPurposeVM> pList = new List<CatalogPurposeVM>();
-           
+
             foreach (Purpose curr in C)
             {
                 CatalogPurposeVM buff = new CatalogPurposeVM();
@@ -81,7 +81,7 @@ namespace GSWA.WebUI.Controllers
                 buff.Curency = catalog.GetPurposePriceByPuposeID(curr.id).Curency.Name;
                 buff.Category = curr.Item.Category.Name;
 
-                
+
 
                 pList.Add(buff);
                 buff = null;
@@ -99,18 +99,44 @@ namespace GSWA.WebUI.Controllers
                     purposeList = purposeList.OrderBy(x => x.Brand);
                     break;
             }
-            
+
             return View(purposeList);
         }
         [ChildActionOnly]
         public ActionResult GetCharList(Guid id)
         {
-            
-
-
             var listOfCategoryChar = catalog.GetCharacterististicsByCategoryId(id);
-            return PartialView("_GetCharList", listOfCategoryChar);
-            
+            //TODO
+            var filterList = new List<FiltersVM>();
+            var checkValuesList = new List<CharValue>();
+            foreach (CategoryCharacteristic item in listOfCategoryChar)
+            {  
+                var currValuesListForCurChar = catalog.GetAllValuesForCharacteristic((Guid)item.CharacteristicID);
+                foreach (CharValue currVal in currValuesListForCurChar)
+                {
+                    if (!checkValuesList.Contains(currVal))
+                    {
+                        var buff = new FiltersVM();
+                        buff.characteristicId = (Guid)item.CharacteristicID;
+                        buff.characteristicName = item.Characteristic.Name;
+                        buff.valueId = currVal.id;
+
+                        buff.charValue = "";
+                        if (currVal.intVal != null)
+                            buff.charValue = currVal.intVal.ToString();
+                        if (currVal.floatVal != null)
+                            buff.charValue = currVal.floatVal.ToString();
+                        if (currVal.strVal != null)
+                            buff.charValue = currVal.strVal;
+
+                        filterList.Add(buff);
+                        checkValuesList.Add(currVal);
+                    }
+                }
+            }
+
+            return PartialView("_GetCharList", filterList);
+
         }
     }
 }

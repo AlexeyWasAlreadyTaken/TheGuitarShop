@@ -12,7 +12,7 @@ namespace GSWA.Domain
     using System;
     using System.Collections.Generic;
     
-    public partial class CharValue
+    public partial class CharValue : IEquatable<CharValue>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CharValue()
@@ -27,5 +27,16 @@ namespace GSWA.Domain
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemCharacteristic> ItemCharacteristics { get; set; }
+
+        public bool Equals(CharValue other)
+        {
+            if (this.id == other.id)
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }
 }

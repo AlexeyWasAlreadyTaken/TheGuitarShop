@@ -72,6 +72,17 @@ namespace GSWA.Domain.Concrete
             }
             return f;
         }
+
+        public IEnumerable<CharValue> GetAllValuesForCharacteristic(Guid charId)
+        {
+            //throw new NotImplementedException();
+            
+            var _currChar = _itemCharacteristic.Get(x => x.CharacteristicID == charId);
+            var _currCharValues = _currChar.Select(x => x.CharValue);
+
+            return _currCharValues;
+        }
+
         public Guid GetParentCategoryByChildID(Guid childCategoryId)
         {
             var currentChild = _categoryRepository.Get(x => x.id == childCategoryId).FirstOrDefault(); 
@@ -81,8 +92,7 @@ namespace GSWA.Domain.Concrete
 
         public IEnumerable<Purpose> GetPurposesByCharacteristic(Guid categoryID,Guid charId)
         {
-            var icWithNecessaryCharacteristics = _itemCharacteristic.Get(x => x.CharacteristicID == charId);
-            return null;
+            throw new NotImplementedException();
         }
         public void Dispose()
         {
@@ -90,6 +100,7 @@ namespace GSWA.Domain.Concrete
             _purposeRepository.Dispose();
             _purpPriceRepository.Dispose();
             _itemCharacteristic.Dispose();
+            _categoryCharacteristic.Dispose();
         }
     }
 }
