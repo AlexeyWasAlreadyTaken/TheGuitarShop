@@ -1,12 +1,8 @@
 ﻿@model IEnumerable<GSWA.WebUI.Models.FiltersVM>
 
-
-
-
-@foreach (var item in Model) {
-
-            @Html.ActionLink(""+item.characteristicName + " "+ item.charValue+" ", "Edit", new { }) <span> | </span>
-
+@foreach (var item in Model)
+{
+    @Html.ActionLink("" + item.characteristicName + " " + item.charValue + " ", "Edit", new { }) <span> | </span>
 }
 
 
