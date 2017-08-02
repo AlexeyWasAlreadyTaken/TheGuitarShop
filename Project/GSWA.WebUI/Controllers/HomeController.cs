@@ -57,5 +57,10 @@ namespace GSWA.WebUI.Controllers
         {
             return PartialView();
         }
+
+        public ActionResult GetNav()
+        {
+            return PartialView("_GetNav");
+        }
     }
 }

@@ -208,6 +208,7 @@
     <Content Include="Views\Purpose\GetPurpose.cshtml" />
     <Content Include="Views\Catalog\_GetCharList.cshtml" />
     <Content Include="Views\Order\OrderRegistered.cshtml" />
+    <Content Include="Views\Home\_GetNav.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
