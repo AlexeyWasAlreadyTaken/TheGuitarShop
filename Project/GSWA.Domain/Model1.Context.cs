@@ -18,8 +18,11 @@ namespace GSWA.Domain
         public GuitarShopDEVEntities()
             : base("name=GuitarShopDEVEntities3")
         {
+            
+                this.Configuration.LazyLoadingEnabled = false;
+            
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

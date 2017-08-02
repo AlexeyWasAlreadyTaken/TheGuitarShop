@@ -33,11 +33,12 @@ namespace GSWA.Domain.Concrete
             else
             {
                 var orderItem = new OrderItem();
-                orderItem.Purpose = _purposeRepository.Get(p => p.id == purposeId).FirstOrDefault();
+                // to do 
+                orderItem.Purpose = _purposeRepository.GetWithInclude(p => p.id == purposeId, y=> y.Item, y=>y.Item.Brand).FirstOrDefault();
                 orderItem.purposeId = purposeId;
                 orderItem.Item = orderItem.Purpose.Item;
                 orderItem.ItemId = orderItem.Item.id;
-                orderItem.purposePrice = _purposePriceRepository.Get(pp => pp.purposeId == purposeId).OrderBy(pp => pp.date).FirstOrDefault();
+                orderItem.purposePrice = _purposePriceRepository.GetWithInclude(pp => pp.purposeId == purposeId, y=>y.Curency).OrderBy(pp => pp.date).FirstOrDefault();
                 orderItem.purposePriceId = orderItem.purposePrice.id;
                 orderItem.count = count;
                 _currentOrderItemList.Add(orderItem);

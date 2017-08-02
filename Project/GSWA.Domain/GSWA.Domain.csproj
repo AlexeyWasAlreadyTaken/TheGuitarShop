@@ -109,7 +109,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Concrete\Cart.cs" />
-    <Compile Include="Concrete\CartLine.cs" />
     <Compile Include="Concrete\Catalog.cs" />
     <Compile Include="Concrete\EFRepository.cs" />
     <Compile Include="Concrete\NewsManager.cs" />

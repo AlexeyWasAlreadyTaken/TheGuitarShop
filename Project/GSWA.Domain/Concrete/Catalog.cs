@@ -35,29 +35,29 @@ namespace GSWA.Domain.Concrete
         }
         public IEnumerable<Purpose> GetPurposesByCategoryID(Guid categoryID)
         {
-            return _purposeRepository.Get(x => x.Item.CategoryID == categoryID);
+            return _purposeRepository.GetWithInclude(x => x.Item.CategoryID == categoryID,y => y.Item, y => y.Item.Brand, y => y.Item.Category);//
         }
         public IEnumerable<Purpose> GetPurposeByID(Guid purposeID)
         {
-            return _purposeRepository.Get(x => x.id == purposeID);
+            return _purposeRepository.GetWithInclude(x => x.id == purposeID,y => y.Item,y => y.Item.Brand,y => y.Item.Category);
         }
 
         public purposePrice GetPurposePriceByPuposeID(Guid purposeID)
         {
-            var curPurposePrice = _purpPriceRepository.Get(x => x.purposeId == purposeID).OrderBy(o => o.date).ToList().FirstOrDefault();
+            var curPurposePrice = _purpPriceRepository.GetWithInclude(x => x.purposeId == purposeID,y => y.Curency).OrderBy(o => o.date).ToList().FirstOrDefault();
             return curPurposePrice;
             
         }
 
         public IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID)
         {
-            return _itemCharacteristic.Get(x => x.ItemID == itemID);
+            return _itemCharacteristic.GetWithInclude(x => x.ItemID == itemID,y => y.Characteristic,y => y.Item, y => y.CharValue);
         }
 
         public IEnumerable<CategoryCharacteristic> GetCharacterististicsByCategoryId(Guid categoryID)
         {
-            var l1 = _categoryCharacteristic.Get(x => x.CategoryID == categoryID);
-            var l2 = _categoryCharacteristic.Get(x => x.CategoryID == GetParentCategoryByChildID(categoryID));
+            var l1 = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == categoryID,y => y.Characteristic);
+            var l2 = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == GetParentCategoryByChildID(categoryID),y => y.Characteristic);
             var f = new List<CategoryCharacteristic>();
             foreach (CategoryCharacteristic i in l1)
             {
@@ -77,7 +77,7 @@ namespace GSWA.Domain.Concrete
         {
             //throw new NotImplementedException();
             
-            var _currChar = _itemCharacteristic.Get(x => x.CharacteristicID == charId);
+            var _currChar = _itemCharacteristic.GetWithInclude(x => x.CharacteristicID == charId,y => y.Characteristic,y => y.CharValue);
             var _currCharValues = _currChar.Select(x => x.CharValue);
 
             return _currCharValues;
