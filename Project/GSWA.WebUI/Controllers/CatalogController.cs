@@ -102,7 +102,7 @@ namespace GSWA.WebUI.Controllers
 
             return View(purposeList);
         }
-        [ChildActionOnly]
+      //  [ChildActionOnly]
         public ActionResult GetCharList(Guid id)
         {
             var listOfCategoryChar = catalog.GetCharacterististicsByCategoryId(id);
