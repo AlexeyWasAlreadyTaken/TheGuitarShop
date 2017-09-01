@@ -41,7 +41,9 @@
                 else
                 {
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Привет"+@User.Identity.Name+ " " + User.Identity.AuthenticationType, "Index", "Home")</li>
+                        <li>@Html.ActionLink("Привет" + @User.Identity.Name + " ", "Index", "Home")</li>
+                      
+                        <li>@Html.ActionLink(""+Html.Action("GetLoggedUserRole", "Home"), "RoleRedirect", "Home")</li>
                         <li>@Html.ActionLink("Выход", "Logout", "Account")</li>
                     </ul>
 
@@ -58,11 +60,12 @@
         <div class="row ">
             <div>
                 <div class="col-lg-2 col-md-2 navbar-left" style="background-color:#d8d8d8">
-                    @Html.Action("GetNav", "Home")
+                   
                 </div>
                 <div class="col-lg-10 col-md-10" style="background-color:#f8f8f8">
                     @RenderBody()
 
+                    
 
 
                 </div>

@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Store.BLL.Interfaces;
 using Store.WEB.Models;
+using Microsoft.AspNet.Identity.Owin;
+using System.Security.Claims;
 
 namespace Store.WEB.Controllers
 {
@@ -62,6 +64,66 @@ namespace Store.WEB.Controllers
         public ActionResult GetNav()
         {
             return PartialView("_GetNav");
+        }
+
+
+        private IUserService UserService
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<IUserService>();
+            }
+        }
+
+        public ActionResult GetLoggedUserRole()
+        {
+            var currentUserRole = "";
+            if (User.Identity.IsAuthenticated)
+            {
+                var userIdentity = (ClaimsIdentity)User.Identity;
+                var claims = userIdentity.Claims;
+                //var roleClaimType = userIdentity.RoleClaimType;
+                var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
+                currentUserRole = roles.FirstOrDefault().Value;
+            }
+            else
+                currentUserRole = "Is Not Authenticated";
+
+            return PartialView("_GetLoggedUserRole",currentUserRole.ToUpper());
+        }
+
+        public ActionResult RoleRedirect()
+        {
+            
+            var currentUserRole = "";
+            if (User.Identity.IsAuthenticated)
+            {
+                var userIdentity = (ClaimsIdentity)User.Identity;
+                var claims = userIdentity.Claims;
+                //var roleClaimType = userIdentity.RoleClaimType;
+                var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
+                currentUserRole = roles.FirstOrDefault().Value;
+            }
+            else
+                currentUserRole = "Is Not Authenticated";
+
+
+
+            switch (currentUserRole)
+            {
+                case "admin":
+                    return RedirectToAction("Index", "ContentManagerAccount");
+                    break;
+                case "user":
+                    return RedirectToAction("Index", "UserAccount");
+                    break;
+                case "Is Not Authenticated":
+                    return RedirectToAction("Index", "Home");
+                    break;
+
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

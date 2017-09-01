@@ -114,7 +114,6 @@ namespace Store.Controllers
                 Role = "admin",
             }, new List<string> { "user", "admin" });
 
-            //HttpContext.GetOwinContext().GetUserManager<IUserService>().
         }
     }
 }
