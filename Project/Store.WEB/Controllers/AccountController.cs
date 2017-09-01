@@ -113,6 +113,8 @@ namespace Store.Controllers
                 Address = "empty",
                 Role = "admin",
             }, new List<string> { "user", "admin" });
+
+            //HttpContext.GetOwinContext().GetUserManager<IUserService>().
         }
     }
 }
