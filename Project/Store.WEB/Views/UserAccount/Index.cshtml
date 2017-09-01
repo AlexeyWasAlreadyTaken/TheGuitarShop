@@ -3,5 +3,15 @@
     ViewBag.Title = "Index";
 }
 
-<h2>User Account</h2>
+<h2>Hello @User.Identity.Name</h2>
+<h3>@Html.Action("GetLoggedUserRole", "Home")</h3>
+<p>
+    Some info ..
+</p>
+
+
+<h3>Order history :</h3>
+
+
+
 
