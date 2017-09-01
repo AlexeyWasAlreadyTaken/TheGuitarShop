@@ -114,6 +114,9 @@ namespace Store.WEB.Controllers
                 case "admin":
                     return RedirectToAction("Index", "ContentManagerAccount");
                     break;
+                case "manager":
+                    return RedirectToAction("Index", "OrderManager");
+                    break;
                 case "user":
                     return RedirectToAction("Index", "UserAccount");
                     break;

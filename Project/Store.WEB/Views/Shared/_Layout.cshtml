@@ -41,8 +41,7 @@
                 else
                 {
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Привет" + @User.Identity.Name + " ", "Index", "Home")</li>
-                      
+                        <li>@Html.ActionLink("Привет " + @User.Identity.Name, "Index", "Home")</li>
                         <li>@Html.ActionLink(""+Html.Action("GetLoggedUserRole", "Home"), "RoleRedirect", "Home")</li>
                         <li>@Html.ActionLink("Выход", "Logout", "Account")</li>
                     </ul>

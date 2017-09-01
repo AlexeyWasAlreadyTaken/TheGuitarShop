@@ -112,7 +112,16 @@ namespace Store.Controllers
                 Name = "empty",
                 Address = "empty",
                 Role = "admin",
-            }, new List<string> { "user", "admin" });
+            }, new List<string> { "user", "admin" ,"manager"});
+            await UserService.SetInitialData(new UserDTO
+            {
+                Email = "manager@mail.net",
+                UserName = "manager@mail.net",
+                Password = "11111111",
+                Name = "empty",
+                Address = "empty",
+                Role = "manager",
+            }, new List<string> { "user", "admin", "manager" });
 
         }
     }
