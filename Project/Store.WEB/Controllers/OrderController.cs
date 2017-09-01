@@ -4,9 +4,11 @@ using Store.WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace Store.WEB.Controllers
 {
@@ -47,6 +49,13 @@ namespace Store.WEB.Controllers
             if (model.email != null && !new Regex(@"\b[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(model.email))
                 ModelState.AddModelError("Adress", "Email empty or wrong");
 
+
+         
+
+
+
+
+
             //Validation Check
             if (ModelState.IsValid)
             {
@@ -64,7 +73,10 @@ namespace Store.WEB.Controllers
                     currentOrderInfo.data = DateTime.Now;
                     currentOrderInfo.statusID = _orderManager.GetStatusIDByName("New");
                     currentOrderInfo.email = model.email;
-
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        currentOrderInfo.UserId = new Guid(User.Identity.GetUserId());
+                    }
                     var orderItemeList = new List<OrderItemDTO>();
                     foreach (var orderItem in cart.GetOrderItems())
                     {
@@ -75,7 +87,7 @@ namespace Store.WEB.Controllers
                         temp.Count = orderItem.Count;
                         orderItemeList.Add(temp);
                     }
-
+                 
                     _orderManager.SaveOrder(currentOrderInfo, orderItemeList);
                     cart.DeleteAllPurposes();
                     // order object "currentOrderInfo" complete to write to base=

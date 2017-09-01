@@ -60,6 +60,7 @@ namespace Store.BLL.Services
             currentorder.Date = order.data;
             currentorder.StatusId = order.statusID;
             currentorder.Email = order.email;
+            currentorder.ApplicationUserId = order.UserId.ToString();
             _order.Create(currentorder);
 
             foreach (var i in orderItemsDTOList)

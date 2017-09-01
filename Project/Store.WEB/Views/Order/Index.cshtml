@@ -11,7 +11,13 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>OrderVM</h4>
+        <h4>Order</h4>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            @Html.ActionLink("Привет " + @User.Identity.Name, "Index", "Home")
+        }
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

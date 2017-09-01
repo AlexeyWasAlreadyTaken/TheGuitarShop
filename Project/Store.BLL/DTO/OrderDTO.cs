@@ -15,6 +15,7 @@ namespace Store.BLL.DTO
         public DeliveryTypesDTO deliveryTypes { get; set; }
         #endregion
         public Guid id { get; set; }
+        public Guid UserId { get; set; }
         public Nullable<Guid> statusID { get; set; }
         public DateTime data { get; set; }
 
