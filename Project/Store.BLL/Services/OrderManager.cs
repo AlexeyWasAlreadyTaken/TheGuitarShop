@@ -108,7 +108,7 @@ namespace Store.BLL.Services
 
         public OrderDTO GetOrderById(Guid orderId)
         {
-            var order = _order.GetWithInclude(o => o.Status).FirstOrDefault();
+            var order = _order.GetWithInclude(o=> o.Id == orderId,o => o.Status).FirstOrDefault();
 
             var orderDTO = new OrderDTO();
             orderDTO.Id = order.Id;

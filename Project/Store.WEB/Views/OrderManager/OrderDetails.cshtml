@@ -3,22 +3,21 @@
 <div>
     <h4>OrderDetailsVM</h4>
     <hr />
-    <dl class="dl-horizontal">
-    </dl>
+    <dl class="dl-horizontal"></dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "")
-</p>
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.order.deliveryTypeID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.order.statusID)
-        </th>
-        <th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.order.deliveryTypeID)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.order.statusID)
+            </th>*@
+
+
+
+        @*<th>
             @Html.DisplayNameFor(model => model.order.data)
         </th>
         <th>
@@ -44,72 +43,114 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.order.Number)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.order.ContactId)
-        </th>
-        <th></th>
+        </th>*@
+
+
+
+        @*<th>
+                @Html.DisplayNameFor(model => model.order.ContactId)
+            </th>*@
     </tr>
 
-        <tr>
-            <td>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.data)</b></td><td>@Html.EditorFor(model => model.order.data)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.Name)</b></td><td>@Html.EditorFor(model => model.order.Name)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.Lname)</b></td><td>@Html.EditorFor(model => model.order.Lname)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.Phone)</b></td><td>@Html.EditorFor(model => model.order.Phone)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.Address)</b></td><td>@Html.EditorFor(model => model.order.Address)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.email)</b></td><td>@Html.EditorFor(model => model.order.email)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.Comment)</b></td><td>@Html.DisplayFor(model => model.order.Comment)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.Status)</b></td><td>@Html.DisplayFor(model => model.order.Status)</td></tr>
+    <tr><td><b>@Html.DisplayNameFor(model => model.order.Number)</b></td><td>@Html.DisplayFor(model => model.order.Number)</td></tr>
+
+    <tr><td></br></td></tr>
+
+
+        @*<td>
                 @Html.DisplayFor(model => model.order.deliveryTypeID)
-            </td>
-            <td>
+            </td>*@
+        @*<td>
                 @Html.DisplayFor(model => model.order.statusID)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.data)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.Lname)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.email)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.Comment)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.order.Number)
-            </td>
-            <td>
+            </td>*@
+
+
+
+        @*<td>
+            @Html.EditorFor(model => model.order.data)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.order.Name)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.order.Lname)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.order.Phone)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.order.Address)
+        </td>
+        <td>
+            @Html.EditorFor(model => model.order.email)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.order.Comment)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.order.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.order.Number)
+        </td>*@
+
+
+
+        @*<td>
                 @Html.DisplayFor(model => model.order.ContactId)
-            </td>
-        </tr>
+            </td>*@
+    <tr>
+        <td>
+            <b>
+                @Html.DisplayNameFor(Model => Model.orderItems.FirstOrDefault().BrandName)
+            </b>
+        </td>
+        <td>
+            <b>
+                @Html.DisplayNameFor(Model => Model.orderItems.FirstOrDefault().ItemName)
+            </b>
+        </td>
+        <td>
+            <b>
+                @Html.DisplayNameFor(Model => Model.orderItems.FirstOrDefault().IsPromo)
+            </b>
+        </td>
+        <td>
+            <b>
+                @Html.DisplayNameFor(Model => Model.orderItems.FirstOrDefault().Price)
+            </b>
+        </td>
+        <td>
+            <b>
+                @Html.DisplayNameFor(Model => Model.orderItems.FirstOrDefault().Currency)
+            </b>
+        </td>
+        <td>
+            <b>
+                @Html.DisplayNameFor(Model => Model.orderItems.FirstOrDefault().Count)
+            </b>
+        </td>
+    </tr>
 
     @foreach (var item in Model.orderItems)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PurposeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPromo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemId)
+                @Html.DisplayFor(modelItem => item.BrandName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ItemName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BrandName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Count)
+                @Html.DisplayFor(modelItem => item.IsPromo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
@@ -118,8 +159,11 @@
                 @Html.DisplayFor(modelItem => item.Currency)
             </td>
             <td>
-                @Html.ActionLink("DeleteOne", "DeletePurpose", new { purposeId = item.PurposeId })
+                @Html.DisplayFor(modelItem => item.Count)
             </td>
+            @*<td>
+                    @Html.ActionLink("DeleteOne", "", new { purposeId = item.PurposeId })
+                </td>*@
         </tr>
     }
 
