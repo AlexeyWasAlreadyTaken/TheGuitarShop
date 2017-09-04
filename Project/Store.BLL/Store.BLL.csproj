@@ -63,6 +63,7 @@
     <Compile Include="DTO\OrderDTO.cs" />
     <Compile Include="DTO\OrderItemDTO.cs" />
     <Compile Include="DTO\PurposeDTO.cs" />
+    <Compile Include="DTO\StatusDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\ICart.cs" />

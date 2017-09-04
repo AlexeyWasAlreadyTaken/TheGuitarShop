@@ -24,8 +24,14 @@ namespace Store.WEB.Models
         [StringLength(50), Required]
         public string Phone { get; set; }
         [StringLength(50), Required]
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public string email { get; set; }
         public string Comment { get; set; }
+
+        //
+        public string Status { get; set; }
+        public Guid Id { get; set; }
+        public string Number { get; set; }
+        public Guid? ContactId { get; set; }
     }
 }

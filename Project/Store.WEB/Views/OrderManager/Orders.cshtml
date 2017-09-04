@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Store.WEB.Models.OrderVM>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.deliveryTypeID)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.statusID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Number)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.ContactId)
+        </th>*@
+        <th></th>
+    </tr>
+
+
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.deliveryTypeID)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.statusID)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.data)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Number)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.ContactId)
+        </td>*@
+        <td>
+            @Html.ActionLink("See details", "OrderDetails", "OrderManager", new { orderId = item.Id}, null)
+            
+        </td>
+    </tr>
+}
+
+</table>

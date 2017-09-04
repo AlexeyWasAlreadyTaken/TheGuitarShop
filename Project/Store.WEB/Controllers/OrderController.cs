@@ -44,7 +44,7 @@ namespace Store.WEB.Controllers
                 ModelState.AddModelError("Phone", "Fill your phone");
             if (model.deliveryTypeID == null)
                 ModelState.AddModelError("deliveryTypeID", "Select delivery type");
-            if (string.IsNullOrEmpty(model.Adress))
+            if (string.IsNullOrEmpty(model.Address))
                 ModelState.AddModelError("Adress", "Fill your adress");
             if (model.email != null && !new Regex(@"\b[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(model.email))
                 ModelState.AddModelError("Adress", "Email empty or wrong");
@@ -68,14 +68,14 @@ namespace Store.WEB.Controllers
                     currentOrderInfo.Lname = model.Lname;
                     currentOrderInfo.Phone = model.Phone;
                     currentOrderInfo.deliveryTypeID = model.deliveryTypeID;
-                    currentOrderInfo.Adress = model.Adress;
+                    currentOrderInfo.Address = model.Address;
                     currentOrderInfo.Comment = model.Comment;
                     currentOrderInfo.data = DateTime.Now;
                     currentOrderInfo.statusID = _orderManager.GetStatusIDByName("New");
                     currentOrderInfo.email = model.email;
                     if (User.Identity.IsAuthenticated)
                     {
-                        currentOrderInfo.UserId = new Guid(User.Identity.GetUserId());
+                        currentOrderInfo.UserId = User.Identity.GetUserId();
                     }
                     var orderItemeList = new List<OrderItemDTO>();
                     foreach (var orderItem in cart.GetOrderItems())

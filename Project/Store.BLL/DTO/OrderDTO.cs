@@ -14,8 +14,8 @@ namespace Store.BLL.DTO
         public Nullable<Guid> deliveryTypeID { get; set; }
         public DeliveryTypesDTO deliveryTypes { get; set; }
         #endregion
-        public Guid id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
+        public string UserId { get; set; }
         public Nullable<Guid> statusID { get; set; }
         public DateTime data { get; set; }
 
@@ -25,8 +25,13 @@ namespace Store.BLL.DTO
 
         public string Phone { get; set; }
 
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public string email { get; set; }
         public string Comment { get; set; }
+
+        //
+        public string Status { get; set; }
+        public Guid? ContactId { get; set; }
+        public string Number { get; set; }
     }
 }

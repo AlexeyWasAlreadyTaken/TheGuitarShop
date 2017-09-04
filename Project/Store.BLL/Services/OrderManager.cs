@@ -55,7 +55,7 @@ namespace Store.BLL.Services
             currentorder.LastName = order.Lname;
             currentorder.Phone = order.Phone;
             currentorder.DeliveryTypeId = order.deliveryTypeID;
-            currentorder.Address = order.Adress;
+            currentorder.Address = order.Address;
             currentorder.Comment = order.Comment;
             currentorder.Date = order.data;
             currentorder.StatusId = order.statusID;
@@ -75,6 +75,145 @@ namespace Store.BLL.Services
                 _orderItems.Create(_buff);
             }
 
+        }
+
+
+        public IEnumerable<OrderDTO> GetOrders()
+        {
+            var orders = _order.GetWithInclude(o=>o.Status);
+            var orderDTOList = new List<OrderDTO>();
+            foreach (var order in orders)
+            {
+                var orderDTO = new OrderDTO();
+                orderDTO.Id = order.Id;
+                orderDTO.email = order.Email;
+                orderDTO.Address = order.Address;
+                orderDTO.Comment = order.Comment;
+                orderDTO.data = (DateTime)order.Date;
+                orderDTO.Phone = order.Phone;
+                orderDTO.Name = order.Name;
+                orderDTO.Lname = order.LastName;
+                orderDTO.statusID = order.StatusId;
+                orderDTO.Status = order.Status.Name;
+                orderDTO.deliveryTypeID = order.DeliveryTypeId;
+
+                orderDTO.Number = order.Number;
+                orderDTO.ContactId = order.ContactId;
+
+                orderDTOList.Add(orderDTO);
+            }
+
+            return orderDTOList;
+        }
+
+        public OrderDTO GetOrderById(Guid orderId)
+        {
+            var order = _order.GetWithInclude(o => o.Status).FirstOrDefault();
+
+            var orderDTO = new OrderDTO();
+            orderDTO.Id = order.Id;
+            orderDTO.email = order.Email;
+            orderDTO.Address = order.Address;
+            orderDTO.Comment = order.Comment;
+            orderDTO.data = (DateTime)order.Date;
+            orderDTO.Phone = order.Phone;
+            orderDTO.Name = order.Name;
+            orderDTO.Lname = order.LastName;
+            orderDTO.statusID = order.StatusId;
+            orderDTO.Status = order.Status.Name;
+            orderDTO.deliveryTypeID = order.DeliveryTypeId;
+
+            orderDTO.Number = order.Number;
+            orderDTO.ContactId = order.ContactId;
+
+            return orderDTO;
+        }
+        public IEnumerable<OrderDTO> GetOrdersByUserId(string userId)
+        {
+            var orders = _order.GetWithInclude(o=>o.ApplicationUserId == userId,o => o.Status);
+            var orderDTOList = new List<OrderDTO>();
+            foreach (var order in orders)
+            {
+                var orderDTO = new OrderDTO();
+                orderDTO.Id = order.Id;
+                orderDTO.email = order.Email;
+                orderDTO.Address = order.Address;
+                orderDTO.Comment = order.Comment;
+                orderDTO.data = (DateTime)order.Date;
+                orderDTO.Phone = order.Phone;
+                orderDTO.Name = order.Name;
+                orderDTO.Lname = order.LastName;
+                orderDTO.statusID = order.StatusId;
+                orderDTO.Status = order.Status.Name;
+                orderDTO.deliveryTypeID = order.DeliveryTypeId;
+
+                orderDTO.Number = order.Number;
+                orderDTO.ContactId = order.ContactId;
+
+                orderDTOList.Add(orderDTO);
+            }
+
+            return orderDTOList;
+        }
+
+        public void UpdateOrder(OrderDTO orderDTO)
+        {
+            var order = new Order();
+
+            order.Id = orderDTO.Id;
+            order.StatusId = orderDTO.Id;
+            order.ApplicationUserId = orderDTO.UserId;
+            order.Comment = orderDTO.Comment;
+            order.Name = orderDTO.Name;
+            order.LastName = orderDTO.Lname;
+            order.Phone = orderDTO.Phone;
+            order.Address = orderDTO.Address;
+            order.Date = orderDTO.data;
+            order.DeliveryTypeId = orderDTO.deliveryTypeID;
+            order.Email = orderDTO.email;
+
+            order.ContactId = orderDTO.ContactId;
+            order.Number = orderDTO.Number;
+
+
+            _order.Update(order);
+        }
+
+        public IEnumerable<StatusDTO> GetStatuses()
+        {
+            var statuses = _status.Get();
+            var statusDTOList = new List<StatusDTO>();
+            foreach (var status in statuses)
+            {
+                var statusDTO = new StatusDTO();
+                statusDTO.Id = status.Id;
+                statusDTO.Name = status.Name;
+                statusDTOList.Add(statusDTO);
+            }
+            return statusDTOList;
+        }
+
+        public IEnumerable<OrderItemDTO> GetOrderItemsByOrderId(Guid orderId)
+        {
+            var orderItems = _orderItems.GetWithInclude(o => o.Id == orderId, o => o.Item, o => o.PurposePrice, o => o.Purpose, o => o.Item.Brand, o => o.PurposePrice.Curency);
+            var orderItemDTOList = new List<OrderItemDTO>();
+            foreach (var orderItem in orderItems)
+            {
+                var orderItemDTO = new OrderItemDTO();
+                orderItemDTO.Id = orderItem.Id;
+                orderItemDTO.ItemId = orderItem.ItemId;
+                orderItemDTO.ItemName = orderItem.Item.Name;
+                orderItemDTO.OrderId = orderItem.OrderId;
+                orderItemDTO.Price = (double)orderItem.PurposePrice.Price;
+                orderItemDTO.PurposeId = orderItem.PurposeId;
+                orderItemDTO.PurposePriceId = orderItem.PurposePriceId;
+                orderItemDTO.BrandName = orderItem.Item.Brand.Name;
+                orderItemDTO.IsPromo = (bool)orderItem.Purpose.IsPromo;
+                orderItemDTO.Currency = orderItem.PurposePrice.Curency.Name;
+                orderItemDTO.Count = orderItem.Count;
+                orderItemDTOList.Add(orderItemDTO);
+            }
+            return orderItemDTOList;
         }
     }
 }

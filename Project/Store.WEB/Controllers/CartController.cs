@@ -13,21 +13,21 @@ namespace Store.WEB.Controllers
         public ActionResult Index(ICart cart)
         {
             var orderItems = cart.GetOrderItems();
-            var CartIndexVMList = new List<CartIndexVM>();
+            var orderItemVMList = new List<OrderItemVM>();
             foreach (var orderItemDTO in orderItems)
             {
-                CartIndexVM cartIndexVM = new CartIndexVM();
-                cartIndexVM.PurposeId = orderItemDTO.PurposeId;
-                cartIndexVM.ItemId = orderItemDTO.ItemId;
-                cartIndexVM.BrandName = orderItemDTO.BrandName;
-                cartIndexVM.ItemName = orderItemDTO.ItemName;
-                cartIndexVM.IsPromo = orderItemDTO.IsPromo;
-                cartIndexVM.Count = orderItemDTO.Count;
-                cartIndexVM.Price = orderItemDTO.Price;
-                cartIndexVM.Currency = orderItemDTO.Currency;
-                CartIndexVMList.Add(cartIndexVM);
+                OrderItemVM orderItemVM = new OrderItemVM();
+                orderItemVM.PurposeId = orderItemDTO.PurposeId;
+                orderItemVM.ItemId = orderItemDTO.ItemId;
+                orderItemVM.BrandName = orderItemDTO.BrandName;
+                orderItemVM.ItemName = orderItemDTO.ItemName;
+                orderItemVM.IsPromo = orderItemDTO.IsPromo;
+                orderItemVM.Count = orderItemDTO.Count;
+                orderItemVM.Price = orderItemDTO.Price;
+                orderItemVM.Currency = orderItemDTO.Currency;
+                orderItemVMList.Add(orderItemVM);
             }
-            return View(CartIndexVMList);
+            return View(orderItemVMList);
         }
         public ActionResult AddPurpose(ICart cart, string purposeId)
         {

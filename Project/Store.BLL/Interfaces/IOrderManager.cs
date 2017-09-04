@@ -13,5 +13,14 @@ namespace Store.BLL.Interfaces
         Nullable<Guid> GetStatusIDByName(string name);
         IEnumerable<DeliveryTypesDTO> GetDeliveryTypes();
         void SaveOrder(OrderDTO order, IEnumerable<OrderItemDTO> orderItemList);
+
+
+        IEnumerable<OrderDTO> GetOrders();
+        OrderDTO GetOrderById(Guid orderId);
+        IEnumerable<OrderDTO> GetOrdersByUserId(string userId);
+        void UpdateOrder(OrderDTO orderDTO);
+
+        IEnumerable<StatusDTO> GetStatuses();
+        IEnumerable<OrderItemDTO> GetOrderItemsByOrderId(Guid orderId);
     }
 }

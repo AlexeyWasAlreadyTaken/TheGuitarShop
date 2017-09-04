@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Store.WEB.Models
 {
-    public class CartIndexVM
+    public class OrderItemVM
     {
         public Guid PurposeId { get; set; }
         public bool? IsPromo { get; set; }
