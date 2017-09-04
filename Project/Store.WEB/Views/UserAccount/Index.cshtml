@@ -1,17 +1,62 @@
-﻿
+﻿@model IEnumerable<Store.WEB.Models.OrderDetailsVM>
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Hello @User.Identity.Name</h2>
-<h3>@Html.Action("GetLoggedUserRole", "Home")</h3>
-<p>
-    Some info ..
-</p>
-
-
+<p>Account type: @Html.Action("GetLoggedUserRole", "Home")</p>
 <h3>Order history :</h3>
+<br>
 
 
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table class="table">
+    @*<tr>
+        <th>Brand</th>
+        <th>Name</th>
+        <th>Count</th>
+        <th>Price</th>
+        <th>Curency</th>
+    </tr>*@
 
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <b>Number : @item.order.Number</b>
+            </td>
+            <td>
+                <b>Date : @item.order.data</b>
+            </td>
+            <td>
+                <b>Status : @item.order.Status</b>
+            </td>
+            <td>
+                @foreach (var orderItem in item.orderItems)
+                {
+            <tr>
+                <td>
+                    @orderItem.BrandName
+                </td>
+                <td>
+                    @orderItem.ItemName
+                </td>
+                <td>
+                    @orderItem.Count
+                </td>
+                <td>
+                    @orderItem.Price
+                </td>
+                <td>
+                    @orderItem.Currency
+                </td>
+            </tr>}
+                </td>
 
+                </tr>
+    }
+
+</table>
