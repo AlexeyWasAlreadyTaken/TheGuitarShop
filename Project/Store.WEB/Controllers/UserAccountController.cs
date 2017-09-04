@@ -28,13 +28,11 @@ namespace Store.WEB.Controllers
                 var orderList = _orderManager.GetOrdersByUserId(currentUserId);
 
                 var orderDetailsVMList = new List<OrderDetailsVM>();
-                var orderDetailsVM = new OrderDetailsVM();
+                
 
                 foreach (var i in orderList)
                 {
-
-
-                    //var order = _orderManager.GetOrderById(orderId);
+                    var orderDetailsVM = new OrderDetailsVM();
                     var orderVM = new OrderVM();
                     orderVM.Id = i.Id;
                     orderVM.Address = i.Address;
@@ -50,6 +48,7 @@ namespace Store.WEB.Controllers
                     orderVM.Status = i.Status;
                     orderVM.statusID = i.statusID;
                     orderDetailsVM.order = orderVM;
+                    orderVM = null;
 
                     var orderItems = _orderManager.GetOrderItemsByOrderId(i.Id);
                     var orderItemVMList = new List<OrderItemVM>();
@@ -65,9 +64,11 @@ namespace Store.WEB.Controllers
                         orderItemVM.Price = orderItem.Price;
                         orderItemVM.Currency = orderItem.Currency;
                         orderItemVMList.Add(orderItemVM);
+                        orderItemVM = null;
                     }
                     orderDetailsVM.orderItems = orderItemVMList;
                     orderDetailsVMList.Add(orderDetailsVM);
+
                 }
 
                 return View(orderDetailsVMList);

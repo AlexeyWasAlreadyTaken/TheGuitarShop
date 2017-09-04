@@ -41,8 +41,8 @@ namespace Store.DAL.Entities
         [StringLength(250)]
         public string Address { get; set; }
 
-        [StringLength(50)]
-        public string Number { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Number { get; set; }
 
         public DateTime? Date { get; set; }
 

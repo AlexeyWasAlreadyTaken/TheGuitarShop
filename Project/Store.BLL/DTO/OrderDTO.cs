@@ -32,6 +32,6 @@ namespace Store.BLL.DTO
         //
         public string Status { get; set; }
         public Guid? ContactId { get; set; }
-        public string Number { get; set; }
+        public int Number { get; set; }
     }
 }
