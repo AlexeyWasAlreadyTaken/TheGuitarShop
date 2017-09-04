@@ -1,1 +1,11 @@
-Project/Store.BLL/bin/Release/EntityFramework.dll
+Project/Store.WEB/bin/*
+Project/Store.WEB/obj/*
+Project/Store.BLL/bin/*
+Project/Store.BLL/obj/*
+Project/Store.DAL/bin/*
+Project/Store.DAL/obj/*
+Project/.vs/Store.WEB/*
+
+
+
+Project/Store.WEB/Properties/PublishProfiles/*
