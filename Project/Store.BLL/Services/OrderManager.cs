@@ -195,7 +195,7 @@ namespace Store.BLL.Services
 
         public IEnumerable<OrderItemDTO> GetOrderItemsByOrderId(Guid orderId)
         {
-            var orderItems = _orderItems.GetWithInclude(o => o.Id == orderId, o => o.Item, o => o.PurposePrice, o => o.Purpose, o => o.Item.Brand, o => o.PurposePrice.Curency);
+            var orderItems = _orderItems.GetWithInclude(o => o.OrderId == orderId, o => o.Item, o => o.PurposePrice, o => o.Purpose, o => o.Item.Brand, o => o.PurposePrice.Curency);
             var orderItemDTOList = new List<OrderItemDTO>();
             foreach (var orderItem in orderItems)
             {
