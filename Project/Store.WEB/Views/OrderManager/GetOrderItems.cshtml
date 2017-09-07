@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Store.WEB.Models.OrderItemVM>
+
+<div>
+    @*<h4>OrderDetailsVM</h4>*@
+    <hr />
+    <dl class="dl-horizontal"></dl>
+</div>
+
+    @*@using (Html.BeginForm("UpdateOrder", "OrderManager", FormMethod.Post))
+    {
+            @Html.AntiForgeryToken()
+
+            @Html.LabelFor(model => model.order.Number)
+            @Html.DisplayFor(model => model.order.Number)
+            <br />
+
+            @Html.LabelFor(model => model.order.data)
+            @Html.DisplayFor(model => model.order.data)
+            <br />
+
+            @Html.LabelFor(model => model.order.Status)
+            @Html.DropDownListFor(model => model.order.statusID, Model.order.Statuses)
+            <br />
+
+            @Html.LabelFor(model => model.order.Name)
+            @Html.EditorFor(model => model.order.Name)
+            <br />
+
+            @Html.LabelFor(model => model.order.Lname)
+            @Html.EditorFor(model => model.order.Lname)
+            <br />
+
+            @Html.LabelFor(model => model.order.Phone)
+            @Html.EditorFor(model => model.order.Phone)
+            <br />
+
+            @Html.LabelFor(model => model.order.Address)
+            @Html.EditorFor(model => model.order.Address)
+            <br />
+
+            @Html.Label("Delivery type")
+            @Html.DropDownListFor(model => model.order.deliveryTypeID, Model.order.deliveryTypes)
+            <br />
+
+            @Html.LabelFor(model => model.order.email)
+            @Html.EditorFor(model => model.order.email)
+            <br />
+
+            @Html.LabelFor(model => model.order.Comment)
+            @Html.DisplayFor(model => model.order.Comment)
+            <br />
+
+            <input type="submit" value="Update Order Info" class="btn btn-default" />
+    }
+
+<br>*@
+
+
+<table class="table">
+
+    <tr>
+        <td><b>@Html.DisplayNameFor(Model => Model.BrandName)</b></td>
+        <td><b>@Html.DisplayNameFor(Model => Model.ItemName)</b></td>
+        <td><b>@Html.DisplayNameFor(Model => Model.IsPromo)</b></td>
+        <td><b>@Html.DisplayNameFor(Model => Model.Price)</b></td>
+        <td><b>@Html.DisplayNameFor(Model => Model.Currency)</b></td>
+        <td><b>@Html.DisplayNameFor(Model => Model.Count)</b></td>
+    </tr>
+
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.BrandName)</td>
+            <td>@Html.DisplayFor(modelItem => item.ItemName)</td>
+            <td>@Html.DisplayFor(modelItem => item.IsPromo)</td>
+            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+            <td>@Html.DisplayFor(modelItem => item.Currency)</td>
+            <td>@Html.DisplayFor(modelItem => item.Count)</td>
+            @*<td>
+                    @Html.ActionLink("DeleteOne", "", new { purposeId = item.PurposeId })
+                </td>*@
+        </tr>
+    }
+
+</table>

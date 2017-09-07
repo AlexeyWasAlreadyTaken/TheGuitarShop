@@ -12,11 +12,11 @@ namespace Store.WEB.Models
         #region DropDownListFor 
         //DropDownListFor 
         public Nullable<Guid> deliveryTypeID { get; set; }
-        SelectList deliveryTypes { get; set; }
+        public SelectList deliveryTypes { get; set; }
         #endregion
 
         public Nullable<Guid> statusID { get; set; }
-        public DateTime data { get; set; }
+        public DateTime? data { get; set; }
         [StringLength(50), Required]
         public string Name { get; set; }
         [StringLength(50), Required]
@@ -33,5 +33,9 @@ namespace Store.WEB.Models
         public Guid Id { get; set; }
         public int Number { get; set; }
         public Guid? ContactId { get; set; }
+        public string UserId { get; set; }
+
+        //
+        public SelectList Statuses { get; set; }
     }
 }

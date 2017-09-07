@@ -17,7 +17,7 @@ namespace Store.BLL.DTO
         public Guid Id { get; set; }
         public string UserId { get; set; }
         public Nullable<Guid> statusID { get; set; }
-        public DateTime data { get; set; }
+        public DateTime? data { get; set; }
 
         public string Name { get; set; }
 

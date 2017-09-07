@@ -85,7 +85,7 @@
             @Html.DisplayFor(modelItem => item.ContactId)
         </td>*@
         <td>
-            @Html.ActionLink("See details", "OrderDetails", "OrderManager", new { orderId = item.Id}, null)
+            @Html.ActionLink("See details", "EditOrder", "OrderManager", new { orderId = item.Id}, null)
             
         </td>
     </tr>

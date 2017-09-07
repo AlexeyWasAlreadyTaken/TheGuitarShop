@@ -89,14 +89,14 @@ namespace Store.BLL.Services
                 orderDTO.email = order.Email;
                 orderDTO.Address = order.Address;
                 orderDTO.Comment = order.Comment;
-                orderDTO.data = (DateTime)order.Date;
+                orderDTO.data = order.Date;
                 orderDTO.Phone = order.Phone;
                 orderDTO.Name = order.Name;
                 orderDTO.Lname = order.LastName;
                 orderDTO.statusID = order.StatusId;
                 orderDTO.Status = order.Status.Name;
                 orderDTO.deliveryTypeID = order.DeliveryTypeId;
-
+                orderDTO.UserId = order.ApplicationUserId;
                 orderDTO.Number = order.Number;
                 orderDTO.ContactId = order.ContactId;
 
@@ -115,14 +115,14 @@ namespace Store.BLL.Services
             orderDTO.email = order.Email;
             orderDTO.Address = order.Address;
             orderDTO.Comment = order.Comment;
-            orderDTO.data = (DateTime)order.Date;
+            orderDTO.data = order.Date;
             orderDTO.Phone = order.Phone;
             orderDTO.Name = order.Name;
             orderDTO.Lname = order.LastName;
             orderDTO.statusID = order.StatusId;
             orderDTO.Status = order.Status.Name;
             orderDTO.deliveryTypeID = order.DeliveryTypeId;
-
+            orderDTO.UserId = order.ApplicationUserId;
             orderDTO.Number = order.Number;
             orderDTO.ContactId = order.ContactId;
 
@@ -139,14 +139,14 @@ namespace Store.BLL.Services
                 orderDTO.email = order.Email;
                 orderDTO.Address = order.Address;
                 orderDTO.Comment = order.Comment;
-                orderDTO.data = (DateTime)order.Date;
+                orderDTO.data = order.Date;
                 orderDTO.Phone = order.Phone;
                 orderDTO.Name = order.Name;
                 orderDTO.Lname = order.LastName;
                 orderDTO.statusID = order.StatusId;
                 orderDTO.Status = order.Status.Name;
                 orderDTO.deliveryTypeID = order.DeliveryTypeId;
-
+                orderDTO.UserId = order.ApplicationUserId;
                 orderDTO.Number = order.Number;
                 orderDTO.ContactId = order.ContactId;
 
@@ -161,7 +161,7 @@ namespace Store.BLL.Services
             var order = new Order();
 
             order.Id = orderDTO.Id;
-            order.StatusId = orderDTO.Id;
+            order.StatusId = orderDTO.statusID;
             order.ApplicationUserId = orderDTO.UserId;
             order.Comment = orderDTO.Comment;
             order.Name = orderDTO.Name;
