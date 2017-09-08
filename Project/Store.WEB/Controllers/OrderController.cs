@@ -73,6 +73,7 @@ namespace Store.WEB.Controllers
                     currentOrderInfo.data = DateTime.Now;
                     currentOrderInfo.statusID = _orderManager.GetStatusIDByName("New");
                     currentOrderInfo.email = model.email;
+
                     if (User.Identity.IsAuthenticated)
                     {
                         currentOrderInfo.UserId = User.Identity.GetUserId();

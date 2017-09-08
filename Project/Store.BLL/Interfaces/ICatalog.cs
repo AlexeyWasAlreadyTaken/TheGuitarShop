@@ -15,6 +15,8 @@ namespace Store.BLL.Interfaces
         IEnumerable<PurposeDTO> GetPurposesByCategoryID(Guid categoryID);
         PurposeDTO GetPurposeByID(Guid itemID);
         IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID);
+        CategoryDTO GetCategoryBytID(Guid parentID);
+        IEnumerable<CategoryCharacteristicDTO> GetCategoryCharacteristics(Guid CategoryID);
 
     }
 }

@@ -31,7 +31,7 @@ namespace Store.WEB.Controllers
             {
                 CategoryVM buff = new CategoryVM();
                 buff.categoryid = n.Id;
-                buff.subCategoryId = n.ParentCategoryID;
+                buff.parentCategoryId = n.ParentCategoryID;
                 buff.categoryName = n.Name;
                 hilist.Add(buff);
                 buff = null;
@@ -55,7 +55,7 @@ namespace Store.WEB.Controllers
             {
                 CategoryVM buff = new CategoryVM();
                 buff.categoryid = n.Id;
-                buff.subCategoryId = n.ParentCategoryID;
+                buff.parentCategoryId = n.ParentCategoryID;
                 buff.categoryName = n.Name;
                 hilist.Add(buff);
                 buff = null;

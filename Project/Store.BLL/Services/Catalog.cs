@@ -71,6 +71,24 @@ namespace Store.BLL.Services
         }
 
 
+        public CategoryDTO GetCategoryBytID(Guid ID)
+        {
+            // return _categoryRepository.Get(x => x.ParentCategoryID == parentID);
+
+            var v = _categoryRepository.Get(x => x.Id == ID);
+            List<CategoryDTO> currDTOList = new List<CategoryDTO>();
+            foreach (Category item in v)
+            {
+                CategoryDTO _buff = new CategoryDTO();
+                _buff.Id = item.Id;
+                _buff.Name = item.Name;
+                _buff.ParentCategoryID = item.ParentCategoryID;
+                currDTOList.Add(_buff);
+                //_buff = null;
+            }
+            return currDTOList.FirstOrDefault();
+        }
+
         public IEnumerable<PurposeDTO> GetPurposesByCategoryID(Guid categoryID)
         {
             var purposeList = _purposeRepository.GetWithInclude(x => x.Item.CategoryID == categoryID, y => y.Item, y => y.Item.Brand, y => y.Item.Category);
@@ -143,6 +161,48 @@ namespace Store.BLL.Services
             return _buff;
         }
 
+
+        public IEnumerable<CategoryCharacteristicDTO> GetCategoryCharacteristics(Guid CategoryID)
+        {
+            //var parentCategory = _categoryRepository.Get(x => x.Id == CategoryID).FirstOrDefault().ParentCategoryID;
+            var DTO = new List<CategoryCharacteristicDTO>();
+            /*
+            var isHaveParentCategory = _categoryRepository.Get(x => x.Id == CategoryID).Count() >= 1 ? true : false;
+            //if (parentCategory != null)
+            if (isHaveParentCategory)
+            {
+                var parentCategory = _categoryRepository.Get(x => x.Id == CategoryID).FirstOrDefault().ParentCategoryID;
+                var parentCategoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == parentCategory, y => y.Characteristic);
+                foreach (var i in parentCategoryChar)
+                {
+                    var buff = new CategoryCharacteristicDTO();
+                    buff.Id = i.Id;
+                    buff.CategoryID = (Guid)i.CategoryID;
+                    buff.CharacteristicID = (Guid)i.CharacteristicID;
+                    var characteristic = new CharacteristicDTO();
+                    characteristic.Id = i.Characteristic.Id;
+                    characteristic.Name = i.Characteristic.Name;
+                    buff.Characteristic = characteristic;
+                    DTO.Add(buff);
+                }
+            }
+            */
+            var categoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
+
+            foreach (var i in categoryChar)
+            {
+                var buff = new CategoryCharacteristicDTO();
+                buff.Id = i.Id;
+                buff.CategoryID = (Guid)i.CategoryID;
+                buff.CharacteristicID = (Guid)i.CharacteristicID;
+                var characteristic = new CharacteristicDTO();
+                characteristic.Id = i.Characteristic.Id;
+                characteristic.Name = i.Characteristic.Name;
+                buff.Characteristic = characteristic;
+                DTO.Add(buff);
+            }
+            return DTO;
+        }
 
 
     }
