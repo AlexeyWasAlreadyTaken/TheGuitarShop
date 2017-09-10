@@ -243,6 +243,7 @@
     </Compile>
     <Compile Include="Infrastructure\CartModelBinder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\CategoryCharacteristicVM.cs" />
     <Compile Include="Models\OrderItemVM.cs" />
     <Compile Include="Models\CatalogPurposeVM.cs" />
     <Compile Include="Models\ConcretePurposeVM.cs" />
@@ -286,6 +287,9 @@
     <Content Include="Views\Home\_GetLoggedUserRole.cshtml" />
     <Content Include="Views\OrderManager\Orders.cshtml" />
     <Content Include="Views\OrderManager\OrderDetails.cshtml" />
+    <Content Include="Views\ContentManagerAccount\CategoryEditorNavigation.cshtml" />
+    <Content Include="Views\ContentManagerAccount\CategoryEditor.cshtml" />
+    <Content Include="Views\ContentManagerAccount\GetCharacteristics.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

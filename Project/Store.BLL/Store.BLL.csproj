@@ -57,7 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\CategoryCharacteristicDTO.cs" />
     <Compile Include="DTO\CategoryDTO.cs" />
+    <Compile Include="DTO\CharacteristicDTO.cs" />
     <Compile Include="DTO\DeliveryTypesDTO.cs" />
     <Compile Include="DTO\NewsDTO.cs" />
     <Compile Include="DTO\OrderDTO.cs" />
