@@ -14,9 +14,10 @@ namespace Store.BLL.Interfaces
         IEnumerable<CategoryDTO> GetChildCategoryByParentID(Guid parentID);
         IEnumerable<PurposeDTO> GetPurposesByCategoryID(Guid categoryID);
         PurposeDTO GetPurposeByID(Guid itemID);
-        IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID);
-        CategoryDTO GetCategoryBytID(Guid parentID);
-        IEnumerable<CategoryCharacteristicDTO> GetCategoryCharacteristics(Guid CategoryID);
+       // IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID);
+        CategoryDTO GetCategoryByID(Guid parentID);
+        IEnumerable<CategoryCharacteristicDTO> GetCurrentCategoryCharacteristics(Guid CategoryID);
+        IEnumerable<CategoryCharacteristicDTO> GetAllChainCategoryCharacteristics(Guid CategoryID);
 
 
 
@@ -35,6 +36,14 @@ namespace Store.BLL.Interfaces
         void CreateItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO);
 
         IEnumerable<CharValueDTO> GetCharValuesByCharacteristicId(Guid characteristicId);
+
+        CharacteristicDTO GetCharacteristicByID(Guid id);
+
+
+
+      //  void UpdateCategory(CategoryDTO categoryDTO);
+      //  void DeleteCategory(CategoryDTO categoryDTO);
+        void CreateCategory(CategoryDTO categoryDTO);
 
     }
 }

@@ -65,7 +65,7 @@ namespace Store.WEB.Controllers
             var category = new CategoryVM();
             if (id != null)
             {                
-                var i = _catalog.GetCategoryBytID((Guid)id);
+                var i = _catalog.GetCategoryByID((Guid)id);
                 category.categoryid = i.Id;
                 category.categoryName = i.Name;
                 category.parentCategoryId = i.ParentCategoryID;
@@ -78,9 +78,29 @@ namespace Store.WEB.Controllers
             return View(category);
         }
 
+
+        public ActionResult CreateCategory(Guid? id)
+        {
+            var pc = id;//parentcategory
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CreateCategory(Guid? id,CategoryVM category)
+        {
+            var pc = id;//parentcategory
+            var buff = new CategoryDTO();
+            buff.Name = category.categoryName;
+            //   buff.Id = category.categoryid;
+            buff.ParentCategoryID = id;//category.parentCategoryId;
+            _catalog.CreateCategory(buff);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+
+
         public ActionResult GetCharacteristics(Guid? id)
         {
-            var categoryCharacteristic = _catalog.GetCategoryCharacteristics((Guid)id);
+            var categoryCharacteristic = _catalog.GetCurrentCategoryCharacteristics((Guid)id);
             var categoryCharacteristicList = new List<CategoryCharacteristicVM>();
 
             foreach (var i in categoryCharacteristic)
@@ -96,6 +116,30 @@ namespace Store.WEB.Controllers
         }
 
 
+        public ActionResult EditCategoryCharacteristic(Guid CharacteristicId)
+        {
+            var currentCharacteristic = _catalog.GetCharacteristicByID(CharacteristicId);
+            var characteristic = new CharacteristicVM();
+            characteristic.id = currentCharacteristic.Id;
+            characteristic.Name = currentCharacteristic.Name;
+            return View(characteristic);
+        }
+        public ActionResult GetCharacteristicsValues(Guid CharacteristicId)
+        {
+            var currentCharacteristicValues = _catalog.GetCharValuesByCharacteristicId(CharacteristicId);
+            var currentCharacteristicValuesDTO = new List<CharValueVM>();
+            foreach (var i in currentCharacteristicValues)
+            {
+                var buff = new CharValueVM();
+                buff.Id = i.Id;
+                buff.StrVal = i.StrVal;
+                buff.IntVal = i.IntVal;
+                buff.FloatVal = i.FloatVal;
+                buff.CharacteristicId = CharacteristicId;
+                currentCharacteristicValuesDTO.Add(buff);
+            }
+            return PartialView(currentCharacteristicValuesDTO);
+        }
 
         public ActionResult GetItems(Guid categoryId)
         {
@@ -158,7 +202,7 @@ namespace Store.WEB.Controllers
 
         public ActionResult EditItemCharacteristics(Guid itemId, Guid categoryId)
         {
-            var categoryCharacteristics = _catalog.GetCategoryCharacteristics(categoryId);
+            var categoryCharacteristics = _catalog.GetAllChainCategoryCharacteristics(categoryId);
             var itemCharacteristics = _catalog.GetItemCharacteristicsByItemId(itemId);
 
             var itemCharacteristicVMList = new List<ItemCharacteristicVM>();

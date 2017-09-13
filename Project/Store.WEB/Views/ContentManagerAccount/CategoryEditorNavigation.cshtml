@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<Store.WEB.Models.CategoryVM>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+   <h1> @Html.ActionLink("+", "CreateCategory", "ContentManagerAccount", new { id = Model.FirstOrDefault().parentCategoryId}, null)</h1>
+    
 </p>
 <table class="table">
     <tr>
@@ -19,6 +20,7 @@
                 @Html.ActionLink("" + item.categoryName, "CategoryEditorNavigation", "ContentManagerAccount", new { id = item.categoryid }, null)
             </td>
             <td>
+                @Html.ActionLink("Add sub Category", "CreateCategory", "ContentManagerAccount", new { id = item.categoryid }, null) |
                 @Html.ActionLink("Edit Category","CategoryEditor", "ContentManagerAccount", new { id = item.categoryid }, null) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>

@@ -244,6 +244,8 @@
     <Compile Include="Infrastructure\CartModelBinder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\CategoryCharacteristicVM.cs" />
+    <Compile Include="Models\CharacteristicVM.cs" />
+    <Compile Include="Models\CharValueVM.cs" />
     <Compile Include="Models\ItemCharacteristicVM.cs" />
     <Compile Include="Models\ItemVM.cs" />
     <Compile Include="Models\OrderItemVM.cs" />
@@ -296,6 +298,9 @@
     <Content Include="Views\ContentManagerAccount\GetItems.cshtml" />
     <Content Include="Views\ContentManagerAccount\EditItem.cshtml" />
     <Content Include="Views\ContentManagerAccount\EditItemCharacteristics.cshtml" />
+    <Content Include="Views\ContentManagerAccount\EditCategoryCharacteristic.cshtml" />
+    <Content Include="Views\ContentManagerAccount\GetCharacteristicsValues.cshtml" />
+    <Content Include="Views\ContentManagerAccount\CreateCategory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

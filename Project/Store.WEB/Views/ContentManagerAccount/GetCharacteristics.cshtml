@@ -6,12 +6,6 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CategoryID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CharacteristicID)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.CharacteristicName)
         </th>
         <th></th>
@@ -20,17 +14,11 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CategoryID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CharacteristicID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CharacteristicName)
+            @*@Html.DisplayFor(modelItem => item.CharacteristicName)*@
+            @Html.ActionLink( item.CharacteristicName, "EditCategoryCharacteristic", "ContentManagerAccount", new { CharacteristicID = item.CharacteristicID }, null)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>

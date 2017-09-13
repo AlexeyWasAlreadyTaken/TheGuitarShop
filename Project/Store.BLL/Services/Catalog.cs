@@ -22,6 +22,7 @@ namespace Store.BLL.Services
         private IRepository<Brand> _brandRepository;
         private IRepository<Country> _countryRepository;
         private IRepository<CharValue> _charValueRepository;
+        private IRepository<Characteristic> _charRepository;
 
         public Catalog(
             IRepository<Category> categoryRepo, 
@@ -32,7 +33,8 @@ namespace Store.BLL.Services
             IRepository<Item> itemRepository, 
             IRepository<Brand> brandRepository, 
             IRepository<Country> countryRepository, 
-            IRepository<CharValue> charValueRepository)
+            IRepository<CharValue> charValueRepository,
+            IRepository<Characteristic> charRepository)
         {
             _categoryRepository = categoryRepo;
             _purposeRepository = purpoaeRepo;
@@ -43,6 +45,7 @@ namespace Store.BLL.Services
             _brandRepository = brandRepository;
             _countryRepository = countryRepository;
             _charValueRepository = charValueRepository;
+            _charRepository = charRepository;
         }
 
         //public void Dispose()
@@ -89,7 +92,7 @@ namespace Store.BLL.Services
         }
 
 
-        public CategoryDTO GetCategoryBytID(Guid ID)
+        public CategoryDTO GetCategoryByID(Guid ID)
         {
             // return _categoryRepository.Get(x => x.ParentCategoryID == parentID);
 
@@ -180,7 +183,7 @@ namespace Store.BLL.Services
         }
 
 
-        public IEnumerable<CategoryCharacteristicDTO> GetCategoryCharacteristics(Guid CategoryID)
+        public IEnumerable<CategoryCharacteristicDTO> GetCurrentCategoryCharacteristics(Guid CategoryID)
         {
             //var parentCategory = _categoryRepository.Get(x => x.Id == CategoryID).FirstOrDefault().ParentCategoryID;
             var DTO = new List<CategoryCharacteristicDTO>();
@@ -205,6 +208,49 @@ namespace Store.BLL.Services
                 }
             }
             */
+            var categoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
+
+            foreach (var i in categoryChar)
+            {
+                var buff = new CategoryCharacteristicDTO();
+                buff.Id = i.Id;
+                buff.CategoryID = (Guid)i.CategoryID;
+                buff.CharacteristicID = (Guid)i.CharacteristicID;
+                var characteristic = new CharacteristicDTO();
+                characteristic.Id = i.Characteristic.Id;
+                characteristic.Name = i.Characteristic.Name;
+                buff.Characteristic = characteristic;
+                DTO.Add(buff);
+            }
+            return DTO;
+        }
+
+
+
+        public IEnumerable<CategoryCharacteristicDTO> GetAllChainCategoryCharacteristics(Guid CategoryID)
+        {
+            var DTO = new List<CategoryCharacteristicDTO>();
+            
+            var isHaveParentCategory = _categoryRepository.Get(x => x.Id == CategoryID).Count() >= 1 ? true : false;
+
+            if (isHaveParentCategory)
+            {
+                var parentCategory = _categoryRepository.Get(x => x.Id == CategoryID).FirstOrDefault().ParentCategoryID;
+                var parentCategoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == parentCategory, y => y.Characteristic);
+                foreach (var i in parentCategoryChar)
+                {
+                    var buff = new CategoryCharacteristicDTO();
+                    buff.Id = i.Id;
+                    buff.CategoryID = (Guid)i.CategoryID;
+                    buff.CharacteristicID = (Guid)i.CharacteristicID;
+                    var characteristic = new CharacteristicDTO();
+                    characteristic.Id = i.Characteristic.Id;
+                    characteristic.Name = i.Characteristic.Name;
+                    buff.Characteristic = characteristic;
+                    DTO.Add(buff);
+                }
+            }
+            
             var categoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
 
             foreach (var i in categoryChar)
@@ -364,6 +410,26 @@ namespace Store.BLL.Services
                 charValueDTOList.Add(charValueDTO);
             }
             return charValueDTOList;
+        }
+
+
+        public CharacteristicDTO GetCharacteristicByID(Guid id)
+        {
+            var characterisitc = _charRepository.Get(x => x.Id == id).FirstOrDefault();
+            var selected = new CharacteristicDTO();
+            selected.Id = characterisitc.Id;
+            selected.Name = characterisitc.Name;
+            return selected;
+        }
+
+
+        public void CreateCategory(CategoryDTO categoryDTO)
+        {
+            var c = new Category();
+            c.Id = Guid.NewGuid();
+            c.Name = categoryDTO.Name;
+            c.ParentCategoryID = categoryDTO.ParentCategoryID;
+            _categoryRepository.Create(c);
         }
     }
 }
