@@ -57,10 +57,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\BrandDTO.cs" />
     <Compile Include="DTO\CategoryCharacteristicDTO.cs" />
     <Compile Include="DTO\CategoryDTO.cs" />
     <Compile Include="DTO\CharacteristicDTO.cs" />
+    <Compile Include="DTO\CharValueDTO.cs" />
+    <Compile Include="DTO\CountryDTO.cs" />
     <Compile Include="DTO\DeliveryTypesDTO.cs" />
+    <Compile Include="DTO\ItemCharacteristicDTO.cs" />
+    <Compile Include="DTO\ItemDTO.cs" />
     <Compile Include="DTO\NewsDTO.cs" />
     <Compile Include="DTO\OrderDTO.cs" />
     <Compile Include="DTO\OrderItemDTO.cs" />

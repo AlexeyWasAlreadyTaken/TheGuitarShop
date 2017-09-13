@@ -18,5 +18,23 @@ namespace Store.BLL.Interfaces
         CategoryDTO GetCategoryBytID(Guid parentID);
         IEnumerable<CategoryCharacteristicDTO> GetCategoryCharacteristics(Guid CategoryID);
 
+
+
+        IEnumerable<ItemDTO> GetItemsByCategoryId(Guid categoryId);
+        ItemDTO GetItemById(Guid itemId);
+        //void CreateItem(ItemDTO itemDTO);
+        void UpdateItem(ItemDTO itemDTO);
+
+        BrandDTO GetBrandById(Guid brandId);
+        IEnumerable<BrandDTO> GetBrands();
+        IEnumerable<CountryDTO> GetCountries();
+
+        IEnumerable<ItemCharacteristicDTO> GetItemCharacteristicsByItemId(Guid itemId);
+        void UpdateItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO);
+        void DeleteItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO);
+        void CreateItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO);
+
+        IEnumerable<CharValueDTO> GetCharValuesByCharacteristicId(Guid characteristicId);
+
     }
 }

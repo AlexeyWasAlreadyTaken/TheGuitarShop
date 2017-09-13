@@ -94,5 +94,139 @@ namespace Store.WEB.Controllers
             }
             return PartialView(categoryCharacteristicList);
         }
+
+
+
+        public ActionResult GetItems(Guid categoryId)
+        {
+            var items = _catalog.GetItemsByCategoryId(categoryId);
+            var itemVMList = new List<ItemVM>();
+            foreach (var i in items)
+            {
+                var itemVM = new ItemVM();
+                itemVM.Id = i.Id;
+                itemVM.Name = i.Name;
+                itemVM.Description = i.Description;
+                itemVM.CategoryID = i.CategoryID;
+                itemVM.BrandID = i.BrandID;
+                itemVM.BrandCountryID = i.BrandCountryID;
+                itemVM.BrandName = _catalog.GetBrandById((Guid)i.BrandID).Name; //?
+                itemVM.ManufCountryID = i.ManufCountryID;
+                itemVMList.Add(itemVM);
+            }
+            return View(itemVMList);
+        }
+        public ActionResult EditItem(Guid itemId)
+        {
+            var item = _catalog.GetItemById(itemId);
+            var itemVM = new ItemVM();
+            itemVM.Id = item.Id;
+            itemVM.Name = item.Name;
+            itemVM.Description = item.Description;
+            itemVM.CategoryID = item.CategoryID;
+            itemVM.BrandID = item.BrandID;
+            itemVM.BrandCountryID = item.BrandCountryID;
+            itemVM.ManufCountryID = item.ManufCountryID;
+
+            var brands = _catalog.GetBrands();
+            itemVM.Brands = new SelectList(brands, "Id", "Name");
+
+            var countries = _catalog.GetCountries();
+            itemVM.BrandCountries = new SelectList(countries, "Id", "Name");
+            itemVM.ManufCountries = new SelectList(countries, "Id", "Name");
+
+            return View(itemVM);
+        }
+        [HttpPost]
+        public ActionResult EditItem(ItemVM itemVM)
+        {
+            // TO DO 
+            // validation here
+
+            var itemDTO = new ItemDTO();
+            itemDTO.Id = itemVM.Id;
+            itemDTO.Name = itemVM.Name;
+            itemDTO.Description = itemVM.Description;
+            itemDTO.CategoryID = itemVM.CategoryID;
+            itemDTO.BrandID = itemVM.BrandID;
+            itemDTO.BrandCountryID = itemVM.BrandCountryID;
+            itemDTO.ManufCountryID = itemVM.ManufCountryID;
+            _catalog.UpdateItem(itemDTO);
+            
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult EditItemCharacteristics(Guid itemId, Guid categoryId)
+        {
+            var categoryCharacteristics = _catalog.GetCategoryCharacteristics(categoryId);
+            var itemCharacteristics = _catalog.GetItemCharacteristicsByItemId(itemId);
+
+            var itemCharacteristicVMList = new List<ItemCharacteristicVM>();
+            foreach (var i in categoryCharacteristics)
+            {
+                var itemCharacteristicVM = new ItemCharacteristicVM();
+                itemCharacteristicVM.IsApplied = false;
+
+                itemCharacteristicVM.CharacteristicID = i.Characteristic.Id;
+                itemCharacteristicVM.CharacteristicName = i.Characteristic.Name;
+                var charValues = _catalog.GetCharValuesByCharacteristicId(i.Characteristic.Id);
+                
+                itemCharacteristicVM.ItemID = itemId;
+
+                var itemCharateristicForCurrent = itemCharacteristics.Where(ic => ic.CharacteristicID == i.Characteristic.Id).FirstOrDefault();
+
+                if (itemCharateristicForCurrent != null)
+                {
+                    itemCharacteristicVM.IsApplied = true;
+                    itemCharacteristicVM.Id = itemCharateristicForCurrent.Id;
+                    itemCharacteristicVM.CharValueID = itemCharateristicForCurrent.CharValueID;
+                }
+
+                itemCharacteristicVM.CharValues =
+                    new SelectList(charValues, "Id",
+                    charValues.FirstOrDefault().IntVal != null ? "IntVal" :
+                    charValues.FirstOrDefault().FloatVal != null ? "FloatVal" :
+                    "StrVal", itemCharacteristicVM.CharValueID); // TO DO
+
+                itemCharacteristicVMList.Add(itemCharacteristicVM);
+            }
+            return View(itemCharacteristicVMList);
+        }
+        [HttpPost]
+        public ActionResult EditItemCharacteristics(IList<ItemCharacteristicVM> itemCharacteristicVMs)
+        {
+            // TO DO
+            if (itemCharacteristicVMs == null || !itemCharacteristicVMs.Any())
+                return RedirectToAction("Index");
+            
+            foreach (var i in itemCharacteristicVMs)
+            {
+                var itemCharacteristicDTO = new ItemCharacteristicDTO();
+                itemCharacteristicDTO.Id = i.Id;
+                itemCharacteristicDTO.ItemID = i.ItemID;
+                itemCharacteristicDTO.CharacteristicID = i.CharacteristicID;
+                itemCharacteristicDTO.CharacteristicName = i.CharacteristicName;
+                itemCharacteristicDTO.CharValueID = i.CharValueID;
+
+                if (i.IsApplied)
+                {
+                    if (i.Id != null)
+                    {
+                        _catalog.UpdateItemCharacteristic(itemCharacteristicDTO);
+                    }
+                    else
+                    {
+                        _catalog.CreateItemCharacteristic(itemCharacteristicDTO);
+                    }
+                }
+                else if(i.Id != null)
+                {
+                    _catalog.DeleteItemCharacteristic(itemCharacteristicDTO);
+                }
+            }
+            
+            return RedirectToAction("Index");
+        }
+
     }
 }

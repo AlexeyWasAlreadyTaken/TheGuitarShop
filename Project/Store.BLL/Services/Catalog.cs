@@ -18,13 +18,31 @@ namespace Store.BLL.Services
         private IRepository<ItemCharacteristic> _itemCharacteristic;
         private IRepository<CategoryCharacteristic> _categoryCharacteristic;
 
-        public Catalog(IRepository<Category> categoryRepo, IRepository<Purpose> purpoaeRepo, IRepository<PurposePrice> purpPriceRepo, IRepository<ItemCharacteristic> itemCharacteristic, IRepository<CategoryCharacteristic> categoryCharacteristic)
+        private IRepository<Item> _itemRepository;
+        private IRepository<Brand> _brandRepository;
+        private IRepository<Country> _countryRepository;
+        private IRepository<CharValue> _charValueRepository;
+
+        public Catalog(
+            IRepository<Category> categoryRepo, 
+            IRepository<Purpose> purpoaeRepo, 
+            IRepository<PurposePrice> purpPriceRepo, 
+            IRepository<ItemCharacteristic> itemCharacteristic, 
+            IRepository<CategoryCharacteristic> categoryCharacteristic,
+            IRepository<Item> itemRepository, 
+            IRepository<Brand> brandRepository, 
+            IRepository<Country> countryRepository, 
+            IRepository<CharValue> charValueRepository)
         {
             _categoryRepository = categoryRepo;
             _purposeRepository = purpoaeRepo;
             _purpPriceRepository = purpPriceRepo;
             _itemCharacteristic = itemCharacteristic;
             _categoryCharacteristic = categoryCharacteristic;
+            _itemRepository = itemRepository;
+            _brandRepository = brandRepository;
+            _countryRepository = countryRepository;
+            _charValueRepository = charValueRepository;
         }
 
         //public void Dispose()
@@ -205,5 +223,147 @@ namespace Store.BLL.Services
         }
 
 
+
+
+        public IEnumerable<ItemDTO> GetItemsByCategoryId(Guid categoryId)
+        {
+            var items = _itemRepository.GetWithInclude(x => x.CategoryID == categoryId);
+            var itemDTOList = new List<ItemDTO>();
+            foreach (var i in items)
+            {
+                var itemDTO = new ItemDTO();
+                itemDTO.Id = i.Id;
+                itemDTO.Name = i.Name;
+                itemDTO.Description = i.Description;
+                itemDTO.BrandID = i.BrandID;
+                itemDTO.BrandCountryID = i.BrandCountryID;
+                itemDTO.CategoryID = i.CategoryID;
+                itemDTO.ManufCountryID = i.ManufCountryID;
+                itemDTOList.Add(itemDTO);
+            }
+            return itemDTOList;
+        }
+
+        public ItemDTO GetItemById(Guid itemId)
+        {
+            var item = _itemRepository.FindById(itemId);
+            var itemDTO = new ItemDTO();
+            itemDTO.Id = item.Id;
+            itemDTO.Name = item.Name;
+            itemDTO.Description = item.Description;
+            itemDTO.BrandID = item.BrandID;
+            itemDTO.BrandCountryID = item.BrandCountryID;
+            itemDTO.CategoryID = item.CategoryID;
+            itemDTO.ManufCountryID = item.ManufCountryID;
+            return itemDTO;
+        }
+        public void UpdateItem(ItemDTO itemDTO)
+        {
+            var item = new Item();
+            item.Id = itemDTO.Id;
+            item.Name = itemDTO.Name;
+            item.Description = itemDTO.Description;
+            item.CategoryID = itemDTO.CategoryID;
+            item.BrandID = itemDTO.BrandID;
+            item.BrandCountryID = itemDTO.BrandCountryID;
+            item.ManufCountryID = itemDTO.ManufCountryID;
+            _itemRepository.Update(item);
+        }
+
+        public BrandDTO GetBrandById(Guid brandId)
+        {
+            var brand = _brandRepository.FindById(brandId);
+            var brandDTO = new BrandDTO();
+            brandDTO.Id = brand.Id;
+            brandDTO.Name = brand.Name;
+            return brandDTO;
+        }
+
+        public IEnumerable<BrandDTO> GetBrands()
+        {
+            var brands = _brandRepository.Get();
+            var brandsDTOList = new List<BrandDTO>();
+            foreach (var i in brands)
+            {
+                var brandDTO = new BrandDTO();
+                brandDTO.Id = i.Id;
+                brandDTO.Name = i.Name;
+                brandsDTOList.Add(brandDTO);
+            }
+            return brandsDTOList;
+        }
+
+        public IEnumerable<CountryDTO> GetCountries()
+        {
+            var countries = _countryRepository.Get();
+            var countryDTOList = new List<CountryDTO>();
+            foreach (var i in countries)
+            {
+                var countryDTO = new CountryDTO();
+                countryDTO.Id = i.Id;
+                countryDTO.Name = i.Name;
+                countryDTOList.Add(countryDTO);
+            }
+            return countryDTOList;
+        }
+
+        public IEnumerable<ItemCharacteristicDTO> GetItemCharacteristicsByItemId(Guid itemId)
+        {
+            var itemCharacteristics = _itemCharacteristic.GetWithInclude(x => x.ItemID == itemId, y => y.Characteristic);
+            var itemCharacteristicDTOList = new List<ItemCharacteristicDTO>();
+            foreach (var i in itemCharacteristics)
+            {
+                var itemCharacteristicDTO = new ItemCharacteristicDTO();
+                itemCharacteristicDTO.Id = i.Id;
+                itemCharacteristicDTO.ItemID = (Guid)i.ItemID;
+                itemCharacteristicDTO.CharacteristicID = (Guid)i.CharacteristicID;
+                itemCharacteristicDTO.CharacteristicName = i.Characteristic.Name;
+                itemCharacteristicDTO.CharValueID = (Guid)i.CharValueID;
+                itemCharacteristicDTOList.Add(itemCharacteristicDTO);
+            }
+            return itemCharacteristicDTOList;
+        }
+        public void UpdateItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO)
+        {
+            var itemCharacteristic = new ItemCharacteristic();
+            itemCharacteristic.Id = (Guid)itemCharacteristicDTO.Id;
+            itemCharacteristic.ItemID = itemCharacteristicDTO.ItemID;
+            itemCharacteristic.CharacteristicID = itemCharacteristicDTO.CharacteristicID;
+            itemCharacteristic.CharValueID = itemCharacteristicDTO.CharValueID;
+            _itemCharacteristic.Update(itemCharacteristic);
+        }
+
+        public void DeleteItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO)
+        {
+            var itemCharacteristic = _itemCharacteristic.FindById((Guid)itemCharacteristicDTO.Id); //costyle
+            _itemCharacteristic.Remove(itemCharacteristic);
+        }
+
+        public void CreateItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO)
+        {
+            var itemCharacteristic = new ItemCharacteristic();
+            itemCharacteristic.Id = Guid.NewGuid();
+            itemCharacteristic.ItemID = itemCharacteristicDTO.ItemID;
+            itemCharacteristic.CharacteristicID = itemCharacteristicDTO.CharacteristicID;
+            itemCharacteristic.CharValueID = itemCharacteristicDTO.CharValueID;
+            _itemCharacteristic.Create(itemCharacteristic);
+        }
+
+        public IEnumerable<CharValueDTO> GetCharValuesByCharacteristicId(Guid characteristicId)
+        {
+            var charValues = _charValueRepository.Get(x => x.CharacteristicId == characteristicId);
+            var charValueDTOList = new List<CharValueDTO>();
+            foreach (var i in charValues)
+            {
+                var charValueDTO = new CharValueDTO();
+                charValueDTO.Id = i.Id;
+                charValueDTO.CharacteristicId = i.CharacteristicId;
+                charValueDTO.IntVal = i.IntVal;
+                charValueDTO.FloatVal = i.FloatVal;
+                charValueDTO.StrVal = i.StrVal;
+                charValueDTOList.Add(charValueDTO);
+            }
+            return charValueDTOList;
+        }
     }
 }

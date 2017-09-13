@@ -1,0 +1,88 @@
+﻿@model IList<Store.WEB.Models.ItemCharacteristicVM>
+
+@{
+    ViewBag.Title = "EditItemCharacteristics";
+}
+
+<h2>EditItemCharacteristics</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.ItemID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model[0].CharacteristicName)
+        </th>
+        <th>
+            @Html.Label("CharValue")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].IsApplied)
+        </th>
+        <th></th>
+    </tr>
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                @Html.HiddenFor(item => Model[i].Id)
+                @Html.HiddenFor(item => Model[i].ItemID)
+                @Html.HiddenFor(item => Model[i].CharacteristicID)
+                @*@Html.HiddenFor(item => Model[i].CharValues)*@
+                <td>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.DisplayFor(item => Model[i].CharacteristicName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(item => Model[i].CharacteristicName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @{
+                                
+                            }
+
+
+                            @Html.DropDownListFor(item => Model[i].CharValueID, Model[i].CharValues, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(item => Model[i].CharValues, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.CheckBoxFor(item => Model[i].IsApplied, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(item => Model[i].IsApplied, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
