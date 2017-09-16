@@ -4,11 +4,9 @@
     ViewBag.Title = "GetItems";
 }
 
-<h2>GetItems</h2>
+@*<h4>Items:</h4>*@
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -60,7 +58,10 @@
         </td>*@
         
         <td>
-            @Html.ActionLink("Edit", "EditItem", new { itemId=item.Id }) 
+            @Html.ActionLink("Edit item", "EditItem", new { itemId=item.Id }) 
+        </td>
+        <td>
+            @Html.ActionLink("Edit characteristics", "EditItemCharacteristics", new { itemId = item.Id, categoryId = item.CategoryID })
         </td>
     </tr>
 }

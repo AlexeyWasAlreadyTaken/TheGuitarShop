@@ -14,6 +14,5 @@ namespace Store.WEB.Models
         public string CharacteristicName { get; set; }
         public Guid? CharValueID { get; set; }
         public SelectList CharValues { get; set; }
-        public bool IsApplied { get; set; }
     }
 }

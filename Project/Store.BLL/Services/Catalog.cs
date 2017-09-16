@@ -289,7 +289,6 @@ namespace Store.BLL.Services
             }
             return itemDTOList;
         }
-
         public ItemDTO GetItemById(Guid itemId)
         {
             var item = _itemRepository.FindById(itemId);
@@ -314,6 +313,29 @@ namespace Store.BLL.Services
             item.BrandCountryID = itemDTO.BrandCountryID;
             item.ManufCountryID = itemDTO.ManufCountryID;
             _itemRepository.Update(item);
+        }
+        public void CreateItem(ItemDTO itemDTO)
+        {
+            var item = new Item();
+            item.Id = Guid.NewGuid();
+            item.CategoryID = itemDTO.CategoryID;
+            item.Name = itemDTO.Name;
+            item.ManufCountryID = itemDTO.ManufCountryID;
+            item.Description = itemDTO.Description;
+            item.BrandID = itemDTO.BrandID;
+            item.BrandCountryID = itemDTO.BrandCountryID;
+            _itemRepository.Create(item);
+
+            // Creating characteristics for a new item
+            var categoryCharacteristics = GetAllChainCategoryCharacteristics((Guid)itemDTO.CategoryID);
+            foreach (var i in categoryCharacteristics)
+            {
+                var itemCharacteristic = new ItemCharacteristic();
+                itemCharacteristic.Id = Guid.NewGuid();
+                itemCharacteristic.ItemID = item.Id;
+                itemCharacteristic.CharacteristicID = i.CharacteristicID;
+                _itemCharacteristic.Create(itemCharacteristic);
+            }
         }
 
         public BrandDTO GetBrandById(Guid brandId)
@@ -364,7 +386,7 @@ namespace Store.BLL.Services
                 itemCharacteristicDTO.ItemID = (Guid)i.ItemID;
                 itemCharacteristicDTO.CharacteristicID = (Guid)i.CharacteristicID;
                 itemCharacteristicDTO.CharacteristicName = i.Characteristic.Name;
-                itemCharacteristicDTO.CharValueID = (Guid)i.CharValueID;
+                itemCharacteristicDTO.CharValueID = i.CharValueID;
                 itemCharacteristicDTOList.Add(itemCharacteristicDTO);
             }
             return itemCharacteristicDTOList;

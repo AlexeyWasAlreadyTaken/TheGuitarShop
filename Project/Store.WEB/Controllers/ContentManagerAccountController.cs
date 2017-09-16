@@ -64,7 +64,7 @@ namespace Store.WEB.Controllers
         {
             var category = new CategoryVM();
             if (id != null)
-            {                
+            {
                 var i = _catalog.GetCategoryByID((Guid)id);
                 category.categoryid = i.Id;
                 category.categoryName = i.Name;
@@ -73,7 +73,7 @@ namespace Store.WEB.Controllers
             else
             {
                 //debug
-                category = new CategoryVM() {categoryid = new Guid("00000000-0000-0000-0000-000000000000"),categoryName = "NULL", parentCategoryId = new Guid("00000000-0000-0000-0000-000000000000") };
+                category = new CategoryVM() { categoryid = new Guid("00000000-0000-0000-0000-000000000000"), categoryName = "NULL", parentCategoryId = new Guid("00000000-0000-0000-0000-000000000000") };
             }
             return View(category);
         }
@@ -85,7 +85,7 @@ namespace Store.WEB.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult CreateCategory(Guid? id,CategoryVM category)
+        public ActionResult CreateCategory(Guid? id, CategoryVM category)
         {
             var pc = id;//parentcategory
             var buff = new CategoryDTO();
@@ -141,6 +141,29 @@ namespace Store.WEB.Controllers
             return PartialView(currentCharacteristicValuesDTO);
         }
 
+
+
+        public ActionResult ItemsEditor(Guid? categoryId)
+        {
+            //TO DO
+            var categories = categoryId == null ? _catalog.GetGeneralCategoryList() : _catalog.GetChildCategoryByParentID((Guid)categoryId);
+            var selectList = new SelectList(categories, "Id", "Name", new { Id = "", Name = "Select Category " });
+
+            if (categoryId != null)
+            {
+                ViewBag.currentCategory = "Current category: " + _catalog.GetCategoryByID((Guid)categoryId).Name;
+            }
+            return View(selectList);
+        }
+        [HttpPost]
+        public ActionResult ItemsEditorPost(Guid? categoryId) // Delete me later
+        {
+            if (categoryId == null)
+                return Redirect(Request.UrlReferrer.ToString());
+
+            return RedirectToAction("ItemsEditor", new { categoryId = (Guid)categoryId });
+        }
+
         public ActionResult GetItems(Guid categoryId)
         {
             var items = _catalog.GetItemsByCategoryId(categoryId);
@@ -158,8 +181,66 @@ namespace Store.WEB.Controllers
                 itemVM.ManufCountryID = i.ManufCountryID;
                 itemVMList.Add(itemVM);
             }
-            return View(itemVMList);
+            if (itemVMList.Any())
+            {
+                return PartialView(itemVMList);
+            }
+            else
+            {
+                return null;
+            }
         }
+
+        public ActionResult CreateItem(Guid categoryId)
+        {
+            var itemVM = new ItemVM();
+            itemVM.CategoryID = categoryId;
+
+            var brands = _catalog.GetBrands();
+            itemVM.Brands = new SelectList(brands, "Id", "Name");
+            var countries = _catalog.GetCountries();
+            itemVM.BrandCountries = new SelectList(countries, "Id", "Name");
+            itemVM.ManufCountries = new SelectList(countries, "Id", "Name");
+
+            return View(itemVM);
+        }
+        [HttpPost]
+        public ActionResult CreateItem(ItemVM itemVM)
+        {
+            if (string.IsNullOrEmpty(itemVM.Name))
+                ModelState.AddModelError("Name", "Fill name");
+            if (string.IsNullOrEmpty(itemVM.CategoryID.ToString()))
+                ModelState.AddModelError("CategoryId", "Category must be chosen!");
+            if (string.IsNullOrEmpty(itemVM.Description))
+                ModelState.AddModelError("Description", "Fill description");
+            if (string.IsNullOrEmpty(itemVM.BrandID.ToString()))
+                ModelState.AddModelError("BrandID", "Choose brand");
+            if (string.IsNullOrEmpty(itemVM.ManufCountryID.ToString()))
+                ModelState.AddModelError("ManufCountryID", "Choose manuf country");
+            if (string.IsNullOrEmpty(itemVM.BrandCountryID.ToString()))
+                ModelState.AddModelError("BrandCountryID", "Choose brand country");
+
+            if (ModelState.IsValid)
+            {
+                var itemDTO = new ItemDTO();
+                itemDTO.CategoryID = itemVM.CategoryID;
+                itemDTO.Name = itemVM.Name;
+                itemDTO.ManufCountryID = itemVM.ManufCountryID;
+                itemDTO.Description = itemVM.Description;
+                itemDTO.BrandID = itemVM.BrandID;
+                itemDTO.BrandCountryID = itemVM.BrandCountryID;
+                _catalog.CreateItem(itemDTO);
+                return RedirectToAction("ItemsEditor", new { categoryId = itemVM.CategoryID });
+            }
+
+            var brands = _catalog.GetBrands();
+            itemVM.Brands = new SelectList(brands, "Id", "Name");
+            var countries = _catalog.GetCountries();
+            itemVM.BrandCountries = new SelectList(countries, "Id", "Name");
+            itemVM.ManufCountries = new SelectList(countries, "Id", "Name");
+            return View(itemVM);
+        }
+        
         public ActionResult EditItem(Guid itemId)
         {
             var item = _catalog.GetItemById(itemId);
@@ -184,20 +265,39 @@ namespace Store.WEB.Controllers
         [HttpPost]
         public ActionResult EditItem(ItemVM itemVM)
         {
-            // TO DO 
-            // validation here
+            if (string.IsNullOrEmpty(itemVM.Name))
+                ModelState.AddModelError("Name", "Fill name");
+            if (string.IsNullOrEmpty(itemVM.CategoryID.ToString()))
+                ModelState.AddModelError("CategoryId", "Category must be chosen!");
+            if (string.IsNullOrEmpty(itemVM.Description))
+                ModelState.AddModelError("Description", "Fill description");
+            if (string.IsNullOrEmpty(itemVM.BrandID.ToString()))
+                ModelState.AddModelError("BrandID", "Choose brand");
+            if (string.IsNullOrEmpty(itemVM.ManufCountryID.ToString()))
+                ModelState.AddModelError("ManufCountryID", "Choose manuf country");
+            if (string.IsNullOrEmpty(itemVM.BrandCountryID.ToString()))
+                ModelState.AddModelError("BrandCountryID", "Choose brand country");
 
-            var itemDTO = new ItemDTO();
-            itemDTO.Id = itemVM.Id;
-            itemDTO.Name = itemVM.Name;
-            itemDTO.Description = itemVM.Description;
-            itemDTO.CategoryID = itemVM.CategoryID;
-            itemDTO.BrandID = itemVM.BrandID;
-            itemDTO.BrandCountryID = itemVM.BrandCountryID;
-            itemDTO.ManufCountryID = itemVM.ManufCountryID;
-            _catalog.UpdateItem(itemDTO);
-            
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var itemDTO = new ItemDTO();
+                itemDTO.Id = itemVM.Id;
+                itemDTO.Name = itemVM.Name;
+                itemDTO.Description = itemVM.Description;
+                itemDTO.CategoryID = itemVM.CategoryID;
+                itemDTO.BrandID = itemVM.BrandID;
+                itemDTO.BrandCountryID = itemVM.BrandCountryID;
+                itemDTO.ManufCountryID = itemVM.ManufCountryID;
+                _catalog.UpdateItem(itemDTO);
+                return RedirectToAction("ItemsEditor", new { categoryId = itemVM.CategoryID });
+            }
+
+            var brands = _catalog.GetBrands();
+            itemVM.Brands = new SelectList(brands, "Id", "Name");
+            var countries = _catalog.GetCountries();
+            itemVM.BrandCountries = new SelectList(countries, "Id", "Name");
+            itemVM.ManufCountries = new SelectList(countries, "Id", "Name");
+            return View(itemVM);
         }
 
         public ActionResult EditItemCharacteristics(Guid itemId, Guid categoryId)
@@ -209,7 +309,6 @@ namespace Store.WEB.Controllers
             foreach (var i in categoryCharacteristics)
             {
                 var itemCharacteristicVM = new ItemCharacteristicVM();
-                itemCharacteristicVM.IsApplied = false;
 
                 itemCharacteristicVM.CharacteristicID = i.Characteristic.Id;
                 itemCharacteristicVM.CharacteristicName = i.Characteristic.Name;
@@ -221,7 +320,6 @@ namespace Store.WEB.Controllers
 
                 if (itemCharateristicForCurrent != null)
                 {
-                    itemCharacteristicVM.IsApplied = true;
                     itemCharacteristicVM.Id = itemCharateristicForCurrent.Id;
                     itemCharacteristicVM.CharValueID = itemCharateristicForCurrent.CharValueID;
                 }
@@ -251,25 +349,18 @@ namespace Store.WEB.Controllers
                 itemCharacteristicDTO.CharacteristicID = i.CharacteristicID;
                 itemCharacteristicDTO.CharacteristicName = i.CharacteristicName;
                 itemCharacteristicDTO.CharValueID = i.CharValueID;
-
-                if (i.IsApplied)
+                
+                if (itemCharacteristicDTO.Id != null)
                 {
-                    if (i.Id != null)
-                    {
-                        _catalog.UpdateItemCharacteristic(itemCharacteristicDTO);
-                    }
-                    else
-                    {
-                        _catalog.CreateItemCharacteristic(itemCharacteristicDTO);
-                    }
+                    _catalog.UpdateItemCharacteristic(itemCharacteristicDTO);
                 }
-                else if(i.Id != null)
+                else
                 {
-                    _catalog.DeleteItemCharacteristic(itemCharacteristicDTO);
+                    _catalog.CreateItemCharacteristic(itemCharacteristicDTO);
                 }
             }
             
-            return RedirectToAction("Index");
+            return RedirectToAction("EditItem", new { itemId = itemCharacteristicVMs.FirstOrDefault().ItemID});
         }
 
     }

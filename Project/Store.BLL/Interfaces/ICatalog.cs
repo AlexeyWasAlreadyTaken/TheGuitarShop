@@ -23,7 +23,7 @@ namespace Store.BLL.Interfaces
 
         IEnumerable<ItemDTO> GetItemsByCategoryId(Guid categoryId);
         ItemDTO GetItemById(Guid itemId);
-        //void CreateItem(ItemDTO itemDTO);
+        void CreateItem(ItemDTO itemDTO);
         void UpdateItem(ItemDTO itemDTO);
 
         BrandDTO GetBrandById(Guid brandId);
