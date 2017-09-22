@@ -303,6 +303,7 @@
     <Content Include="Views\ContentManagerAccount\CreateCategory.cshtml" />
     <Content Include="Views\ContentManagerAccount\ItemsEditor.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreateItem.cshtml" />
+    <Content Include="Views\ContentManagerAccount\CreateCategoryCharacteristic.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

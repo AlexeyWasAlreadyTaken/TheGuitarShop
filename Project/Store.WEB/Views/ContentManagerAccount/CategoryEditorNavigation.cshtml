@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<Store.WEB.Models.CategoryVM>
 
 <p>
-   <h1> @Html.ActionLink("+", "CreateCategory", "ContentManagerAccount", new { id = Model.FirstOrDefault().parentCategoryId}, null)</h1>
+    <h1>
+        @Html.ActionLink("+", "CreateCategory", "ContentManagerAccount", new { id = Model.FirstOrDefault().parentCategoryId }, null)
+            
+         </h1>
     
 </p>
 <table class="table">

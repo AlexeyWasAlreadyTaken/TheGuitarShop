@@ -19,7 +19,7 @@ namespace Store.BLL.Interfaces
         IEnumerable<CategoryCharacteristicDTO> GetCurrentCategoryCharacteristics(Guid CategoryID);
         IEnumerable<CategoryCharacteristicDTO> GetAllChainCategoryCharacteristics(Guid CategoryID);
 
-
+        IEnumerable <CharacteristicDTO> GetAllCharacteristic();
 
         IEnumerable<ItemDTO> GetItemsByCategoryId(Guid categoryId);
         ItemDTO GetItemById(Guid itemId);
@@ -44,6 +44,8 @@ namespace Store.BLL.Interfaces
       //  void UpdateCategory(CategoryDTO categoryDTO);
       //  void DeleteCategory(CategoryDTO categoryDTO);
         void CreateCategory(CategoryDTO categoryDTO);
+
+        void CreateCategoryCharacteristic(CategoryCharacteristicDTO ccDTO);
 
     }
 }

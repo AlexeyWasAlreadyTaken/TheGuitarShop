@@ -453,5 +453,28 @@ namespace Store.BLL.Services
             c.ParentCategoryID = categoryDTO.ParentCategoryID;
             _categoryRepository.Create(c);
         }
+
+        public IEnumerable<CharacteristicDTO> GetAllCharacteristic()
+        {
+            var characterisitc = _charRepository.Get();
+            var charlist = new List<CharacteristicDTO>();
+            foreach (var i in characterisitc)
+            {
+                var buff = new CharacteristicDTO();
+                buff.Id = i.Id;
+                buff.Name = i.Name;
+                charlist.Add(buff);
+            }
+
+            return charlist;
+        }
+        public void CreateCategoryCharacteristic(CategoryCharacteristicDTO ccDTO)
+        {
+            var categoryCharacteristic = new CategoryCharacteristic();
+            categoryCharacteristic.Id = Guid.NewGuid();
+            categoryCharacteristic.CategoryID = ccDTO.CategoryID;
+            categoryCharacteristic.CharacteristicID = ccDTO.CharacteristicID;
+            _categoryCharacteristic.Create(categoryCharacteristic);
+        }
     }
 }

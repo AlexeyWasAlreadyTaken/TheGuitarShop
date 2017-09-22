@@ -141,7 +141,74 @@ namespace Store.WEB.Controllers
             return PartialView(currentCharacteristicValuesDTO);
         }
 
+        public ActionResult AddCategoryCharacteristic(Guid? categoryID,Guid? charID)
+        {
+            // to do
+            var categoryChar = new CategoryCharacteristicDTO();
+            categoryChar.CategoryID = (Guid)categoryID;
+            categoryChar.CharacteristicID = (Guid)charID;
+            _catalog.CreateCategoryCharacteristic(categoryChar);
+            return RedirectToAction("CategoryEditor", new { id = (Guid)categoryID });
+        }
 
+        public ActionResult CreateCategoryCharacteristic(Guid? categoryID)
+        {
+            var ALL = new List<CharacteristicVM>();
+            var NOTNEED = new List<CharacteristicVM>();
+            var FINAL = new List<CharacteristicVM>();
+            var allCharacteristic = _catalog.GetAllCharacteristic();
+
+            if (_catalog.GetAllChainCategoryCharacteristics((Guid)categoryID) == null)
+            {
+                foreach (var i in allCharacteristic)
+                {
+                    var buff = new CharacteristicVM();
+                    buff.id = i.Id;
+                    buff.Name = i.Name;
+                    ALL.Add(buff);
+                }
+                return View(ALL);
+            }
+
+            var alreadyExistCharacteristic = _catalog.GetAllChainCategoryCharacteristics((Guid)categoryID);
+            
+
+            
+            
+
+           
+
+            foreach (var i in allCharacteristic)
+            {
+                var buff = new CharacteristicVM();
+                buff.id = i.Id;
+                buff.Name = i.Name;
+                ALL.Add(buff);
+            }
+
+            foreach (var i in alreadyExistCharacteristic)
+            {
+                var buff = new CharacteristicVM();
+                buff.id = i.CharacteristicID;
+                buff.Name = "";
+                NOTNEED.Add(buff);
+            }
+
+            foreach (var i in ALL)
+            {
+                if (NOTNEED.Contains(i))
+                {
+                  
+                }
+                else
+                {
+                   if (!FINAL.Contains(i))
+                        FINAL.Add(i);
+                }
+            }
+
+            return View(FINAL);
+        }
 
         public ActionResult ItemsEditor(Guid? categoryId)
         {
@@ -240,7 +307,7 @@ namespace Store.WEB.Controllers
             itemVM.ManufCountries = new SelectList(countries, "Id", "Name");
             return View(itemVM);
         }
-        
+
         public ActionResult EditItem(Guid itemId)
         {
             var item = _catalog.GetItemById(itemId);
@@ -313,7 +380,7 @@ namespace Store.WEB.Controllers
                 itemCharacteristicVM.CharacteristicID = i.Characteristic.Id;
                 itemCharacteristicVM.CharacteristicName = i.Characteristic.Name;
                 var charValues = _catalog.GetCharValuesByCharacteristicId(i.Characteristic.Id);
-                
+
                 itemCharacteristicVM.ItemID = itemId;
 
                 var itemCharateristicForCurrent = itemCharacteristics.Where(ic => ic.CharacteristicID == i.Characteristic.Id).FirstOrDefault();
@@ -340,7 +407,7 @@ namespace Store.WEB.Controllers
             // TO DO
             if (itemCharacteristicVMs == null || !itemCharacteristicVMs.Any())
                 return RedirectToAction("Index");
-            
+
             foreach (var i in itemCharacteristicVMs)
             {
                 var itemCharacteristicDTO = new ItemCharacteristicDTO();
@@ -349,7 +416,7 @@ namespace Store.WEB.Controllers
                 itemCharacteristicDTO.CharacteristicID = i.CharacteristicID;
                 itemCharacteristicDTO.CharacteristicName = i.CharacteristicName;
                 itemCharacteristicDTO.CharValueID = i.CharValueID;
-                
+
                 if (itemCharacteristicDTO.Id != null)
                 {
                     _catalog.UpdateItemCharacteristic(itemCharacteristicDTO);
@@ -359,8 +426,8 @@ namespace Store.WEB.Controllers
                     _catalog.CreateItemCharacteristic(itemCharacteristicDTO);
                 }
             }
-            
-            return RedirectToAction("EditItem", new { itemId = itemCharacteristicVMs.FirstOrDefault().ItemID});
+
+            return RedirectToAction("EditItem", new { itemId = itemCharacteristicVMs.FirstOrDefault().ItemID });
         }
 
     }

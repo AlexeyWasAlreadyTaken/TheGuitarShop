@@ -1,7 +1,17 @@
 ﻿@model IEnumerable<Store.WEB.Models.CategoryCharacteristicVM>
 
 <p>
-    @Html.ActionLink("Add", "Index")
+
+    @*@{if (Model.FirstOrDefault() != null)
+        {
+            @Html.ActionLink("ADD", "CreateCategoryCharacteristic", "ContentManagerAccount", new { categoryID = Model.FirstOrDefault().CategoryID }, null)
+        }
+        if (Model.FirstOrDefault() == null)
+        {*@
+            @Html.ActionLink("ADD", "CreateCategoryCharacteristic", "ContentManagerAccount", new { categoryID = ViewContext.RouteData.Values["id"] }, null)
+        @*}*@
+
+    @*}*@
 </p>
 <table class="table">
     <tr>
