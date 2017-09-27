@@ -7,7 +7,8 @@
 <h2>CreateCategoryCharacteristic</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("ADD", "CreateCharacteristic", "ContentManagerAccount", new { }, null)
+    
 </p>
 <table class="table">
     <tr>
@@ -20,7 +21,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+
+            @Html.ActionLink(item.Name, "GetCharacteristicsValues", "ContentManagerAccount", new { CharacteristicId = item.id }, null)
+
         </td>
         <td>
             @Html.ActionLink("ADD", "AddCategoryCharacteristic", "ContentManagerAccount", new { categoryID = Request.Params["categoryID"] , charID = item.id },null) 

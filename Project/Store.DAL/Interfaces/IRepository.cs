@@ -14,6 +14,7 @@ namespace Store.DAL.Interfaces
         IEnumerable<T> Get();
         IEnumerable<T> Get(Func<T, bool> predicate);
         void Remove(T item);
+        void RemoveWithAttach(T item);
         void Update(T item);
         IEnumerable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
         IEnumerable<T> GetWithInclude(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties);

@@ -8,8 +8,8 @@
         }
         if (Model.FirstOrDefault() == null)
         {*@
-            @Html.ActionLink("ADD", "CreateCategoryCharacteristic", "ContentManagerAccount", new { categoryID = ViewContext.RouteData.Values["id"] }, null)
-        @*}*@
+    @Html.ActionLink("ADD", "CreateCategoryCharacteristic", "ContentManagerAccount", new { categoryID = ViewContext.RouteData.Values["id"] }, null)
+    @*}*@
 
     @*}*@
 </p>
@@ -21,17 +21,18 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @*@Html.DisplayFor(modelItem => item.CharacteristicName)*@
-            @Html.ActionLink( item.CharacteristicName, "EditCategoryCharacteristic", "ContentManagerAccount", new { CharacteristicID = item.CharacteristicID }, null)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @*  @Html.DisplayFor(modelItem => item.CharacteristicName)*@
+                @Html.ActionLink(item.CharacteristicName, "GetCharacteristicsValues", "ContentManagerAccount", new { CharacteristicID = item.CharacteristicID }, null)
+            </td>
+            <td>
+                @Html.ActionLink( "Edit Characteristic", "UpdateCharacteristic", "ContentManagerAccount", new { id = item.CharacteristicID }, null) |
+               @Html.ActionLink("Remove", "DeleteCategoryCharacteristic", "ContentManagerAccount", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
 
 </table>

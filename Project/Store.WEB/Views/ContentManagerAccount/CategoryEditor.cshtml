@@ -9,18 +9,15 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.categoryid, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.categoryid, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.categoryid, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.categoryid, new { htmlAttributes = new { @class = "form-control" } })
+
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.parentCategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.parentCategoryId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.parentCategoryId, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.parentCategoryId, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
 

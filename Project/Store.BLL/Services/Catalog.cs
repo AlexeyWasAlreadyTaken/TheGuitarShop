@@ -23,16 +23,16 @@ namespace Store.BLL.Services
         private IRepository<Country> _countryRepository;
         private IRepository<CharValue> _charValueRepository;
         private IRepository<Characteristic> _charRepository;
-
+        #region INIT
         public Catalog(
-            IRepository<Category> categoryRepo, 
-            IRepository<Purpose> purpoaeRepo, 
-            IRepository<PurposePrice> purpPriceRepo, 
-            IRepository<ItemCharacteristic> itemCharacteristic, 
+            IRepository<Category> categoryRepo,
+            IRepository<Purpose> purpoaeRepo,
+            IRepository<PurposePrice> purpPriceRepo,
+            IRepository<ItemCharacteristic> itemCharacteristic,
             IRepository<CategoryCharacteristic> categoryCharacteristic,
-            IRepository<Item> itemRepository, 
-            IRepository<Brand> brandRepository, 
-            IRepository<Country> countryRepository, 
+            IRepository<Item> itemRepository,
+            IRepository<Brand> brandRepository,
+            IRepository<Country> countryRepository,
             IRepository<CharValue> charValueRepository,
             IRepository<Characteristic> charRepository)
         {
@@ -56,7 +56,7 @@ namespace Store.BLL.Services
         //    _itemCharacteristic.Dispose();
         //    _categoryCharacteristic.Dispose();
         //}
-
+        #endregion
         public IEnumerable<CategoryDTO> GetGeneralCategoryList()
         {
             var v = _categoryRepository.Get(x => x.ParentCategoryID == null);
@@ -72,7 +72,6 @@ namespace Store.BLL.Services
             }
             return currDTOList;
         }
-
         public IEnumerable<CategoryDTO> GetChildCategoryByParentID(Guid parentID)
         {
             // return _categoryRepository.Get(x => x.ParentCategoryID == parentID);
@@ -90,8 +89,6 @@ namespace Store.BLL.Services
             }
             return currDTOList;
         }
-
-
         public CategoryDTO GetCategoryByID(Guid ID)
         {
             // return _categoryRepository.Get(x => x.ParentCategoryID == parentID);
@@ -109,7 +106,6 @@ namespace Store.BLL.Services
             }
             return currDTOList.FirstOrDefault();
         }
-
         public IEnumerable<PurposeDTO> GetPurposesByCategoryID(Guid categoryID)
         {
             var purposeList = _purposeRepository.GetWithInclude(x => x.Item.CategoryID == categoryID, y => y.Item, y => y.Item.Brand, y => y.Item.Category);
@@ -132,19 +128,16 @@ namespace Store.BLL.Services
 
             return purposesDTOList;
         }
-
         public PurposePrice GetPurposePriceByPuposeID(Guid purposeID)
         {
             var curPurposePrice = _purpPriceRepository.GetWithInclude(x => x.PurposeId == purposeID, y => y.Curency).OrderBy(o => o.Date).ToList().FirstOrDefault();
             return curPurposePrice;
 
         }
-
         public IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID)
         {
             return _itemCharacteristic.GetWithInclude(x => x.ItemID == itemID, y => y.Characteristic, y => y.Item, y => y.CharValue);
         }
-
         public PurposeDTO GetPurposeByID(Guid purposeID)
         {
             var purpose = _purposeRepository.GetWithInclude(x => x.Id == purposeID, y => y.Item, y => y.Item.Brand, y => y.Item.Category).FirstOrDefault();
@@ -181,33 +174,11 @@ namespace Store.BLL.Services
 
             return _buff;
         }
-
-
         public IEnumerable<CategoryCharacteristicDTO> GetCurrentCategoryCharacteristics(Guid CategoryID)
         {
-            //var parentCategory = _categoryRepository.Get(x => x.Id == CategoryID).FirstOrDefault().ParentCategoryID;
+
             var DTO = new List<CategoryCharacteristicDTO>();
-            /*
-            var isHaveParentCategory = _categoryRepository.Get(x => x.Id == CategoryID).Count() >= 1 ? true : false;
-            //if (parentCategory != null)
-            if (isHaveParentCategory)
-            {
-                var parentCategory = _categoryRepository.Get(x => x.Id == CategoryID).FirstOrDefault().ParentCategoryID;
-                var parentCategoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == parentCategory, y => y.Characteristic);
-                foreach (var i in parentCategoryChar)
-                {
-                    var buff = new CategoryCharacteristicDTO();
-                    buff.Id = i.Id;
-                    buff.CategoryID = (Guid)i.CategoryID;
-                    buff.CharacteristicID = (Guid)i.CharacteristicID;
-                    var characteristic = new CharacteristicDTO();
-                    characteristic.Id = i.Characteristic.Id;
-                    characteristic.Name = i.Characteristic.Name;
-                    buff.Characteristic = characteristic;
-                    DTO.Add(buff);
-                }
-            }
-            */
+
             var categoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
 
             foreach (var i in categoryChar)
@@ -224,13 +195,10 @@ namespace Store.BLL.Services
             }
             return DTO;
         }
-
-
-
         public IEnumerable<CategoryCharacteristicDTO> GetAllChainCategoryCharacteristics(Guid CategoryID)
         {
             var DTO = new List<CategoryCharacteristicDTO>();
-            
+
             var isHaveParentCategory = _categoryRepository.Get(x => x.Id == CategoryID).Count() >= 1 ? true : false;
 
             if (isHaveParentCategory)
@@ -250,7 +218,7 @@ namespace Store.BLL.Services
                     DTO.Add(buff);
                 }
             }
-            
+
             var categoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
 
             foreach (var i in categoryChar)
@@ -267,10 +235,6 @@ namespace Store.BLL.Services
             }
             return DTO;
         }
-
-
-
-
         public IEnumerable<ItemDTO> GetItemsByCategoryId(Guid categoryId)
         {
             var items = _itemRepository.GetWithInclude(x => x.CategoryID == categoryId);
@@ -337,7 +301,6 @@ namespace Store.BLL.Services
                 _itemCharacteristic.Create(itemCharacteristic);
             }
         }
-
         public BrandDTO GetBrandById(Guid brandId)
         {
             var brand = _brandRepository.FindById(brandId);
@@ -346,7 +309,6 @@ namespace Store.BLL.Services
             brandDTO.Name = brand.Name;
             return brandDTO;
         }
-
         public IEnumerable<BrandDTO> GetBrands()
         {
             var brands = _brandRepository.Get();
@@ -360,7 +322,6 @@ namespace Store.BLL.Services
             }
             return brandsDTOList;
         }
-
         public IEnumerable<CountryDTO> GetCountries()
         {
             var countries = _countryRepository.Get();
@@ -374,7 +335,6 @@ namespace Store.BLL.Services
             }
             return countryDTOList;
         }
-
         public IEnumerable<ItemCharacteristicDTO> GetItemCharacteristicsByItemId(Guid itemId)
         {
             var itemCharacteristics = _itemCharacteristic.GetWithInclude(x => x.ItemID == itemId, y => y.Characteristic);
@@ -400,13 +360,11 @@ namespace Store.BLL.Services
             itemCharacteristic.CharValueID = itemCharacteristicDTO.CharValueID;
             _itemCharacteristic.Update(itemCharacteristic);
         }
-
         public void DeleteItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO)
         {
             var itemCharacteristic = _itemCharacteristic.FindById((Guid)itemCharacteristicDTO.Id); //costyle
             _itemCharacteristic.Remove(itemCharacteristic);
         }
-
         public void CreateItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO)
         {
             var itemCharacteristic = new ItemCharacteristic();
@@ -416,7 +374,6 @@ namespace Store.BLL.Services
             itemCharacteristic.CharValueID = itemCharacteristicDTO.CharValueID;
             _itemCharacteristic.Create(itemCharacteristic);
         }
-
         public IEnumerable<CharValueDTO> GetCharValuesByCharacteristicId(Guid characteristicId)
         {
             var charValues = _charValueRepository.Get(x => x.CharacteristicId == characteristicId);
@@ -433,8 +390,6 @@ namespace Store.BLL.Services
             }
             return charValueDTOList;
         }
-
-
         public CharacteristicDTO GetCharacteristicByID(Guid id)
         {
             var characterisitc = _charRepository.Get(x => x.Id == id).FirstOrDefault();
@@ -443,8 +398,6 @@ namespace Store.BLL.Services
             selected.Name = characterisitc.Name;
             return selected;
         }
-
-
         public void CreateCategory(CategoryDTO categoryDTO)
         {
             var c = new Category();
@@ -453,7 +406,6 @@ namespace Store.BLL.Services
             c.ParentCategoryID = categoryDTO.ParentCategoryID;
             _categoryRepository.Create(c);
         }
-
         public IEnumerable<CharacteristicDTO> GetAllCharacteristic()
         {
             var characterisitc = _charRepository.Get();
@@ -476,5 +428,73 @@ namespace Store.BLL.Services
             categoryCharacteristic.CharacteristicID = ccDTO.CharacteristicID;
             _categoryCharacteristic.Create(categoryCharacteristic);
         }
+        public void CreateCharacteristic(CharacteristicDTO dto)
+        {
+            var newCharacteristic = new Characteristic();
+            newCharacteristic.Id = Guid.NewGuid();
+            newCharacteristic.Name = dto.Name;
+            _charRepository.Create(newCharacteristic);
+        }
+        public void CreateCharacteristicValue(CharValueDTO dto)
+        {
+            var newCharValue = new CharValue();
+            newCharValue.CharacteristicId = dto.CharacteristicId;
+            newCharValue.Id = Guid.NewGuid();
+            newCharValue.IntVal = dto.IntVal;
+            newCharValue.FloatVal = dto.FloatVal;
+            newCharValue.StrVal = dto.StrVal;
+            _charValueRepository.Create(newCharValue);
+        }
+        public void UpdateCategory(CategoryDTO categoryDTO)
+        {
+            var buff = new Category();
+            buff.Id = categoryDTO.Id;
+            buff.Name = categoryDTO.Name;
+            buff.ParentCategoryID = categoryDTO.ParentCategoryID;
+            _categoryRepository.Update(buff);
+        }
+        public void UpdateCharacteristic(CharacteristicDTO dto)
+        {
+            var buff = new Characteristic();
+            buff.Id = dto.Id;
+            buff.Name = dto.Name;
+            _charRepository.Update(buff);
+        }
+
+        public CategoryCharacteristicDTO GetCategoryCharacteristicByID(Guid id)
+        {
+            var buff = _categoryCharacteristic.GetWithInclude(x => x.Id == id,y => y.Characteristic).FirstOrDefault();
+            var dto = new CategoryCharacteristicDTO();
+            dto.Id = buff.Id;
+            var CharBuff = new CharacteristicDTO();
+            CharBuff.Id = buff.Characteristic.Id;
+            CharBuff.Name = buff.Characteristic.Name; 
+            dto.Characteristic = CharBuff;
+            dto.CategoryID = (Guid)buff.CategoryID;
+            dto.CharacteristicID = (Guid)buff.CharacteristicID;
+            return dto;
+        }
+        public void DeleteCategoryCharacteristic(Guid? id)
+        {
+            var buff = _categoryCharacteristic.Get(x => x.Id == id).FirstOrDefault();
+            _categoryCharacteristic.RemoveWithAttach(buff);
+        }
+        public CharValueDTO GetCharacteristicValueByID(Guid id)
+        {
+            var curr = _charValueRepository.FindById(id);
+            var dto = new CharValueDTO();
+            dto.Id = curr.Id;
+            dto.CharacteristicId = curr.CharacteristicId;
+            dto.IntVal = curr.IntVal;
+            dto.FloatVal = curr.FloatVal;
+            dto.StrVal = curr.StrVal;
+            return dto; 
+        }
+        public void DeleteCharacteristicValue(Guid? id)
+        {
+            var buff = _charValueRepository.Get(x => x.Id == id).FirstOrDefault();
+            _charValueRepository.RemoveWithAttach(buff);
+        }
+
     }
 }

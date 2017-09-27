@@ -299,11 +299,14 @@
     <Content Include="Views\ContentManagerAccount\EditItem.cshtml" />
     <Content Include="Views\ContentManagerAccount\EditItemCharacteristics.cshtml" />
     <Content Include="Views\ContentManagerAccount\EditCategoryCharacteristic.cshtml" />
-    <Content Include="Views\ContentManagerAccount\GetCharacteristicsValues.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreateCategory.cshtml" />
     <Content Include="Views\ContentManagerAccount\ItemsEditor.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreateItem.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreateCategoryCharacteristic.cshtml" />
+    <Content Include="Views\ContentManagerAccount\CreateCharacteristic.cshtml" />
+    <Content Include="Views\ContentManagerAccount\GetCharacteristicsValues.cshtml" />
+    <Content Include="Views\ContentManagerAccount\CreateCharacteristicValue.cshtml" />
+    <Content Include="Views\ContentManagerAccount\UpdateCharacteristic.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

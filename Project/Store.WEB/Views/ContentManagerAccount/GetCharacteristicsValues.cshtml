@@ -1,7 +1,14 @@
 ﻿@model IEnumerable<Store.WEB.Models.CharValueVM>
 
+@{
+    ViewBag.Title = "GetCharacteristicsValues";
+}
+
+<h2>GetCharacteristicsValues</h2>
+
 <p>
     @Html.ActionLink("Create New", "Create")
+    | @Html.ActionLink("+", "CreateCharacteristicValue", "ContentManagerAccount", new { id = Request.Params["CharacteristicId"] }, null)
 </p>
 <table class="table">
     <tr>
@@ -35,9 +42,8 @@
             @Html.DisplayFor(modelItem => item.StrVal)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+
+            @Html.ActionLink("Remove", "DeleteCharacteristicValue", "ContentManagerAccount", new { item.Id }, null)
         </td>
     </tr>
 }
