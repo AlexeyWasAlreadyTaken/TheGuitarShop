@@ -35,7 +35,8 @@ namespace Store.BLL.Services
             IRepository<Brand> brandRepository,
             IRepository<Country> countryRepository,
             IRepository<CharValue> charValueRepository,
-            IRepository<Characteristic> charRepository)
+            IRepository<Characteristic> charRepository,IRepository<AvailabilityType> availabilityType,IRepository<Curency> currency)
+
         {
             _categoryRepository = categoryRepo;
             _purposeRepository = purpoaeRepo;
@@ -47,6 +48,8 @@ namespace Store.BLL.Services
             _countryRepository = countryRepository;
             _charValueRepository = charValueRepository;
             _charRepository = charRepository;
+            _availabilityTypeRepository = availabilityType;
+            _curencyRepository = currency;
         }
 
         //public void Dispose()

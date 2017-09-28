@@ -524,7 +524,7 @@ namespace Store.WEB.Controllers
                     ultPurposeVM.ItemName = currItem.Name;
                 }
                 ultPurposeVM.Price = i.Price;
-                ultPurposeVM.IsPromo = i.IsPromo;
+                ultPurposeVM.IsPromo = (bool)i.IsPromo;
                 ultPurposeVM.AvailabilityTypeID = i.AvailabilityTypeID;
                 ultPurposeVM.CurencyID = i.CurencyID;
                 ultPurposeVMList.Add(ultPurposeVM);
