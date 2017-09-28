@@ -3,20 +3,21 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Content Manager Account</h2>
 
 
-<h3>Чё ннадо ?</h3>
+
+<h3>Admin controls : </h3>
+<br>
 
 <ul>
     <li>
-        @Html.ActionLink("Кутёж с категориями", "CategoryEditorNavigation", "ContentManagerAccount")
+        <h4> @Html.ActionLink("Category Editor", "CategoryEditorNavigation", "ContentManagerAccount")</h4>
     </li>
     <li>
-        @Html.ActionLink("Вечерний променад с итемамки", "ItemsEditor", "ContentManagerAccount")
+        <h4> @Html.ActionLink("Items Editor", "ItemsEditor", "ContentManagerAccount")</h4>
     </li>
     <li>
-        @Html.ActionLink("Создать лохотрон", "Index", "ContentManagerAccount")
+        <h4> @Html.ActionLink("Purposes Editor", "Index", "ContentManagerAccount")</h4>
     </li>
 </ul>
 

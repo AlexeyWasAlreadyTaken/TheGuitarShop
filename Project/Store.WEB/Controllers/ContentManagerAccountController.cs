@@ -12,6 +12,7 @@ namespace Store.WEB.Controllers
 {
     public class ContentManagerAccountController : Controller
     {
+        #region Init
         // GET: ContentManagerAccount
         private ICatalog _catalog;
         public ContentManagerAccountController(ICatalog catalog)
@@ -19,14 +20,13 @@ namespace Store.WEB.Controllers
             _catalog = catalog;
         }
 
-
+        #endregion
 
         public ActionResult Index()
         {
             return View();
         }
-
-
+        #region Category
         public ActionResult CategoryEditorNavigation(Guid? id)
         {
             var categoryList = new List<CategoryVM>();
@@ -59,7 +59,6 @@ namespace Store.WEB.Controllers
 
             return View(categoryList);
         }
-
         public ActionResult CategoryEditor(Guid? id)
         {
             var category = new CategoryVM();
@@ -77,8 +76,16 @@ namespace Store.WEB.Controllers
             }
             return View(category);
         }
-
-
+        [HttpPost]
+        public ActionResult CategoryEditor(CategoryVM category)
+        {
+            var updatedCategory = new CategoryDTO();
+            updatedCategory.Id = category.categoryid;
+            updatedCategory.Name = category.categoryName;
+            updatedCategory.ParentCategoryID = category.parentCategoryId;
+            _catalog.UpdateCategory(updatedCategory);
+            return View(category);
+        }
         public ActionResult CreateCategory(Guid? id)
         {
             var pc = id;//parentcategory
@@ -95,9 +102,11 @@ namespace Store.WEB.Controllers
             _catalog.CreateCategory(buff);
             return Redirect(Request.UrlReferrer.ToString());
         }
-
-
-
+        public ActionResult UpdateCategory(Guid? id)
+        {
+            
+            return View();
+        }
         public ActionResult GetCharacteristics(Guid? id)
         {
             var categoryCharacteristic = _catalog.GetCurrentCategoryCharacteristics((Guid)id);
@@ -114,8 +123,6 @@ namespace Store.WEB.Controllers
             }
             return PartialView(categoryCharacteristicList);
         }
-
-
         public ActionResult EditCategoryCharacteristic(Guid CharacteristicId)
         {
             var currentCharacteristic = _catalog.GetCharacteristicByID(CharacteristicId);
@@ -124,24 +131,7 @@ namespace Store.WEB.Controllers
             characteristic.Name = currentCharacteristic.Name;
             return View(characteristic);
         }
-        public ActionResult GetCharacteristicsValues(Guid CharacteristicId)
-        {
-            var currentCharacteristicValues = _catalog.GetCharValuesByCharacteristicId(CharacteristicId);
-            var currentCharacteristicValuesDTO = new List<CharValueVM>();
-            foreach (var i in currentCharacteristicValues)
-            {
-                var buff = new CharValueVM();
-                buff.Id = i.Id;
-                buff.StrVal = i.StrVal;
-                buff.IntVal = i.IntVal;
-                buff.FloatVal = i.FloatVal;
-                buff.CharacteristicId = CharacteristicId;
-                currentCharacteristicValuesDTO.Add(buff);
-            }
-            return PartialView(currentCharacteristicValuesDTO);
-        }
-
-        public ActionResult AddCategoryCharacteristic(Guid? categoryID,Guid? charID)
+        public ActionResult AddCategoryCharacteristic(Guid? categoryID, Guid? charID)
         {
             // to do
             var categoryChar = new CategoryCharacteristicDTO();
@@ -150,7 +140,52 @@ namespace Store.WEB.Controllers
             _catalog.CreateCategoryCharacteristic(categoryChar);
             return RedirectToAction("CategoryEditor", new { id = (Guid)categoryID });
         }
+        public ActionResult CreateCharacteristic()
+        {     
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CreateCharacteristic(CharacteristicVM newCharacteristic)
+        {
+            var dto = new CharacteristicDTO();
+            dto.Name = newCharacteristic.Name;
+            _catalog.CreateCharacteristic(dto);
+            return Redirect(Request.UrlReferrer.ToString()); //TO DO , doesnt work
+           // return View();
+        }
+        public ActionResult UpdateCharacteristic(Guid? id)
+        {
+            var currentCharacteristic = _catalog.GetCharacteristicByID((Guid)id);
+            var currentCharVM = new CharacteristicVM();
+            currentCharVM.id = currentCharacteristic.Id;
+            currentCharVM.Name = currentCharacteristic.Name;
+            return View(currentCharVM);
+        }
+        [HttpPost]
+        public ActionResult UpdateCharacteristic(CharacteristicVM characteristic)
+        {
 
+            var updatedCharDTO = new CharacteristicDTO();
+            updatedCharDTO.Id = characteristic.id;
+            updatedCharDTO.Name = characteristic.Name;
+            _catalog.UpdateCharacteristic(updatedCharDTO);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        public ActionResult CreateCharacteristicValue(Guid? id) 
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CreateCharacteristicValue(CharValueVM newCharValue)   
+        {
+            var dto = new CharValueDTO();
+            dto.CharacteristicId = newCharValue.CharacteristicId;
+            dto.IntVal = newCharValue.IntVal;
+            dto.StrVal = newCharValue.StrVal;
+            dto.FloatVal = newCharValue.FloatVal;
+            _catalog.CreateCharacteristicValue(dto);
+            return RedirectToAction("GetCharacteristicsValues", "ContentManagerAccount", new { CharacteristicId = newCharValue.CharacteristicId });
+        }
         public ActionResult CreateCategoryCharacteristic(Guid? categoryID)
         {
             var ALL = new List<CharacteristicVM>();
@@ -171,12 +206,6 @@ namespace Store.WEB.Controllers
             }
 
             var alreadyExistCharacteristic = _catalog.GetAllChainCategoryCharacteristics((Guid)categoryID);
-            
-
-            
-            
-
-           
 
             foreach (var i in allCharacteristic)
             {
@@ -198,18 +227,45 @@ namespace Store.WEB.Controllers
             {
                 if (NOTNEED.Contains(i))
                 {
-                  
+
                 }
                 else
                 {
-                   if (!FINAL.Contains(i))
+                    if (!FINAL.Contains(i))
                         FINAL.Add(i);
                 }
             }
 
             return View(FINAL);
         }
-
+        public ActionResult GetCharacteristicsValues(Guid CharacteristicId)
+        {
+            var currentCharacteristicValues = _catalog.GetCharValuesByCharacteristicId(CharacteristicId);
+            var currentCharacteristicValuesDTO = new List<CharValueVM>();
+            foreach (var i in currentCharacteristicValues)
+            {
+                var buff = new CharValueVM();
+                buff.Id = i.Id;
+                buff.StrVal = i.StrVal;
+                buff.IntVal = i.IntVal;
+                buff.FloatVal = i.FloatVal;
+                buff.CharacteristicId = CharacteristicId;
+                currentCharacteristicValuesDTO.Add(buff);
+            }
+            return View(currentCharacteristicValuesDTO);
+        }
+        public ActionResult DeleteCategoryCharacteristic(Guid? id)// to do
+        {
+            _catalog.DeleteCategoryCharacteristic(id);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        public ActionResult DeleteCharacteristicValue(Guid? id) // to do
+        {
+            _catalog.DeleteCharacteristicValue(id);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        #endregion
+        #region Items
         public ActionResult ItemsEditor(Guid? categoryId)
         {
             //TO DO
@@ -429,6 +485,7 @@ namespace Store.WEB.Controllers
 
             return RedirectToAction("EditItem", new { itemId = itemCharacteristicVMs.FirstOrDefault().ItemID });
         }
+        #endregion
 
     }
 }

@@ -49,6 +49,14 @@ namespace Store.DAL.Concrete
         }
         public void Remove(T item)
         {
+
+            _dbSet.Remove(item);
+            _context.SaveChanges();
+        }
+
+        public void RemoveWithAttach(T item)
+        {
+            _dbSet.Attach(item);
             _dbSet.Remove(item);
             _context.SaveChanges();
         }
