@@ -521,6 +521,95 @@ namespace Store.BLL.Services
             var buff = _charValueRepository.Get(x => x.Id == id).FirstOrDefault();
             _charValueRepository.RemoveWithAttach(buff);
         }
-        
+
+        //Ultimate Purpose use in admin controls for creating new purpose & purpose price
+        #region Ultimate Purpose
+        public void CreateUltimatePurpose(UltimatePurposeDTO dto)
+        {
+            var newPurpose = new Purpose();
+            var newPurposePrice = new PurposePrice();
+
+            newPurpose.Id = Guid.NewGuid();
+            newPurpose.IsPromo = dto.IsPromo;
+            newPurpose.ItemId = dto.ItemId;
+            newPurpose.AvailabilityTypeID = dto.AvailabilityTypeID;
+
+            newPurposePrice.Id = Guid.NewGuid();
+            newPurposePrice.PurposeId = newPurpose.Id;
+            newPurposePrice.Price = dto.Price;
+            newPurposePrice.CurencyID = dto.CurencyID;
+            newPurposePrice.Date = DateTime.Now;
+
+            _purposeRepository.Create(newPurpose);
+            _purpPriceRepository.Create(newPurposePrice);
+        }
+        public IEnumerable<UltimatePurposeDTO> GetPurposeListByCategoryId(Guid categoryId)
+        {
+            var buff = _purposeRepository.GetWithInclude(x => x.Item.CategoryID == categoryId, y => y.Item , y => y.Item.CategoryID);
+            var dtoList = new List<UltimatePurposeDTO>();
+            foreach (var i in buff)
+            {
+                var pp = GetPurposePriceByPuposeID(i.Id);
+                var currDto = new UltimatePurposeDTO();
+                currDto.PurposeId = i.Id;
+                currDto.IsPromo = i.IsPromo;
+                currDto.ItemId = i.ItemId;
+                currDto.AvailabilityTypeID = i.AvailabilityTypeID;
+
+                currDto.Price = pp.Price;
+                currDto.CurencyID = pp.CurencyID;
+                currDto.PurposeId = i.Id;
+                currDto.Date = pp.Date;
+                    
+                dtoList.Add(currDto);
+            }
+            return dtoList;
+        }
+        public UltimatePurposeDTO GetPurposeById(Guid purposeId)
+        {
+            var buff = _purposeRepository.FindById(purposeId);
+
+                var pp = GetPurposePriceByPuposeID(buff.Id);
+                var currDto = new UltimatePurposeDTO();
+                currDto.PurposeId = buff.Id;
+                currDto.IsPromo = buff.IsPromo;
+                currDto.ItemId = buff.ItemId;
+                currDto.AvailabilityTypeID = buff.AvailabilityTypeID;
+
+                currDto.Price = pp.Price;
+                currDto.CurencyID = pp.CurencyID;
+                currDto.PurposeId = buff.Id;
+                currDto.Date = pp.Date;
+
+            return currDto;
+        }
+        public void UpdateUltimatePurpose(UltimatePurposeDTO dto)
+        {
+            var selectedPurpose = _purposeRepository.FindById((Guid)dto.PurposeId);
+            var selectedPurposePrice = GetPurposePriceByPuposeID((Guid)dto.PurposeId);
+
+         // selectedPurpose.Id = "";
+            selectedPurpose.IsPromo = dto.IsPromo;
+            selectedPurpose.ItemId = dto.ItemId;
+            selectedPurpose.AvailabilityTypeID = dto.AvailabilityTypeID;
+
+         // selectedPurposePrice.Id = "";
+            selectedPurposePrice.PurposeId = selectedPurpose.Id;
+            selectedPurposePrice.Price = dto.Price;
+            selectedPurposePrice.CurencyID = dto.CurencyID;
+         // selectedPurposePrice.Date = DateTime.Now;
+
+            _purposeRepository.Update(selectedPurpose);
+            _purpPriceRepository.Update(selectedPurposePrice);
+
+        }
+        public void RemoveUltimatePurpose(Guid purposeId)
+        {
+            var selectedPurpose = _purposeRepository.FindById(purposeId);
+            _purposeRepository.RemoveWithAttach(selectedPurpose);
+        }
+        #endregion
+
+
     }
 }

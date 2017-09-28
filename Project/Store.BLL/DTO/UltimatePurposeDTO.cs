@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Store.BLL.DTO
 {
-    class UltimatePurposeDTO
+    public class UltimatePurposeDTO
     {
         public Guid? PurposeId { get; set; }
         public Guid? ItemId { get; set; }
