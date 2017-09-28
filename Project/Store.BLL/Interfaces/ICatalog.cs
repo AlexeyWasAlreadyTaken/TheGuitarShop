@@ -46,6 +46,6 @@ namespace Store.BLL.Interfaces
         void CreateCategory(CategoryDTO categoryDTO);
 
         void CreateCategoryCharacteristic(CategoryCharacteristicDTO ccDTO);
-
+        IEnumerable<PurposeDTO> GetPurposesByCharValues(Guid categoryId, IEnumerable<CharValueDTO> filterCharValues);
     }
 }

@@ -39,8 +39,6 @@ namespace Store.WEB.Controllers
             H = hilist;
             return View(H);
         }
-
-
         public ActionResult SubCategories(Guid id)
         {
             var C = _catalog.GetChildCategoryByParentID(id);
@@ -63,7 +61,6 @@ namespace Store.WEB.Controllers
             H = hilist;
             return View(H);
         }
-
         public ActionResult PurposesList(Guid id, string st)
         {
             var C = _catalog.GetPurposesByCategoryID(id);
@@ -105,6 +102,95 @@ namespace Store.WEB.Controllers
 
             return View(purposeList);
         }
+
+        public ActionResult GetFilters(Guid categoryId)
+        {
+            var characteristics = _catalog.GetAllChainCategoryCharacteristics(categoryId);
+            var filterVMList = new List<FilterVM>();
+            foreach (var i in characteristics)
+            {
+                var filterVM = new FilterVM();
+                filterVM.characteristicId = i.Characteristic.Id;
+                filterVM.characteristicName = i.Characteristic.Name;
+                
+                var filterCharValues = _catalog.GetCharValuesByCharacteristicId(filterVM.characteristicId);
+                filterVM.valuesList = new List<FilterCharValueVM>();
+                foreach (var j in filterCharValues)
+                {
+                    var filterCharValueVM = new FilterCharValueVM();
+                    filterCharValueVM.Id = j.Id;
+                    filterCharValueVM.CharacteristicId = j.CharacteristicId;
+                    filterCharValueVM.IntVal = j.IntVal;
+                    filterCharValueVM.FloatVal = j.FloatVal;
+                    filterCharValueVM.StrVal = j.StrVal;
+                    filterVM.valuesList.Add(filterCharValueVM);
+                }
+                filterVMList.Add(filterVM);
+            }
+
+            return PartialView(filterVMList);
+        }
+        [HttpPost]
+        //TO DO
+        public ActionResult PurposesList(Guid id, string st, IList<FilterVM> filterVMs)
+        {
+            var charValueDTOList = new List<CharValueDTO>();
+            foreach (var i in filterVMs)
+            {
+                foreach (var j in i.valuesList)
+                {
+                    if (j.isApplied)
+                    {
+                        var charValueDTO = new CharValueDTO();
+                        charValueDTO.Id = j.Id;
+                        charValueDTO.CharacteristicId = j.CharacteristicId;
+                        charValueDTO.IntVal = j.IntVal;
+                        charValueDTO.FloatVal = j.FloatVal;
+                        charValueDTO.StrVal = j.StrVal;
+                        charValueDTOList.Add(charValueDTO);
+                    }
+                }
+            }
+            var purposes = _catalog.GetPurposesByCharValues((Guid)id, charValueDTOList);
+
+
+
+            var purposeList = new List<CatalogPurposeVM>();
+            foreach (var curr in purposes)
+            {
+                CatalogPurposeVM buff = new CatalogPurposeVM();
+                buff.purposeID = curr.purposeID;
+                buff.categoryID = id;
+                buff.Brand = curr.Brand;
+                buff.Name = curr.Name;
+                buff.Price = curr.Price;
+                buff.Curency = curr.Curency;
+                buff.Category = curr.CategoryName;
+
+                purposeList.Add(buff);
+                buff = null;
+            }
+            // 8====3
+            if (String.IsNullOrEmpty(st))
+                st = "ByPrice";
+
+            switch (st)
+            {
+                case "ByName":
+                    purposeList = purposeList.OrderBy(x => x.Name).Distinct().ToList();
+                    break;
+                case "ByPrice":
+                    purposeList = purposeList.OrderBy(x => x.Price).ToList();
+                    break;
+                case "ByBrand":
+                    purposeList = purposeList.OrderBy(x => x.Brand).ToList();
+                    break;
+            }
+
+            return View(purposeList);
+        }
+        
+        
 
     }
 }

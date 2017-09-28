@@ -476,5 +476,33 @@ namespace Store.BLL.Services
             categoryCharacteristic.CharacteristicID = ccDTO.CharacteristicID;
             _categoryCharacteristic.Create(categoryCharacteristic);
         }
+
+        public IEnumerable<PurposeDTO> GetPurposesByCharValues(Guid categoryId, IEnumerable<CharValueDTO> filterCharValues)
+        {
+            var characteristicIdList = filterCharValues.Select(f => f.CharacteristicId).Distinct().ToList();
+
+            //TO DO
+            var purposes = _purposeRepository.GetWithInclude(
+                x => x.Item.CategoryID == categoryId
+                && x.Item.ItemCharacteristics.Where(
+                    ic => characteristicIdList.Contains((Guid)ic.CharacteristicID)
+                    && filterCharValues.Any(f => f.Id == (Guid)ic.CharValueID)).Count() >= characteristicIdList.Count,
+                y => y.Item, y => y.Item.Brand, y => y.Item.Category, y => y.Item.ItemCharacteristics);
+            
+            var purposeDTOList = new List<PurposeDTO>();
+            foreach (var i in purposes)
+            {
+                var purposeDTO = new PurposeDTO();
+                purposeDTO.purposeID = i.Id;
+                purposeDTO.categoryID = categoryId;
+                purposeDTO.Name = i.Item.Name;
+                purposeDTO.Brand = i.Item.Brand.Name;
+                purposeDTO.Curency = GetPurposePriceByPuposeID(purposeDTO.purposeID).Curency.Name;
+                purposeDTO.Price = (double)GetPurposePriceByPuposeID(purposeDTO.purposeID).Price;
+                purposeDTO.CategoryName = i.Item.Category.Name;
+                purposeDTOList.Add(purposeDTO);
+            }
+            return purposeDTOList;
+        }
     }
 }

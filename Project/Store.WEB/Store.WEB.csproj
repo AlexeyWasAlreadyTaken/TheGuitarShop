@@ -246,12 +246,13 @@
     <Compile Include="Models\CategoryCharacteristicVM.cs" />
     <Compile Include="Models\CharacteristicVM.cs" />
     <Compile Include="Models\CharValueVM.cs" />
+    <Compile Include="Models\FilterCharValueVM.cs" />
     <Compile Include="Models\ItemCharacteristicVM.cs" />
     <Compile Include="Models\ItemVM.cs" />
     <Compile Include="Models\OrderItemVM.cs" />
     <Compile Include="Models\CatalogPurposeVM.cs" />
     <Compile Include="Models\ConcretePurposeVM.cs" />
-    <Compile Include="Models\FiltersVM.cs" />
+    <Compile Include="Models\FilterVM.cs" />
     <Compile Include="Models\CategoryVM.cs" />
     <Compile Include="Models\HomeNewsVM.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -304,6 +305,7 @@
     <Content Include="Views\ContentManagerAccount\ItemsEditor.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreateItem.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreateCategoryCharacteristic.cshtml" />
+    <Content Include="Views\Catalog\GetFilters.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

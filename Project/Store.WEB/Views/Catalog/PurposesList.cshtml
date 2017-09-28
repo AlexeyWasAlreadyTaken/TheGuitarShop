@@ -15,8 +15,9 @@
             @Html.ActionLink("ByPrice", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByPrice" }, null) <span> | </span>
             @Html.ActionLink("ByBrand", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByBrand" }, null)
             <br>
-            <b>FILTER TYPE:</b>
-            @* @Html.Action("GetCharList", new { id = Model.ToList().FirstOrDefault().categoryID })*@
+            @*<b>FILTER TYPE:</b>
+            @Html.Action("GetCharList", new { id = Model.ToList().FirstOrDefault().categoryID })*@
+            
         }
         else
         {
@@ -27,48 +28,55 @@
     }
 
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Brand)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Curency)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+<div style="float:left">
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Curency)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.ActionLink("Show details", "GetPurpose", "Purpose", new { id = item.purposeID }, null)
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Curency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Curency)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.ActionLink("Show details", "GetPurpose", "Purpose", new { id = item.purposeID }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<div style="float:right">
+    <b>FILTERS</b>
+    @Html.Action("GetFilters", new { categoryId = ViewContext.RouteData.Values["id"] ?? Request.Params["id"] }) @*TO DO*@
+</div>

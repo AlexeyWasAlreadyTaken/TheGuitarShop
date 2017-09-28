@@ -1,0 +1,50 @@
+﻿@model IList<Store.WEB.Models.FilterVM>
+
+<table class="table">
+
+    @using (Html.BeginForm("PurposesList", "Catalog", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        //TO DO
+        @Html.Hidden("id", ViewContext.RouteData.Values["id"] ?? Request.Params["id"])
+        @Html.Hidden("st", Request.Params["st"])
+
+        for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>
+                    <b>
+                        @Html.DisplayFor(modelItem => Model[i].characteristicName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(modelItem => Model[i].characteristicId)
+                    </b>
+                    <br />
+                    @for (int j = 0; j < Model[i].valuesList.Count; j++)
+                    {
+                        @Html.DisplayFor(iItem => Model[i].valuesList[j].IntVal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DisplayFor(iItem => Model[i].valuesList[j].FloatVal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DisplayFor(iItem => Model[i].valuesList[j].StrVal, new { htmlAttributes = new { @class = "form-control" } })
+                        <span>&#160;</span>
+                        @Html.CheckBoxFor(iItem => Model[i].valuesList[j].isApplied, new { htmlAttributes = new { @class = "form-control" } })
+
+                        @Html.HiddenFor(iItem => Model[i].valuesList[j].Id)
+                        @Html.HiddenFor(iItem => Model[i].valuesList[j].CharacteristicId)
+                        <br />
+                    }
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Apply filters" class="btn btn-default" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
