@@ -1,5 +1,7 @@
 ﻿@model IList<Store.WEB.Models.FilterVM>
 
+  <br>
+<h3>Filters</h3>
 <table class="table">
 
     @using (Html.BeginForm("PurposesList", "Catalog", FormMethod.Post))
@@ -39,12 +41,19 @@
             <td>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Apply filters" class="btn btn-default" />
+                        <input type="submit" value="Apply filters" class="btn btn-default" style="background-color:forestgreen; color:white"/>
                     </div>
                 </div>
             </td>
         </tr>
     }
 
+
+  
 </table>
+
+<br>
+<br>
+<br>
+<br>
 

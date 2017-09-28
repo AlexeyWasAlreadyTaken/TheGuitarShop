@@ -309,6 +309,7 @@
     <Content Include="Views\ContentManagerAccount\GetCharacteristicsValues.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreateCharacteristicValue.cshtml" />
     <Content Include="Views\ContentManagerAccount\UpdateCharacteristic.cshtml" />
+    <Content Include="Views\Shared\_PurposesListLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

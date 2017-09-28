@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "PurposesList";
+    Layout = "~/Views/Shared/_PurposesListLayout.cshtml";
 }
 
 <h2>PurposesList</h2>
@@ -14,9 +15,6 @@
             @Html.ActionLink("ByName", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByName" }, null) <span> | </span>
             @Html.ActionLink("ByPrice", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByPrice" }, null) <span> | </span>
             @Html.ActionLink("ByBrand", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByBrand" }, null)
-            <br>
-            @*<b>FILTER TYPE:</b>
-            @Html.Action("GetCharList", new { id = Model.ToList().FirstOrDefault().categoryID })*@
             
         }
         else
@@ -29,7 +27,7 @@
 
 </p>
 
-<div style="float:left">
+<div>
     <table class="table">
         <tr>
             <th>
@@ -76,7 +74,4 @@
 
     </table>
 </div>
-<div style="float:right">
-    <b>FILTERS</b>
-    @Html.Action("GetFilters", new { categoryId = ViewContext.RouteData.Values["id"] ?? Request.Params["id"] }) @*TO DO*@
-</div>
+
