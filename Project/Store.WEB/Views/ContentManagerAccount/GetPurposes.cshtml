@@ -41,7 +41,8 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Edit purpose", "EditPurpose", new { purposeId = item.PurposeId })
+                @Html.ActionLink("Edit purpose", "EditPurpose", new { purposeId = item.PurposeId })|
+                @Html.ActionLink("Delete purpose", "DeletePurpose", new { purposeId = item.PurposeId })
             </td>
         </tr>
     }

@@ -314,6 +314,8 @@
     <Content Include="Views\ContentManagerAccount\PurposesEditor.cshtml" />
     <Content Include="Views\ContentManagerAccount\GetPurposes.cshtml" />
     <Content Include="Views\ContentManagerAccount\CreatePurpose.cshtml" />
+    <Content Include="Views\ContentManagerAccount\SelectItemToPurpose.cshtml" />
+    <Content Include="Views\ContentManagerAccount\EditPurpose.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

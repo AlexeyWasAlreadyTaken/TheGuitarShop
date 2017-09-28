@@ -538,19 +538,86 @@ namespace Store.WEB.Controllers
                 return null;
             }
         }
-        public ActionResult CreatePurpose(Guid categoryId)
+        public ActionResult CreatePurpose(Guid categoryId, Guid? itemId)
         {
             var purposeVM = new UltimatePurposeVM();
             purposeVM.categoryId = categoryId;
+
             purposeVM.AvailabilityTypes = new SelectList(_catalog.GetAvailabilityTypeList(), "Id", "Name");
             purposeVM.CurrencyList = new SelectList(_catalog.GetCurrencyList(), "Id", "Name");
 
+            var item = _catalog.GetItemById((Guid)itemId);
+            purposeVM.ItemId = item.Id;
+            purposeVM.ItemName = item.Name;
+            purposeVM.ItemBrand = _catalog.GetBrandById((Guid)item.BrandID).Name;
             return View(purposeVM);
         }
         [HttpPost]
         public ActionResult CreatePurpose(UltimatePurposeVM ultimatePurposeVM)
         {
-            return null;
+            var ultPurposeDTO = new UltimatePurposeDTO();
+            ultPurposeDTO.ItemId = ultimatePurposeVM.ItemId;
+            ultPurposeDTO.Price = ultimatePurposeVM.Price;
+            ultPurposeDTO.IsPromo = ultimatePurposeVM.IsPromo;
+            ultPurposeDTO.AvailabilityTypeID = ultimatePurposeVM.AvailabilityTypeID;
+            ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
+
+            _catalog.CreateUltimatePurpose(ultPurposeDTO);
+            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.categoryId });
+        }
+        public ActionResult SelectItemToPurpose(Guid categoryId)
+        {
+            var items = _catalog.GetItemsByCategoryId(categoryId);
+            var itemVMList = new List<ItemVM>();
+            foreach (var i in items)
+            {
+                var itemVM = new ItemVM();
+                itemVM.Id = i.Id;
+                itemVM.Name = i.Name;
+                itemVM.BrandName = _catalog.GetBrandById((Guid)i.BrandID).Name;
+                itemVMList.Add(itemVM);
+            }
+            return View(itemVMList);
+        }
+        public ActionResult EditPurpose(Guid purposeId)
+        {
+            var purpose = _catalog.GetPurposeById(purposeId);
+            var purposeVM = new UltimatePurposeVM();
+
+            purposeVM.AvailabilityTypes = new SelectList(_catalog.GetAvailabilityTypeList(), "Id", "Name");
+            purposeVM.CurrencyList = new SelectList(_catalog.GetCurrencyList(), "Id", "Name");
+            purposeVM.PurposeId = purpose.PurposeId;
+            purposeVM.AvailabilityTypeID = purpose.AvailabilityTypeID;
+            purposeVM.Price = purpose.Price;
+            purposeVM.ItemId = purpose.ItemId;
+            purposeVM.IsPromo = (bool)purpose.IsPromo;
+            purposeVM.CurencyID = purpose.CurencyID;
+
+            var item = _catalog.GetItemById((Guid)purpose.ItemId);
+            purposeVM.ItemBrand = _catalog.GetBrandById((Guid)item.BrandID).Name;
+            purposeVM.ItemName = item.Name;
+            purposeVM.categoryId = item.CategoryID;
+
+            return View(purposeVM);
+        }
+        [HttpPost]
+        public ActionResult EditPurpose(UltimatePurposeVM ultimatePurposeVM)
+        {
+            var ultPurposeDTO = new UltimatePurposeDTO();
+            ultPurposeDTO.PurposeId = ultimatePurposeVM.PurposeId;
+            ultPurposeDTO.ItemId = ultimatePurposeVM.ItemId;
+            ultPurposeDTO.Price = ultimatePurposeVM.Price;
+            ultPurposeDTO.IsPromo = ultimatePurposeVM.IsPromo;
+            ultPurposeDTO.AvailabilityTypeID = ultimatePurposeVM.AvailabilityTypeID;
+            ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
+
+            _catalog.UpdateUltimatePurpose(ultPurposeDTO);
+            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.categoryId });
+        }
+        public ActionResult DeletePurpose(Guid purposeId)
+        {
+            _catalog.RemoveUltimatePurpose(purposeId);
+            return Redirect(Request.UrlReferrer.ToString());
         }
         #endregion
     }

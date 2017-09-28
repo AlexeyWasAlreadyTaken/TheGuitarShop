@@ -51,7 +51,7 @@ namespace Store.BLL.Interfaces
         void UpdateUltimatePurpose(UltimatePurposeDTO dto);
         void RemoveUltimatePurpose(Guid purposeId);
         IEnumerable<UltimatePurposeDTO> GetPurposeListByCategoryId(Guid categoryId);    
-        UltimatePurposeDTO GetPurposeById(Guid categoryId);
+        UltimatePurposeDTO GetPurposeById(Guid purposeId);
         #endregion
 
     }

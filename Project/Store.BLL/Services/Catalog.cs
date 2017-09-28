@@ -132,9 +132,9 @@ namespace Store.BLL.Services
 
             return purposesDTOList;
         }
-        public PurposePrice GetPurposePriceByPuposeID(Guid purposeID)
+        private PurposePrice GetPurposePriceByPuposeID(Guid purposeID)
         {
-            var curPurposePrice = _purpPriceRepository.GetWithInclude(x => x.PurposeId == purposeID, y => y.Curency).OrderBy(o => o.Date).ToList().FirstOrDefault();
+            var curPurposePrice = _purpPriceRepository.GetWithInclude(x => x.PurposeId == purposeID, y => y.Curency).OrderByDescending(o => o.Date).ToList().FirstOrDefault();
             return curPurposePrice;
 
         }
@@ -620,23 +620,34 @@ namespace Store.BLL.Services
             var selectedPurpose = _purposeRepository.FindById((Guid)dto.PurposeId);
             var selectedPurposePrice = GetPurposePriceByPuposeID((Guid)dto.PurposeId);
 
-         // selectedPurpose.Id = "";
+            selectedPurpose.Id = (Guid)dto.PurposeId;
             selectedPurpose.IsPromo = dto.IsPromo;
             selectedPurpose.ItemId = dto.ItemId;
             selectedPurpose.AvailabilityTypeID = dto.AvailabilityTypeID;
 
-         // selectedPurposePrice.Id = "";
-            selectedPurposePrice.PurposeId = selectedPurpose.Id;
-            selectedPurposePrice.Price = dto.Price;
-            selectedPurposePrice.CurencyID = dto.CurencyID;
-         // selectedPurposePrice.Date = DateTime.Now;
+            if (dto.Price != selectedPurposePrice.Price || dto.CurencyID != selectedPurposePrice.CurencyID)
+            {
+                var newPurposePrice = new PurposePrice();
+                newPurposePrice.Id = Guid.NewGuid();
+                newPurposePrice.Price = dto.Price;
+                newPurposePrice.PurposeId = dto.PurposeId;
+                newPurposePrice.Date = DateTime.Now;
+                newPurposePrice.CurencyID = dto.CurencyID;
+                _purpPriceRepository.Create(newPurposePrice);
+            }
 
             _purposeRepository.Update(selectedPurpose);
-            _purpPriceRepository.Update(selectedPurposePrice);
 
         }
         public void RemoveUltimatePurpose(Guid purposeId)
         {
+            var purposePrices = _purpPriceRepository.Get(pp => pp.PurposeId == purposeId);
+            foreach (var i in purposePrices)
+            {
+                i.PurposeId = null;
+                _purpPriceRepository.Update(i);
+            }
+
             var selectedPurpose = _purposeRepository.FindById(purposeId);
             _purposeRepository.RemoveWithAttach(selectedPurpose);
         }
