@@ -17,7 +17,8 @@ namespace Store.BLL.Services
         private IRepository<PurposePrice> _purpPriceRepository;
         private IRepository<ItemCharacteristic> _itemCharacteristic;
         private IRepository<CategoryCharacteristic> _categoryCharacteristic;
-
+        private IRepository<AvailabilityType> _availabilityTypeRepository;
+        private IRepository<Curency> _curencyRepository;
         private IRepository<Item> _itemRepository;
         private IRepository<Brand> _brandRepository;
         private IRepository<Country> _countryRepository;
@@ -520,6 +521,34 @@ namespace Store.BLL.Services
         {
             var buff = _charValueRepository.Get(x => x.Id == id).FirstOrDefault();
             _charValueRepository.RemoveWithAttach(buff);
+        }
+
+        public IEnumerable<CurrencyDTO> GetCurrencyList()
+        {
+            var currecyList = _curencyRepository.Get();
+            var dtoList = new List<CurrencyDTO>();
+            foreach (var i in currecyList)
+            {
+                var curr = new CurrencyDTO();
+                curr.Id = i.Id;
+                curr.Name = i.Name;
+                dtoList.Add(curr);
+            }
+            
+            return dtoList;
+        }
+        public IEnumerable<AvailabilityTypeDTO> GetAvailabilityTypeList()
+        {
+            var availabilityTypeList = _availabilityTypeRepository.Get();
+            var dtoList = new List<AvailabilityTypeDTO>();
+            foreach (var i in availabilityTypeList)
+            {
+                var curr = new AvailabilityTypeDTO();
+                curr.id = i.id;
+                curr.Name = i.Name;
+                dtoList.Add(curr);
+            }
+            return dtoList;
         }
 
         //Ultimate Purpose use in admin controls for creating new purpose & purpose price

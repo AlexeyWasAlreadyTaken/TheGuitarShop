@@ -57,12 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\AvailabilityTypeDTO.cs" />
     <Compile Include="DTO\BrandDTO.cs" />
     <Compile Include="DTO\CategoryCharacteristicDTO.cs" />
     <Compile Include="DTO\CategoryDTO.cs" />
     <Compile Include="DTO\CharacteristicDTO.cs" />
     <Compile Include="DTO\CharValueDTO.cs" />
     <Compile Include="DTO\CountryDTO.cs" />
+    <Compile Include="DTO\CurrencyDTO.cs" />
     <Compile Include="DTO\DeliveryTypesDTO.cs" />
     <Compile Include="DTO\ItemCharacteristicDTO.cs" />
     <Compile Include="DTO\ItemDTO.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="DTO\OrderItemDTO.cs" />
     <Compile Include="DTO\PurposeDTO.cs" />
     <Compile Include="DTO\StatusDTO.cs" />
+    <Compile Include="DTO\UltimatePurposeDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\ICart.cs" />

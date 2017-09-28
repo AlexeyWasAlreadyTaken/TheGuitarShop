@@ -42,6 +42,8 @@ namespace Store.BLL.Interfaces
         void DeleteCharacteristicValue(Guid? dto);
         CategoryCharacteristicDTO GetCategoryCharacteristicByID(Guid id);
         CharValueDTO GetCharacteristicValueByID(Guid id);
+        IEnumerable<CurrencyDTO> GetCurrencyList();
+        IEnumerable<AvailabilityTypeDTO> GetAvailabilityTypeList();
 
         //Ultimate Purpose use in admin controls for creating new purpose & purpose price
         #region Ultimate Purpose
