@@ -260,6 +260,7 @@
     <Compile Include="Models\OrderVM.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\StatusVM.cs" />
+    <Compile Include="Models\UltimatePurposeVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
