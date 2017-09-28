@@ -311,6 +311,9 @@
     <Content Include="Views\ContentManagerAccount\CreateCharacteristicValue.cshtml" />
     <Content Include="Views\ContentManagerAccount\UpdateCharacteristic.cshtml" />
     <Content Include="Views\Shared\_PurposesListLayout.cshtml" />
+    <Content Include="Views\ContentManagerAccount\PurposesEditor.cshtml" />
+    <Content Include="Views\ContentManagerAccount\GetPurposes.cshtml" />
+    <Content Include="Views\ContentManagerAccount\CreatePurpose.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

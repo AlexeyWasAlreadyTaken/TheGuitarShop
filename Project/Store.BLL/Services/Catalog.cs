@@ -574,7 +574,7 @@ namespace Store.BLL.Services
         }
         public IEnumerable<UltimatePurposeDTO> GetPurposeListByCategoryId(Guid categoryId)
         {
-            var buff = _purposeRepository.GetWithInclude(x => x.Item.CategoryID == categoryId, y => y.Item , y => y.Item.CategoryID);
+            var buff = _purposeRepository.GetWithInclude(x => x.Item.CategoryID == categoryId, y => y.Item);
             var dtoList = new List<UltimatePurposeDTO>();
             foreach (var i in buff)
             {

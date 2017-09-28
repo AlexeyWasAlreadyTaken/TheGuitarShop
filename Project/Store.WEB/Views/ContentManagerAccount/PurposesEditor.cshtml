@@ -1,0 +1,55 @@
+﻿@model SelectList
+@{
+    ViewBag.Title = "PurposesEditor";
+}
+<h2>ItemsEditor</h2>
+@using (Html.BeginForm("PurposesEditorPost", "ContentManagerAccount"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>@ViewBag.currentCategory</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @if (Model.Any())
+        {
+
+            <table>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            @Html.Label("Select category", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                            <div class="col-md-10">
+                                @Html.DropDownList("categoryId", Model, "select some", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Go to selected category" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+}
+@{
+    if (Request.Params["categoryId"] != null)
+    {
+        <p>
+            @Html.ActionLink("Create new purpose", "CreatePurpose", new { categoryId = Request.Params["categoryId"] })
+        </p>
+        @Html.Action("GetPurposes");
+    }
+}

@@ -486,6 +486,72 @@ namespace Store.WEB.Controllers
             return RedirectToAction("EditItem", new { itemId = itemCharacteristicVMs.FirstOrDefault().ItemID });
         }
         #endregion
+        #region Purposes
+        public ActionResult PurposesEditor(Guid? categoryId)
+        {
+            //TO DO
+            var categories = categoryId == null ? _catalog.GetGeneralCategoryList() : _catalog.GetChildCategoryByParentID((Guid)categoryId);
+            var selectList = new SelectList(categories, "Id", "Name", new { Id = "", Name = "Select Category " });
 
+            if (categoryId != null)
+            {
+                ViewBag.currentCategory = "Current category: " + _catalog.GetCategoryByID((Guid)categoryId).Name;
+            }
+            return View(selectList);
+        }
+        [HttpPost]
+        public ActionResult PurposesEditorPost(Guid? categoryId) // Delete me later too
+        {
+            if (categoryId == null)
+                return Redirect(Request.UrlReferrer.ToString());
+
+            return RedirectToAction("PurposesEditor", new { categoryId = (Guid)categoryId });
+        }
+        public ActionResult GetPurposes(Guid categoryId)
+        {
+            var ultPurposes = _catalog.GetPurposeListByCategoryId(categoryId);
+            var ultPurposeVMList = new List<UltimatePurposeVM>();
+            foreach (var i in ultPurposes)
+            {
+                var ultPurposeVM = new UltimatePurposeVM();
+                ultPurposeVM.PurposeId = i.PurposeId;
+
+                if (i.ItemId != null)//delete me
+                {
+                    ultPurposeVM.ItemId = i.ItemId;
+                    var currItem = _catalog.GetItemById((Guid)i.ItemId);
+                    ultPurposeVM.ItemBrand = _catalog.GetBrandById((Guid)currItem.BrandID).Name;
+                    ultPurposeVM.ItemName = currItem.Name;
+                }
+                ultPurposeVM.Price = i.Price;
+                ultPurposeVM.IsPromo = i.IsPromo;
+                ultPurposeVM.AvailabilityTypeID = i.AvailabilityTypeID;
+                ultPurposeVM.CurencyID = i.CurencyID;
+                ultPurposeVMList.Add(ultPurposeVM);
+            }
+            if (ultPurposeVMList.Any())
+            {
+                return PartialView(ultPurposeVMList);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public ActionResult CreatePurpose(Guid categoryId)
+        {
+            var purposeVM = new UltimatePurposeVM();
+            purposeVM.categoryId = categoryId;
+            purposeVM.AvailabilityTypes = new SelectList(_catalog.GetAvailabilityTypeList(), "Id", "Name");
+            purposeVM.CurrencyList = new SelectList(_catalog.GetCurrencyList(), "Id", "Name");
+
+            return View(purposeVM);
+        }
+        [HttpPost]
+        public ActionResult CreatePurpose(UltimatePurposeVM ultimatePurposeVM)
+        {
+            return null;
+        }
+        #endregion
     }
 }
