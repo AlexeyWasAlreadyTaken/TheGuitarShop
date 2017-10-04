@@ -23,84 +23,83 @@ namespace Store.WEB.Controllers
 
         public ActionResult Categories()
         {
-            IEnumerable<CategoryDTO> C = _catalog.GetGeneralCategoryList();
-            IEnumerable<CategoryVM> H = Enumerable.Empty<CategoryVM>();
+            IEnumerable<CategoryDTO> categoryList = _catalog.GetGeneralCategoryList();
+            IEnumerable<CategoryVM> categoryListVM = Enumerable.Empty<CategoryVM>();
             List<CategoryVM> hilist = new List<CategoryVM>();
 
-            foreach (var n in C)
+            foreach (var i in categoryList)
             {
                 CategoryVM buff = new CategoryVM();
-                buff.categoryid = n.Id;
-                buff.parentCategoryId = n.ParentCategoryID;
-                buff.categoryName = n.Name;
+                buff.CategoryId = i.Id;
+                buff.ParentCategoryId = i.ParentCategoryID;
+                buff.CategoryName = i.Name;
                 hilist.Add(buff);
                 buff = null;
             }
-            H = hilist;
-            return View(H);
+            categoryListVM = hilist;
+            return View(categoryListVM);
         }
         public ActionResult SubCategories(Guid id)
         {
-            var C = _catalog.GetChildCategoryByParentID(id);
-            if (C.ToList().Count == 0)
+            var categoryList = _catalog.GetChildCategoryByParentID(id);
+            if (categoryList.ToList().Count == 0)
             {
                 return RedirectToAction("PurposesList", "Catalog", new { id = id });
             }
-            IEnumerable<CategoryVM> H = Enumerable.Empty<CategoryVM>();
+            IEnumerable<CategoryVM> categoryListVM = Enumerable.Empty<CategoryVM>();
             List<CategoryVM> hilist = new List<CategoryVM>();
 
-            foreach (var n in C)
+            foreach (var i in categoryList)
             {
                 CategoryVM buff = new CategoryVM();
-                buff.categoryid = n.Id;
-                buff.parentCategoryId = n.ParentCategoryID;
-                buff.categoryName = n.Name;
+                buff.CategoryId = i.Id;
+                buff.ParentCategoryId = i.ParentCategoryID;
+                buff.CategoryName = i.Name;
                 hilist.Add(buff);
                 buff = null;
             }
-            H = hilist;
-            return View(H);
+            categoryListVM = hilist;
+            return View(categoryListVM);
         }
         public ActionResult PurposesList(Guid id, string st)
         {
-            var C = _catalog.GetPurposesByCategoryID(id);
-            var purposeList = Enumerable.Empty<CatalogPurposeVM>();
+            var purposeDTOList = _catalog.GetPurposesByCategoryID(id);
+            var purposeVMList = Enumerable.Empty<CatalogPurposeVM>();
             List<CatalogPurposeVM> pList = new List<CatalogPurposeVM>();
 
-            foreach (var curr in C)
+            foreach (var i in purposeDTOList)
             {
                 CatalogPurposeVM buff = new CatalogPurposeVM();
-                buff.purposeID = curr.purposeID;
-                buff.categoryID = id;
-                buff.Brand = curr.Brand;
-                buff.Name = curr.Name;
-                buff.Price = curr.Price;
-                buff.Curency = curr.Curency;
-                buff.Category = curr.CategoryName;
+                buff.PurposeID = i.PurposeID;
+                buff.CategoryID = id;
+                buff.Brand = i.Brand;
+                buff.Name = i.Name;
+                buff.Price = i.Price;
+                buff.Curency = i.Curency;
+                buff.Category = i.CategoryName;
 
                 pList.Add(buff);
                 buff = null;
             }
-            purposeList = pList;
+            purposeVMList = pList;
 
-            // 8====3
             if (String.IsNullOrEmpty(st))
                 st = "ByPrice";
 
             switch (st)
             {
                 case "ByName":
-                    purposeList = purposeList.OrderBy(x => x.Name).Distinct();
+                    purposeVMList = purposeVMList.OrderBy(x => x.Name).Distinct();
                     break;
                 case "ByPrice":
-                    purposeList = purposeList.OrderBy(x => x.Price);
+                    purposeVMList = purposeVMList.OrderBy(x => x.Price);
                     break;
                 case "ByBrand":
-                    purposeList = purposeList.OrderBy(x => x.Brand);
+                    purposeVMList = purposeVMList.OrderBy(x => x.Brand);
                     break;
             }
 
-            return View(purposeList);
+            return View(purposeVMList);
         }
 
         public ActionResult GetFilters(Guid categoryId)
@@ -110,20 +109,20 @@ namespace Store.WEB.Controllers
             foreach (var i in characteristics)
             {
                 var filterVM = new FilterVM();
-                filterVM.characteristicId = i.Characteristic.Id;
-                filterVM.characteristicName = i.Characteristic.Name;
+                filterVM.CharacteristicId = i.Characteristic.Id;
+                filterVM.CharacteristicName = i.Characteristic.Name;
                 
-                var filterCharValues = _catalog.GetCharValuesByCharacteristicId(filterVM.characteristicId);
-                filterVM.valuesList = new List<FilterCharValueVM>();
+                var filterCharValues = _catalog.GetCharValuesByCharacteristicId(filterVM.CharacteristicId);
+                filterVM.ValuesList = new List<FilterCharValueVM>();
                 foreach (var j in filterCharValues)
                 {
-                    var filterCharValueVM = new FilterCharValueVM();
-                    filterCharValueVM.Id = j.Id;
-                    filterCharValueVM.CharacteristicId = j.CharacteristicId;
-                    filterCharValueVM.IntVal = j.IntVal;
-                    filterCharValueVM.FloatVal = j.FloatVal;
-                    filterCharValueVM.StrVal = j.StrVal;
-                    filterVM.valuesList.Add(filterCharValueVM);
+                    var buff = new FilterCharValueVM();
+                    buff.Id = j.Id;
+                    buff.CharacteristicId = j.CharacteristicId;
+                    buff.IntVal = j.IntVal;
+                    buff.FloatVal = j.FloatVal;
+                    buff.StrVal = j.StrVal;
+                    filterVM.ValuesList.Add(buff);
                 }
                 filterVMList.Add(filterVM);
             }
@@ -131,36 +130,33 @@ namespace Store.WEB.Controllers
             return PartialView(filterVMList);
         }
         [HttpPost]
-        //TO DO
         public ActionResult PurposesList(Guid id, string st, IList<FilterVM> filterVMs)
         {
             var charValueDTOList = new List<CharValueDTO>();
             foreach (var i in filterVMs)
             {
-                foreach (var j in i.valuesList)
+                foreach (var j in i.ValuesList)
                 {
                     if (j.isApplied)
                     {
-                        var charValueDTO = new CharValueDTO();
-                        charValueDTO.Id = j.Id;
-                        charValueDTO.CharacteristicId = j.CharacteristicId;
-                        charValueDTO.IntVal = j.IntVal;
-                        charValueDTO.FloatVal = j.FloatVal;
-                        charValueDTO.StrVal = j.StrVal;
-                        charValueDTOList.Add(charValueDTO);
+                        var buff = new CharValueDTO();
+                        buff.Id = j.Id;
+                        buff.CharacteristicId = j.CharacteristicId;
+                        buff.IntVal = j.IntVal;
+                        buff.FloatVal = j.FloatVal;
+                        buff.StrVal = j.StrVal;
+                        charValueDTOList.Add(buff);
                     }
                 }
             }
             var purposes = _catalog.GetPurposesByCharValues((Guid)id, charValueDTOList);
 
-
-
             var purposeList = new List<CatalogPurposeVM>();
             foreach (var curr in purposes)
             {
                 CatalogPurposeVM buff = new CatalogPurposeVM();
-                buff.purposeID = curr.purposeID;
-                buff.categoryID = id;
+                buff.PurposeID = curr.PurposeID;
+                buff.CategoryID = id;
                 buff.Brand = curr.Brand;
                 buff.Name = curr.Name;
                 buff.Price = curr.Price;
@@ -170,7 +166,6 @@ namespace Store.WEB.Controllers
                 purposeList.Add(buff);
                 buff = null;
             }
-            // 8====3
             if (String.IsNullOrEmpty(st))
                 st = "ByPrice";
 

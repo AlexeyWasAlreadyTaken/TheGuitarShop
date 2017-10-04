@@ -7,8 +7,8 @@ namespace Store.WEB.Models
 {
     public class CategoryVM
     {
-        public Guid categoryid { get; set; }
-        public Guid? parentCategoryId { get; set; }
-        public string categoryName { get; set; }
+        public Guid CategoryId { get; set; }
+        public Guid? ParentCategoryId { get; set; }
+        public string CategoryName { get; set; }
     }
 }

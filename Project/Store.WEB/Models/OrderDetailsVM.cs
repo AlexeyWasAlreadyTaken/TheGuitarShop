@@ -7,7 +7,7 @@ namespace Store.WEB.Models
 {
     public class OrderDetailsVM
     {
-        public OrderVM order { get; set; }
-        public IEnumerable<OrderItemVM> orderItems { get; set; }
+        public OrderVM Order { get; set; }
+        public IEnumerable<OrderItemVM> OrderItems { get; set; }
     }
 }

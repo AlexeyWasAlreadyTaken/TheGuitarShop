@@ -26,42 +26,19 @@ namespace Store.BLL.Services
 
             foreach (var i in newsList)
             {
-                var _buff = new NewsDTO(); 
-                _buff.Id = i.Id;
-                _buff.Name = i.Name;
-                _buff.Description = i.Description;
-                _buff.Date = (DateTime)i.Date;
+                var buff = new NewsDTO(); 
+                buff.Id = i.Id;
+                buff.Name = i.Name;
+                buff.Description = i.Description;
+                buff.Date = (DateTime)i.Date;
 
-                newsDTOList.Add(_buff);
-                _buff = null;
+                newsDTOList.Add(buff);
+                buff = null;
             }
 
             return newsDTOList;
         }
-        //public GeneralNews GetNews(Guid newsId)
-        //{
-        //    return _GeneralNewssRepository.Get(n => n.Id == newsId).FirstOrDefault();
-        //}
-        //public void AddNews(GeneralNews news)
-        //{
-        //    _GeneralNewssRepository.Create(news);
-        //}
-        //public void AddNews(IEnumerable<GeneralNews> news)
-        //{
-        //    foreach (var n in news)
-        //    {
-        //        _GeneralNewssRepository.Create(n);
-        //    }
-        //}
-        //public void DeleteNews(GeneralNews news)
-        //{
-        //    _GeneralNewssRepository.Remove(news);
-        //}
-        //public void Dispose()
-        //{
-        //    _GeneralNewssRepository.Dispose();
-        //    _GeneralNewssRepository = null;
-        //}
+
 
     }
 }

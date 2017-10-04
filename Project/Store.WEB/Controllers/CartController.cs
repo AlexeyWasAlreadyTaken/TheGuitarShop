@@ -16,16 +16,16 @@ namespace Store.WEB.Controllers
             var orderItemVMList = new List<OrderItemVM>();
             foreach (var orderItemDTO in orderItems)
             {
-                OrderItemVM orderItemVM = new OrderItemVM();
-                orderItemVM.PurposeId = orderItemDTO.PurposeId;
-                orderItemVM.ItemId = orderItemDTO.ItemId;
-                orderItemVM.BrandName = orderItemDTO.BrandName;
-                orderItemVM.ItemName = orderItemDTO.ItemName;
-                orderItemVM.IsPromo = orderItemDTO.IsPromo;
-                orderItemVM.Count = orderItemDTO.Count;
-                orderItemVM.Price = orderItemDTO.Price;
-                orderItemVM.Currency = orderItemDTO.Currency;
-                orderItemVMList.Add(orderItemVM);
+                OrderItemVM buff = new OrderItemVM();
+                buff.PurposeId = orderItemDTO.PurposeId;
+                buff.ItemId = orderItemDTO.ItemId;
+                buff.BrandName = orderItemDTO.BrandName;
+                buff.ItemName = orderItemDTO.ItemName;
+                buff.IsPromo = orderItemDTO.IsPromo;
+                buff.Count = orderItemDTO.Count;
+                buff.Price = orderItemDTO.Price;
+                buff.Currency = orderItemDTO.Currency;
+                orderItemVMList.Add(buff);
             }
             return View(orderItemVMList);
         }

@@ -21,7 +21,7 @@ namespace Store.WEB.Controllers
         // GET: UserAccount
         public ActionResult Index()
         {
-            var currentUserId = "LOL BAT9 NEMA IDshnika";
+            var currentUserId = "Empty";
             if (User.Identity.IsAuthenticated)
             {
                 currentUserId = User.Identity.GetUserId();
@@ -38,16 +38,16 @@ namespace Store.WEB.Controllers
                     orderVM.Address = i.Address;
                     orderVM.Comment = i.Comment;
                     orderVM.ContactId = i.ContactId;
-                    orderVM.data = i.data;
-                    orderVM.deliveryTypeID = i.deliveryTypeID;
-                    orderVM.email = i.email;
+                    orderVM.Date = i.Date;
+                    orderVM.deliveryTypeID = i.DeliveryTypeID;
+                    orderVM.Email = i.Email;
                     orderVM.Lname = i.Lname;
                     orderVM.Name = i.Name;
                     orderVM.Number = i.Number;
                     orderVM.Phone = i.Phone;
                     orderVM.Status = i.Status;
-                    orderVM.statusID = i.statusID;
-                    orderDetailsVM.order = orderVM;
+                    orderVM.StatusId = i.StatusID;
+                    orderDetailsVM.Order = orderVM;
                     orderVM = null;
 
                     var orderItems = _orderManager.GetOrderItemsByOrderId(i.Id);
@@ -66,7 +66,7 @@ namespace Store.WEB.Controllers
                         orderItemVMList.Add(orderItemVM);
                         orderItemVM = null;
                     }
-                    orderDetailsVM.orderItems = orderItemVMList;
+                    orderDetailsVM.OrderItems = orderItemVMList;
                     orderDetailsVMList.Add(orderDetailsVM);
 
                 }

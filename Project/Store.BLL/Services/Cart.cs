@@ -35,16 +35,15 @@ namespace Store.BLL.Services
             }
             else
             {
-                var orderItem = new OrderItem();
-                // to do 
-                orderItem.Purpose = _purposeRepository.GetWithInclude(p => p.Id == purposeId, y => y.Item, y => y.Item.Brand).FirstOrDefault();
-                orderItem.PurposeId = purposeId;
-                orderItem.Item = orderItem.Purpose.Item;
-                orderItem.ItemId = orderItem.Item.Id;
-                orderItem.PurposePrice = _purposePriceRepository.GetWithInclude(pp => pp.PurposeId == purposeId, y => y.Curency).OrderBy(pp => pp.Date).FirstOrDefault();
-                orderItem.PurposePriceId = orderItem.PurposePrice.Id;
-                orderItem.Count = count;
-                _currentOrderItemList.Add(orderItem);
+                var buff = new OrderItem();
+                buff.Purpose = _purposeRepository.GetWithInclude(p => p.Id == purposeId, y => y.Item, y => y.Item.Brand).FirstOrDefault();
+                buff.PurposeId = purposeId;
+                buff.Item = buff.Purpose.Item;
+                buff.ItemId = buff.Item.Id;
+                buff.PurposePrice = _purposePriceRepository.GetWithInclude(pp => pp.PurposeId == purposeId, y => y.Curency).OrderBy(pp => pp.Date).FirstOrDefault();
+                buff.PurposePriceId = buff.PurposePrice.Id;
+                buff.Count = count;
+                _currentOrderItemList.Add(buff);
             }
             RecalculateTotalPrice();
         }
@@ -74,18 +73,18 @@ namespace Store.BLL.Services
             var orderItemDTOList = new List<OrderItemDTO>();
             foreach (var oi in _currentOrderItemList)
             {
-                var orderItemDTO = new OrderItemDTO();
-                orderItemDTO.Id = oi.Id;
-                orderItemDTO.ItemId = oi.ItemId;
-                orderItemDTO.PurposeId = oi.PurposeId;
-                orderItemDTO.PurposePriceId = oi.PurposePriceId;
-                orderItemDTO.Count = oi.Count;
-                orderItemDTO.BrandName = oi.Item.Brand.Name;
-                orderItemDTO.ItemName = oi.Item.Name;
-                orderItemDTO.IsPromo = (bool)oi.Purpose.IsPromo;
-                orderItemDTO.Price = (double)oi.PurposePrice.Price * oi.Count;
-                orderItemDTO.Currency = oi.PurposePrice.Curency.Name;
-                orderItemDTOList.Add(orderItemDTO);
+                var buff = new OrderItemDTO();
+                buff.Id = oi.Id;
+                buff.ItemId = oi.ItemId;
+                buff.PurposeId = oi.PurposeId;
+                buff.PurposePriceId = oi.PurposePriceId;
+                buff.Count = oi.Count;
+                buff.BrandName = oi.Item.Brand.Name;
+                buff.ItemName = oi.Item.Name;
+                buff.IsPromo = (bool)oi.Purpose.IsPromo;
+                buff.Price = (double)oi.PurposePrice.Price * oi.Count;
+                buff.Currency = oi.PurposePrice.Curency.Name;
+                orderItemDTOList.Add(buff);
             }
             return orderItemDTOList;
         }
@@ -106,12 +105,6 @@ namespace Store.BLL.Services
                 _totalPrice += orderItemPrice;
             }
         }
-        //public void Dispose()
-        //{
-        //    _purposeRepository.Dispose();
-        //    _purposePriceRepository.Dispose();
-        //    _currentOrderItemList.Clear();
-        //    _currentOrderItemList = null;
-        //}
+
     }
 }

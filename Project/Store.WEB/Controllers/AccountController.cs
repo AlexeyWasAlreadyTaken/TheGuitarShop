@@ -123,6 +123,6 @@ namespace Store.Controllers
                 Role = "manager",
             }, new List<string> { "user", "admin", "manager" });
 
-        }
+        } 
     }
 }

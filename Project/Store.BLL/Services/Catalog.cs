@@ -14,52 +14,46 @@ namespace Store.BLL.Services
     {
         private IRepository<Category> _categoryRepository;
         private IRepository<Purpose> _purposeRepository;
-        private IRepository<PurposePrice> _purpPriceRepository;
-        private IRepository<ItemCharacteristic> _itemCharacteristic;
-        private IRepository<CategoryCharacteristic> _categoryCharacteristic;
+        private IRepository<PurposePrice> _purposePriceRepository;
+        private IRepository<ItemCharacteristic> _itemCharacteristicRepository;
+        private IRepository<CategoryCharacteristic> _categoryCharacteristicRepository;
         private IRepository<AvailabilityType> _availabilityTypeRepository;
         private IRepository<Curency> _curencyRepository;
         private IRepository<Item> _itemRepository;
         private IRepository<Brand> _brandRepository;
         private IRepository<Country> _countryRepository;
-        private IRepository<CharValue> _charValueRepository;
-        private IRepository<Characteristic> _charRepository;
+        private IRepository<CharValue> _characteristicValueRepository;
+        private IRepository<Characteristic> _characteristicRepository;
         #region INIT
         public Catalog(
-            IRepository<Category> categoryRepo,
-            IRepository<Purpose> purpoaeRepo,
-            IRepository<PurposePrice> purpPriceRepo,
-            IRepository<ItemCharacteristic> itemCharacteristic,
-            IRepository<CategoryCharacteristic> categoryCharacteristic,
+            IRepository<Category> categoryRepository,
+            IRepository<Purpose> purposeRepository,
+            IRepository<PurposePrice> purposePriceRepository,
+            IRepository<ItemCharacteristic> itemCharacteristicRepository,
+            IRepository<CategoryCharacteristic> categoryCharacteristicRepository,
             IRepository<Item> itemRepository,
             IRepository<Brand> brandRepository,
             IRepository<Country> countryRepository,
-            IRepository<CharValue> charValueRepository,
-            IRepository<Characteristic> charRepository,IRepository<AvailabilityType> availabilityType,IRepository<Curency> currency)
+            IRepository<CharValue> characteristicValueRepository,
+            IRepository<Characteristic> characteristicRepository,
+            IRepository<AvailabilityType> availabilityTypeRepository,
+            IRepository<Curency> currencyRepository)
 
         {
-            _categoryRepository = categoryRepo;
-            _purposeRepository = purpoaeRepo;
-            _purpPriceRepository = purpPriceRepo;
-            _itemCharacteristic = itemCharacteristic;
-            _categoryCharacteristic = categoryCharacteristic;
+            _categoryRepository = categoryRepository;
+            _purposeRepository = purposeRepository;
+            _purposePriceRepository = purposePriceRepository;
+            _itemCharacteristicRepository = itemCharacteristicRepository;
+            _categoryCharacteristicRepository = categoryCharacteristicRepository;
             _itemRepository = itemRepository;
             _brandRepository = brandRepository;
             _countryRepository = countryRepository;
-            _charValueRepository = charValueRepository;
-            _charRepository = charRepository;
-            _availabilityTypeRepository = availabilityType;
-            _curencyRepository = currency;
+            _characteristicValueRepository = characteristicValueRepository;
+            _characteristicRepository = characteristicRepository;
+            _availabilityTypeRepository = availabilityTypeRepository;
+            _curencyRepository = currencyRepository;
         }
 
-        //public void Dispose()
-        //{
-        //    _categoryRepository.Dispose();
-        //    _purposeRepository.Dispose();
-        //    _purpPriceRepository.Dispose();
-        //    _itemCharacteristic.Dispose();
-        //    _categoryCharacteristic.Dispose();
-        //}
         #endregion
         public IEnumerable<CategoryDTO> GetGeneralCategoryList()
         {
@@ -67,28 +61,25 @@ namespace Store.BLL.Services
             List<CategoryDTO> currDTOList = new List<CategoryDTO>();
             foreach (Category item in v)
             {
-                CategoryDTO _buff = new CategoryDTO();
-                _buff.Id = item.Id;
-                _buff.Name = item.Name;
-                _buff.ParentCategoryID = item.ParentCategoryID;
-                currDTOList.Add(_buff);
-                //_buff = null;
+                CategoryDTO buff = new CategoryDTO();
+                buff.Id = item.Id;
+                buff.Name = item.Name;
+                buff.ParentCategoryID = item.ParentCategoryID;
+                currDTOList.Add(buff);
             }
             return currDTOList;
         }
         public IEnumerable<CategoryDTO> GetChildCategoryByParentID(Guid parentID)
         {
-            // return _categoryRepository.Get(x => x.ParentCategoryID == parentID);
-
             var v = _categoryRepository.Get(x => x.ParentCategoryID == parentID);
             List<CategoryDTO> currDTOList = new List<CategoryDTO>();
             foreach (Category item in v)
             {
-                CategoryDTO _buff = new CategoryDTO();
-                _buff.Id = item.Id;
-                _buff.Name = item.Name;
-                _buff.ParentCategoryID = item.ParentCategoryID;
-                currDTOList.Add(_buff);
+                CategoryDTO buff = new CategoryDTO();
+                buff.Id = item.Id;
+                buff.Name = item.Name;
+                buff.ParentCategoryID = item.ParentCategoryID;
+                currDTOList.Add(buff);
                 //_buff = null;
             }
             return currDTOList;
@@ -101,12 +92,11 @@ namespace Store.BLL.Services
             List<CategoryDTO> currDTOList = new List<CategoryDTO>();
             foreach (Category item in v)
             {
-                CategoryDTO _buff = new CategoryDTO();
-                _buff.Id = item.Id;
-                _buff.Name = item.Name;
-                _buff.ParentCategoryID = item.ParentCategoryID;
-                currDTOList.Add(_buff);
-                //_buff = null;
+                CategoryDTO buff = new CategoryDTO();
+                buff.Id = item.Id;
+                buff.Name = item.Name;
+                buff.ParentCategoryID = item.ParentCategoryID;
+                currDTOList.Add(buff);
             }
             return currDTOList.FirstOrDefault();
         }
@@ -116,17 +106,17 @@ namespace Store.BLL.Services
             var purposesDTOList = new List<PurposeDTO>();
             foreach (var i in purposeList)
             {
-                var _buff = new PurposeDTO();
-                _buff.purposeID = i.Id;
-                _buff.categoryID = categoryID;
-                _buff.Name = i.Item.Name;
-                _buff.Brand = i.Item.Brand.Name;
-                _buff.Curency = GetPurposePriceByPuposeID(_buff.purposeID).Curency.Name;
-                _buff.Price = (double)GetPurposePriceByPuposeID(_buff.purposeID).Price;
-                _buff.CategoryName = i.Item.Category.Name;
+                var buff = new PurposeDTO();
+                buff.PurposeID = i.Id;
+                buff.CategoryID = categoryID;
+                buff.Name = i.Item.Name;
+                buff.Brand = i.Item.Brand.Name;
+                buff.Curency = GetPurposePriceByPuposeID(buff.PurposeID).Curency.Name;
+                buff.Price = (double)GetPurposePriceByPuposeID(buff.PurposeID).Price;
+                buff.CategoryName = i.Item.Category.Name;
 
-                purposesDTOList.Add(_buff);
-                _buff = null;
+                purposesDTOList.Add(buff);
+                buff = null;
 
             }
 
@@ -134,32 +124,32 @@ namespace Store.BLL.Services
         }
         private PurposePrice GetPurposePriceByPuposeID(Guid purposeID)
         {
-            var curPurposePrice = _purpPriceRepository.GetWithInclude(x => x.PurposeId == purposeID, y => y.Curency).OrderByDescending(o => o.Date).ToList().FirstOrDefault();
+            var curPurposePrice = _purposePriceRepository.GetWithInclude(x => x.PurposeId == purposeID, y => y.Curency).OrderByDescending(o => o.Date).ToList().FirstOrDefault();
             return curPurposePrice;
 
         }
         public IEnumerable<ItemCharacteristic> GetCharacterististicByItemId(Guid itemID)
         {
-            return _itemCharacteristic.GetWithInclude(x => x.ItemID == itemID, y => y.Characteristic, y => y.Item, y => y.CharValue);
+            return _itemCharacteristicRepository.GetWithInclude(x => x.ItemID == itemID, y => y.Characteristic, y => y.Item, y => y.CharValue);
         }
         public PurposeDTO GetPurposeByID(Guid purposeID)
         {
             var purpose = _purposeRepository.GetWithInclude(x => x.Id == purposeID, y => y.Item, y => y.Item.Brand, y => y.Item.Category).FirstOrDefault();
 
-            var _buff = new PurposeDTO();
-            _buff.purposeID = purpose.Id;
-            _buff.categoryID = purpose.Item.Category.Id;
-            _buff.Name = purpose.Item.Name;
-            _buff.Brand = purpose.Item.Brand.Name;
-            _buff.Curency = GetPurposePriceByPuposeID(_buff.purposeID).Curency.Name;
-            _buff.Price = (double)GetPurposePriceByPuposeID(_buff.purposeID).Price;
-            _buff.CategoryName = purpose.Item.Category.Name;
-            _buff.Description = purpose.Item.Description;
+            var buff = new PurposeDTO();
+            buff.PurposeID = purpose.Id;
+            buff.CategoryID = purpose.Item.Category.Id;
+            buff.Name = purpose.Item.Name;
+            buff.Brand = purpose.Item.Brand.Name;
+            buff.Curency = GetPurposePriceByPuposeID(buff.PurposeID).Curency.Name;
+            buff.Price = (double)GetPurposePriceByPuposeID(buff.PurposeID).Price;
+            buff.CategoryName = purpose.Item.Category.Name;
+            buff.Description = purpose.Item.Description;
 
 
             var _temp = GetCharacterististicByItemId(purpose.Item.Id);
-            _buff.charname = new List<string>();
-            _buff.charvalue = new List<string>();
+            buff.CharName = new List<string>();
+            buff.CharValue = new List<string>();
 
             foreach (ItemCharacteristic item in _temp)
             {
@@ -171,19 +161,19 @@ namespace Store.BLL.Services
                 if (item.CharValue.StrVal != null)
                     charval = item.CharValue.StrVal;
 
-                _buff.charname.Add(item.Characteristic.Name);
-                _buff.charvalue.Add(charval);
+                buff.CharName.Add(item.Characteristic.Name);
+                buff.CharValue.Add(charval);
             }
 
 
-            return _buff;
+            return buff;
         }
         public IEnumerable<CategoryCharacteristicDTO> GetCurrentCategoryCharacteristics(Guid CategoryID)
         {
 
             var DTO = new List<CategoryCharacteristicDTO>();
 
-            var categoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
+            var categoryChar = _categoryCharacteristicRepository.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
 
             foreach (var i in categoryChar)
             {
@@ -208,7 +198,7 @@ namespace Store.BLL.Services
             if (isHaveParentCategory)
             {
                 var parentCategory = _categoryRepository.Get(x => x.Id == CategoryID).FirstOrDefault().ParentCategoryID;
-                var parentCategoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == parentCategory, y => y.Characteristic);
+                var parentCategoryChar = _categoryCharacteristicRepository.GetWithInclude(x => x.CategoryID == parentCategory, y => y.Characteristic);
                 foreach (var i in parentCategoryChar)
                 {
                     var buff = new CategoryCharacteristicDTO();
@@ -223,7 +213,7 @@ namespace Store.BLL.Services
                 }
             }
 
-            var categoryChar = _categoryCharacteristic.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
+            var categoryChar = _categoryCharacteristicRepository.GetWithInclude(x => x.CategoryID == CategoryID, y => y.Characteristic);
 
             foreach (var i in categoryChar)
             {
@@ -302,7 +292,7 @@ namespace Store.BLL.Services
                 itemCharacteristic.Id = Guid.NewGuid();
                 itemCharacteristic.ItemID = item.Id;
                 itemCharacteristic.CharacteristicID = i.CharacteristicID;
-                _itemCharacteristic.Create(itemCharacteristic);
+                _itemCharacteristicRepository.Create(itemCharacteristic);
             }
         }
         public BrandDTO GetBrandById(Guid brandId)
@@ -341,7 +331,7 @@ namespace Store.BLL.Services
         }
         public IEnumerable<ItemCharacteristicDTO> GetItemCharacteristicsByItemId(Guid itemId)
         {
-            var itemCharacteristics = _itemCharacteristic.GetWithInclude(x => x.ItemID == itemId, y => y.Characteristic);
+            var itemCharacteristics = _itemCharacteristicRepository.GetWithInclude(x => x.ItemID == itemId, y => y.Characteristic);
             var itemCharacteristicDTOList = new List<ItemCharacteristicDTO>();
             foreach (var i in itemCharacteristics)
             {
@@ -362,12 +352,12 @@ namespace Store.BLL.Services
             itemCharacteristic.ItemID = itemCharacteristicDTO.ItemID;
             itemCharacteristic.CharacteristicID = itemCharacteristicDTO.CharacteristicID;
             itemCharacteristic.CharValueID = itemCharacteristicDTO.CharValueID;
-            _itemCharacteristic.Update(itemCharacteristic);
+            _itemCharacteristicRepository.Update(itemCharacteristic);
         }
         public void DeleteItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO)
         {
-            var itemCharacteristic = _itemCharacteristic.FindById((Guid)itemCharacteristicDTO.Id); //costyle
-            _itemCharacteristic.Remove(itemCharacteristic);
+            var itemCharacteristic = _itemCharacteristicRepository.FindById((Guid)itemCharacteristicDTO.Id); //costyle
+            _itemCharacteristicRepository.Remove(itemCharacteristic);
         }
         public void CreateItemCharacteristic(ItemCharacteristicDTO itemCharacteristicDTO)
         {
@@ -376,11 +366,11 @@ namespace Store.BLL.Services
             itemCharacteristic.ItemID = itemCharacteristicDTO.ItemID;
             itemCharacteristic.CharacteristicID = itemCharacteristicDTO.CharacteristicID;
             itemCharacteristic.CharValueID = itemCharacteristicDTO.CharValueID;
-            _itemCharacteristic.Create(itemCharacteristic);
+            _itemCharacteristicRepository.Create(itemCharacteristic);
         }
         public IEnumerable<CharValueDTO> GetCharValuesByCharacteristicId(Guid characteristicId)
         {
-            var charValues = _charValueRepository.Get(x => x.CharacteristicId == characteristicId);
+            var charValues = _characteristicValueRepository.Get(x => x.CharacteristicId == characteristicId);
             var charValueDTOList = new List<CharValueDTO>();
             foreach (var i in charValues)
             {
@@ -396,7 +386,7 @@ namespace Store.BLL.Services
         }
         public CharacteristicDTO GetCharacteristicByID(Guid id)
         {
-            var characterisitc = _charRepository.Get(x => x.Id == id).FirstOrDefault();
+            var characterisitc = _characteristicRepository.Get(x => x.Id == id).FirstOrDefault();
             var selected = new CharacteristicDTO();
             selected.Id = characterisitc.Id;
             selected.Name = characterisitc.Name;
@@ -412,7 +402,7 @@ namespace Store.BLL.Services
         }
         public IEnumerable<CharacteristicDTO> GetAllCharacteristic()
         {
-            var characterisitc = _charRepository.Get();
+            var characterisitc = _characteristicRepository.Get();
             var charlist = new List<CharacteristicDTO>();
             foreach (var i in characterisitc)
             {
@@ -430,11 +420,31 @@ namespace Store.BLL.Services
             categoryCharacteristic.Id = Guid.NewGuid();
             categoryCharacteristic.CategoryID = ccDTO.CategoryID;
             categoryCharacteristic.CharacteristicID = ccDTO.CharacteristicID;
-            _categoryCharacteristic.Create(categoryCharacteristic);
+            _categoryCharacteristicRepository.Create(categoryCharacteristic);
         }
         public IEnumerable<PurposeDTO> GetPurposesByCharValues(Guid categoryId, IEnumerable<CharValueDTO> filterCharValues)
         {
             var characteristicIdList = filterCharValues.Select(f => f.CharacteristicId).Distinct().ToList();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //TO DO
             var purposes = _purposeRepository.GetWithInclude(
@@ -444,16 +454,40 @@ namespace Store.BLL.Services
                     && filterCharValues.Any(f => f.Id == (Guid)ic.CharValueID)).Count() >= characteristicIdList.Count,
                 y => y.Item, y => y.Item.Brand, y => y.Item.Category, y => y.Item.ItemCharacteristics);
             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             var purposeDTOList = new List<PurposeDTO>();
             foreach (var i in purposes)
             {
                 var purposeDTO = new PurposeDTO();
-                purposeDTO.purposeID = i.Id;
-                purposeDTO.categoryID = categoryId;
+                purposeDTO.PurposeID = i.Id;
+                purposeDTO.CategoryID = categoryId;
                 purposeDTO.Name = i.Item.Name;
                 purposeDTO.Brand = i.Item.Brand.Name;
-                purposeDTO.Curency = GetPurposePriceByPuposeID(purposeDTO.purposeID).Curency.Name;
-                purposeDTO.Price = (double)GetPurposePriceByPuposeID(purposeDTO.purposeID).Price;
+                purposeDTO.Curency = GetPurposePriceByPuposeID(purposeDTO.PurposeID).Curency.Name;
+                purposeDTO.Price = (double)GetPurposePriceByPuposeID(purposeDTO.PurposeID).Price;
                 purposeDTO.CategoryName = i.Item.Category.Name;
                 purposeDTOList.Add(purposeDTO);
             }
@@ -464,7 +498,7 @@ namespace Store.BLL.Services
             var newCharacteristic = new Characteristic();
             newCharacteristic.Id = Guid.NewGuid();
             newCharacteristic.Name = dto.Name;
-            _charRepository.Create(newCharacteristic);
+            _characteristicRepository.Create(newCharacteristic);
         }
         public void CreateCharacteristicValue(CharValueDTO dto)
         {
@@ -474,7 +508,7 @@ namespace Store.BLL.Services
             newCharValue.IntVal = dto.IntVal;
             newCharValue.FloatVal = dto.FloatVal;
             newCharValue.StrVal = dto.StrVal;
-            _charValueRepository.Create(newCharValue);
+            _characteristicValueRepository.Create(newCharValue);
         }
         public void UpdateCategory(CategoryDTO categoryDTO)
         {
@@ -489,11 +523,11 @@ namespace Store.BLL.Services
             var buff = new Characteristic();
             buff.Id = dto.Id;
             buff.Name = dto.Name;
-            _charRepository.Update(buff);
+            _characteristicRepository.Update(buff);
         }
         public CategoryCharacteristicDTO GetCategoryCharacteristicByID(Guid id)
         {
-            var buff = _categoryCharacteristic.GetWithInclude(x => x.Id == id,y => y.Characteristic).FirstOrDefault();
+            var buff = _categoryCharacteristicRepository.GetWithInclude(x => x.Id == id,y => y.Characteristic).FirstOrDefault();
             var dto = new CategoryCharacteristicDTO();
             dto.Id = buff.Id;
             var CharBuff = new CharacteristicDTO();
@@ -506,12 +540,12 @@ namespace Store.BLL.Services
         }
         public void DeleteCategoryCharacteristic(Guid? id)
         {
-            var buff = _categoryCharacteristic.Get(x => x.Id == id).FirstOrDefault();
-            _categoryCharacteristic.RemoveWithAttach(buff);
+            var buff = _categoryCharacteristicRepository.Get(x => x.Id == id).FirstOrDefault();
+            _categoryCharacteristicRepository.RemoveWithAttach(buff);
         }
         public CharValueDTO GetCharacteristicValueByID(Guid id)
         {
-            var curr = _charValueRepository.FindById(id);
+            var curr = _characteristicValueRepository.FindById(id);
             var dto = new CharValueDTO();
             dto.Id = curr.Id;
             dto.CharacteristicId = curr.CharacteristicId;
@@ -522,8 +556,8 @@ namespace Store.BLL.Services
         }
         public void DeleteCharacteristicValue(Guid? id)
         {
-            var buff = _charValueRepository.Get(x => x.Id == id).FirstOrDefault();
-            _charValueRepository.RemoveWithAttach(buff);
+            var buff = _characteristicValueRepository.Get(x => x.Id == id).FirstOrDefault();
+            _characteristicValueRepository.RemoveWithAttach(buff);
         }
 
         public IEnumerable<CurrencyDTO> GetCurrencyList()
@@ -547,7 +581,7 @@ namespace Store.BLL.Services
             foreach (var i in availabilityTypeList)
             {
                 var curr = new AvailabilityTypeDTO();
-                curr.id = i.id;
+                curr.Id = i.id;
                 curr.Name = i.Name;
                 dtoList.Add(curr);
             }
@@ -573,7 +607,7 @@ namespace Store.BLL.Services
             newPurposePrice.Date = DateTime.Now;
 
             _purposeRepository.Create(newPurpose);
-            _purpPriceRepository.Create(newPurposePrice);
+            _purposePriceRepository.Create(newPurposePrice);
         }
         public IEnumerable<UltimatePurposeDTO> GetPurposeListByCategoryId(Guid categoryId)
         {
@@ -633,7 +667,7 @@ namespace Store.BLL.Services
                 newPurposePrice.PurposeId = dto.PurposeId;
                 newPurposePrice.Date = DateTime.Now;
                 newPurposePrice.CurencyID = dto.CurencyID;
-                _purpPriceRepository.Create(newPurposePrice);
+                _purposePriceRepository.Create(newPurposePrice);
             }
 
             _purposeRepository.Update(selectedPurpose);
@@ -641,11 +675,11 @@ namespace Store.BLL.Services
         }
         public void RemoveUltimatePurpose(Guid purposeId)
         {
-            var purposePrices = _purpPriceRepository.Get(pp => pp.PurposeId == purposeId);
+            var purposePrices = _purposePriceRepository.Get(pp => pp.PurposeId == purposeId);
             foreach (var i in purposePrices)
             {
                 i.PurposeId = null;
-                _purpPriceRepository.Update(i);
+                _purposePriceRepository.Update(i);
             }
 
             var selectedPurpose = _purposeRepository.FindById(purposeId);

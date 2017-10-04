@@ -16,7 +16,7 @@ namespace Store.WEB.Models
         public bool IsPromo { get; set; }
         public double? Price { get; set; }
         public Guid CurencyID { get; set; }
-        public Guid? categoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         
         public SelectList AvailabilityTypes { get; set; }
         public SelectList CurrencyList { get; set; }

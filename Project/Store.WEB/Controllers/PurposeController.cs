@@ -20,16 +20,15 @@ namespace Store.WEB.Controllers
         {
             var currentPurposeDTO = _catalog.GetPurposeByID(id);
             ConcretePurposeVM buff = new ConcretePurposeVM();
-            buff.purposeID = currentPurposeDTO.purposeID;
+            buff.PurposeID = currentPurposeDTO.PurposeID;
             buff.Brand = currentPurposeDTO.Brand;
             buff.Name = currentPurposeDTO.Name;
             buff.Price =  currentPurposeDTO.Price.ToString();
-            buff.Curency = currentPurposeDTO.Curency;
-            buff.description = currentPurposeDTO.Description;
+            buff.Currency = currentPurposeDTO.Curency;
+            buff.Description = currentPurposeDTO.Description;
             buff.Category = currentPurposeDTO.CategoryName;
-            //TO DO dictionary
-            buff.charname = currentPurposeDTO.charname;
-            buff.charvalue = currentPurposeDTO.charvalue;
+            buff.CharName = currentPurposeDTO.CharName;
+            buff.CharValue = currentPurposeDTO.CharValue;
             return View(buff);
         }
     }

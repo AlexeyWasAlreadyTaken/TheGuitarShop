@@ -7,14 +7,14 @@ namespace Store.WEB.Models
 {
     public class CatalogPurposeVM
     {
-        public Nullable<Guid> purposeID { get; set; }
-        public Nullable<Guid> categoryID { get; set; }
+        public Nullable<Guid> PurposeID { get; set; }
+        public Nullable<Guid> CategoryID { get; set; }
         public string Brand { get; set; }
         public string Name { get; set; }
         public double? Price { get; set; }
         public string Curency { get; set; }
         public string Category { get; set; }
-        public List<string> filterCharName { get; set; }
-        public List<string> filterCharVal { get; set; }
+        public List<string> FilterCharName { get; set; }
+        public List<string> FilterCharVal { get; set; }
     }
 }

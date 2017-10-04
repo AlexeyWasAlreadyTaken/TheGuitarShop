@@ -46,9 +46,9 @@ namespace Store.WEB.Controllers
                 foreach (var i in catalogCategoryList)
                 {
                     var buff = new CategoryVM();
-                    buff.categoryid = i.Id;
-                    buff.categoryName = i.Name;
-                    buff.parentCategoryId = i.ParentCategoryID;
+                    buff.CategoryId = i.Id;
+                    buff.CategoryName = i.Name;
+                    buff.ParentCategoryId = i.ParentCategoryID;
                     categoryList.Add(buff);
                 }
             }
@@ -64,15 +64,15 @@ namespace Store.WEB.Controllers
             var category = new CategoryVM();
             if (id != null)
             {
-                var i = _catalog.GetCategoryByID((Guid)id);
-                category.categoryid = i.Id;
-                category.categoryName = i.Name;
-                category.parentCategoryId = i.ParentCategoryID;
+                var buff = _catalog.GetCategoryByID((Guid)id);
+                category.CategoryId = buff.Id;
+                category.CategoryName = buff.Name;
+                category.ParentCategoryId = buff.ParentCategoryID;
             }
             else
             {
                 //debug
-                category = new CategoryVM() { categoryid = new Guid("00000000-0000-0000-0000-000000000000"), categoryName = "NULL", parentCategoryId = new Guid("00000000-0000-0000-0000-000000000000") };
+                category = new CategoryVM() { CategoryId = new Guid("00000000-0000-0000-0000-000000000000"), CategoryName = "NULL", ParentCategoryId = new Guid("00000000-0000-0000-0000-000000000000") };
             }
             return View(category);
         }
@@ -80,15 +80,15 @@ namespace Store.WEB.Controllers
         public ActionResult CategoryEditor(CategoryVM category)
         {
             var updatedCategory = new CategoryDTO();
-            updatedCategory.Id = category.categoryid;
-            updatedCategory.Name = category.categoryName;
-            updatedCategory.ParentCategoryID = category.parentCategoryId;
+            updatedCategory.Id = category.CategoryId;
+            updatedCategory.Name = category.CategoryName;
+            updatedCategory.ParentCategoryID = category.ParentCategoryId;
             _catalog.UpdateCategory(updatedCategory);
             return View(category);
         }
         public ActionResult CreateCategory(Guid? id)
         {
-            var pc = id;//parentcategory
+            var pc = id;
             return View();
         }
         [HttpPost]
@@ -96,9 +96,8 @@ namespace Store.WEB.Controllers
         {
             var pc = id;//parentcategory
             var buff = new CategoryDTO();
-            buff.Name = category.categoryName;
-            //   buff.Id = category.categoryid;
-            buff.ParentCategoryID = id;//category.parentCategoryId;
+            buff.Name = category.CategoryName;
+            buff.ParentCategoryID = id;
             _catalog.CreateCategory(buff);
             return Redirect(Request.UrlReferrer.ToString());
         }
@@ -127,7 +126,7 @@ namespace Store.WEB.Controllers
         {
             var currentCharacteristic = _catalog.GetCharacteristicByID(CharacteristicId);
             var characteristic = new CharacteristicVM();
-            characteristic.id = currentCharacteristic.Id;
+            characteristic.Id = currentCharacteristic.Id;
             characteristic.Name = currentCharacteristic.Name;
             return View(characteristic);
         }
@@ -157,7 +156,7 @@ namespace Store.WEB.Controllers
         {
             var currentCharacteristic = _catalog.GetCharacteristicByID((Guid)id);
             var currentCharVM = new CharacteristicVM();
-            currentCharVM.id = currentCharacteristic.Id;
+            currentCharVM.Id = currentCharacteristic.Id;
             currentCharVM.Name = currentCharacteristic.Name;
             return View(currentCharVM);
         }
@@ -166,7 +165,7 @@ namespace Store.WEB.Controllers
         {
 
             var updatedCharDTO = new CharacteristicDTO();
-            updatedCharDTO.Id = characteristic.id;
+            updatedCharDTO.Id = characteristic.Id;
             updatedCharDTO.Name = characteristic.Name;
             _catalog.UpdateCharacteristic(updatedCharDTO);
             return Redirect(Request.UrlReferrer.ToString());
@@ -188,9 +187,9 @@ namespace Store.WEB.Controllers
         }
         public ActionResult CreateCategoryCharacteristic(Guid? categoryID)
         {
-            var ALL = new List<CharacteristicVM>();
-            var NOTNEED = new List<CharacteristicVM>();
-            var FINAL = new List<CharacteristicVM>();
+            var allCharacteristicList = new List<CharacteristicVM>();
+            var alreadyInUseCharacteristicList = new List<CharacteristicVM>();
+            var unusedCharacteristicList = new List<CharacteristicVM>();
             var allCharacteristic = _catalog.GetAllCharacteristic();
 
             if (_catalog.GetAllChainCategoryCharacteristics((Guid)categoryID) == null)
@@ -198,11 +197,11 @@ namespace Store.WEB.Controllers
                 foreach (var i in allCharacteristic)
                 {
                     var buff = new CharacteristicVM();
-                    buff.id = i.Id;
+                    buff.Id = i.Id;
                     buff.Name = i.Name;
-                    ALL.Add(buff);
+                    allCharacteristicList.Add(buff);
                 }
-                return View(ALL);
+                return View(allCharacteristicList);
             }
 
             var alreadyExistCharacteristic = _catalog.GetAllChainCategoryCharacteristics((Guid)categoryID);
@@ -210,33 +209,33 @@ namespace Store.WEB.Controllers
             foreach (var i in allCharacteristic)
             {
                 var buff = new CharacteristicVM();
-                buff.id = i.Id;
+                buff.Id = i.Id;
                 buff.Name = i.Name;
-                ALL.Add(buff);
+                allCharacteristicList.Add(buff);
             }
 
             foreach (var i in alreadyExistCharacteristic)
             {
                 var buff = new CharacteristicVM();
-                buff.id = i.CharacteristicID;
+                buff.Id = i.CharacteristicID;
                 buff.Name = "";
-                NOTNEED.Add(buff);
+                alreadyInUseCharacteristicList.Add(buff);
             }
 
-            foreach (var i in ALL)
+            foreach (var i in allCharacteristicList)
             {
-                if (NOTNEED.Contains(i))
+                if (alreadyInUseCharacteristicList.Contains(i))
                 {
 
                 }
                 else
                 {
-                    if (!FINAL.Contains(i))
-                        FINAL.Add(i);
+                    if (!unusedCharacteristicList.Contains(i))
+                        unusedCharacteristicList.Add(i);
                 }
             }
 
-            return View(FINAL);
+            return View(unusedCharacteristicList);
         }
         public ActionResult GetCharacteristicsValues(Guid CharacteristicId)
         {
@@ -540,7 +539,7 @@ namespace Store.WEB.Controllers
         public ActionResult CreatePurpose(Guid categoryId, Guid? itemId)
         {
             var purposeVM = new UltimatePurposeVM();
-            purposeVM.categoryId = categoryId;
+            purposeVM.CategoryId = categoryId;
 
             purposeVM.AvailabilityTypes = new SelectList(_catalog.GetAvailabilityTypeList(), "Id", "Name");
             purposeVM.CurrencyList = new SelectList(_catalog.GetCurrencyList(), "Id", "Name");
@@ -564,7 +563,7 @@ namespace Store.WEB.Controllers
             ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
 
             _catalog.CreateUltimatePurpose(ultPurposeDTO);
-            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.categoryId });
+            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.CategoryId });
         }
         public ActionResult SelectItemToPurpose(Guid categoryId)
         {
@@ -597,7 +596,7 @@ namespace Store.WEB.Controllers
             var item = _catalog.GetItemById((Guid)purpose.ItemId);
             purposeVM.ItemBrand = _catalog.GetBrandById((Guid)item.BrandID).Name;
             purposeVM.ItemName = item.Name;
-            purposeVM.categoryId = item.CategoryID;
+            purposeVM.CategoryId = item.CategoryID;
 
             return View(purposeVM);
         }
@@ -613,7 +612,7 @@ namespace Store.WEB.Controllers
             ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
 
             _catalog.UpdateUltimatePurpose(ultPurposeDTO);
-            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.categoryId });
+            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.CategoryId });
         }
         public ActionResult DeletePurpose(Guid purposeId)
         {

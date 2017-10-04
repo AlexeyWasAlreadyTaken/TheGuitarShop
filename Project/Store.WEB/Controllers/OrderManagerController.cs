@@ -30,22 +30,22 @@ namespace Store.WEB.Controllers
             var orderVMList = new List<OrderVM>();
             foreach (var order in orders)
             {
-                var orderVM = new OrderVM();
-                orderVM.Id = order.Id;
-                orderVM.Address = order.Address;
-                orderVM.Comment = order.Comment;
-                orderVM.ContactId = order.ContactId;
-                orderVM.data = order.data;
-                orderVM.deliveryTypeID = order.deliveryTypeID;
-                orderVM.email = order.email;
-                orderVM.Lname = order.Lname;
-                orderVM.Name = order.Name;
-                orderVM.Number = order.Number;
-                orderVM.Phone = order.Phone;
-                orderVM.Status = order.Status;
-                orderVM.statusID = order.statusID;
-                orderVM.UserId = order.UserId;
-                orderVMList.Add(orderVM);
+                var buff = new OrderVM();
+                buff.Id = order.Id;
+                buff.Address = order.Address;
+                buff.Comment = order.Comment;
+                buff.ContactId = order.ContactId;
+                buff.Date = order.Date;
+                buff.deliveryTypeID = order.DeliveryTypeID;
+                buff.Email = order.Email;
+                buff.Lname = order.Lname;
+                buff.Name = order.Name;
+                buff.Number = order.Number;
+                buff.Phone = order.Phone;
+                buff.Status = order.Status;
+                buff.StatusId = order.StatusID;
+                buff.UserId = order.UserId;
+                orderVMList.Add(buff);
             }
             return View(orderVMList);
         }
@@ -55,16 +55,16 @@ namespace Store.WEB.Controllers
             var orderItemVMList = new List<OrderItemVM>();
             foreach (var orderItem in orderItems)
             {
-                var orderItemVM = new OrderItemVM();
-                orderItemVM.PurposeId = orderItem.PurposeId;
-                orderItemVM.IsPromo = orderItem.IsPromo;
-                orderItemVM.ItemId = orderItem.ItemId;
-                orderItemVM.ItemName = orderItem.ItemName;
-                orderItemVM.BrandName = orderItem.BrandName;
-                orderItemVM.Count = orderItem.Count;
-                orderItemVM.Price = orderItem.Price;
-                orderItemVM.Currency = orderItem.Currency;
-                orderItemVMList.Add(orderItemVM);
+                var buff = new OrderItemVM();
+                buff.PurposeId = orderItem.PurposeId;
+                buff.IsPromo = orderItem.IsPromo;
+                buff.ItemId = orderItem.ItemId;
+                buff.ItemName = orderItem.ItemName;
+                buff.BrandName = orderItem.BrandName;
+                buff.Count = orderItem.Count;
+                buff.Price = orderItem.Price;
+                buff.Currency = orderItem.Currency;
+                orderItemVMList.Add(buff);
             }
             
             return PartialView(orderItemVMList);
@@ -74,29 +74,29 @@ namespace Store.WEB.Controllers
         public ActionResult EditOrder(Guid orderId)
         {
             var order = _orderManager.GetOrderById(orderId);
-            var orderVM = new OrderVM();
-            orderVM.Id = order.Id;
-            orderVM.Address = order.Address;
-            orderVM.Comment = order.Comment;
-            orderVM.ContactId = order.ContactId;
-            orderVM.data = order.data;
-            orderVM.deliveryTypeID = order.deliveryTypeID;
-            orderVM.email = order.email;
-            orderVM.Lname = order.Lname;
-            orderVM.Name = order.Name;
-            orderVM.Number = order.Number;
-            orderVM.Phone = order.Phone;
-            orderVM.Status = order.Status;
-            orderVM.statusID = order.statusID;
-            orderVM.UserId = order.UserId;
+            var buff = new OrderVM();
+            buff.Id = order.Id;
+            buff.Address = order.Address;
+            buff.Comment = order.Comment;
+            buff.ContactId = order.ContactId;
+            buff.Date = order.Date;
+            buff.deliveryTypeID = order.DeliveryTypeID;
+            buff.Email = order.Email;
+            buff.Lname = order.Lname;
+            buff.Name = order.Name;
+            buff.Number = order.Number;
+            buff.Phone = order.Phone;
+            buff.Status = order.Status;
+            buff.StatusId = order.StatusID;
+            buff.UserId = order.UserId;
 
             var statuses = _orderManager.GetStatuses();
-            orderVM.Statuses = new SelectList(statuses, "Id", "Name");
+            buff.Statuses = new SelectList(statuses, "Id", "Name");
 
             var deliveryTypes = _orderManager.GetDeliveryTypes();
-            orderVM.deliveryTypes = new SelectList(deliveryTypes, "Id", "Name");
+            buff.deliveryTypes = new SelectList(deliveryTypes, "Id", "Name");
 
-            return View("EditOrder", orderVM);
+            return View("EditOrder", buff);
         }
 
         //
@@ -114,27 +114,27 @@ namespace Store.WEB.Controllers
                 ModelState.AddModelError("deliveryTypeID", "Select delivery type");
             if (string.IsNullOrEmpty(orderVM.Address))
                 ModelState.AddModelError("Adress", "Fill your adress");
-            if (orderVM.email != null && !new Regex(@"\b[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(orderVM.email))
+            if (orderVM.Email != null && !new Regex(@"\b[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(orderVM.Email))
                 ModelState.AddModelError("Adress", "Email empty or wrong");
 
             if (ModelState.IsValid)
             {
-                var orderDTO = new OrderDTO();
-                orderDTO.Id = orderVM.Id;
-                orderDTO.data = orderVM.data;
-                orderDTO.statusID = orderVM.statusID;
-                orderDTO.deliveryTypeID = orderVM.deliveryTypeID;
-                orderDTO.UserId = orderVM.UserId;
-                orderDTO.Name = orderVM.Name;
-                orderDTO.Lname = orderVM.Lname;
-                orderDTO.Phone = orderVM.Phone;
-                orderDTO.Address = orderVM.Address;
-                orderDTO.email = orderVM.email;
-                orderDTO.Comment = orderVM.Comment;
-                orderDTO.ContactId = orderVM.ContactId;
-                orderDTO.Number = orderVM.Number;
+                var buff = new OrderDTO();
+                buff.Id = orderVM.Id;
+                buff.Date = orderVM.Date;
+                buff.StatusID = orderVM.StatusId;
+                buff.DeliveryTypeID = orderVM.deliveryTypeID;
+                buff.UserId = orderVM.UserId;
+                buff.Name = orderVM.Name;
+                buff.Lname = orderVM.Lname;
+                buff.Phone = orderVM.Phone;
+                buff.Address = orderVM.Address;
+                buff.Email = orderVM.Email;
+                buff.Comment = orderVM.Comment;
+                buff.ContactId = orderVM.ContactId;
+                buff.Number = orderVM.Number;
 
-                _orderManager.UpdateOrder(orderDTO);
+                _orderManager.UpdateOrder(buff);
 
                 return RedirectToAction("Orders");
             }

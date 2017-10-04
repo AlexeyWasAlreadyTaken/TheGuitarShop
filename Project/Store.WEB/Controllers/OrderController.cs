@@ -23,7 +23,6 @@ namespace Store.WEB.Controllers
         public ActionResult Index()
         {
             var ddl = _orderManager.GetDeliveryTypes();
-            //ViewBag.dtl = new SelectList(_orderManager.GetDeliveryTypes(), "Id", "Name");
             ViewBag.dtl = new SelectList(ddl, "Id", "Name");
             return View();
         }
@@ -33,7 +32,6 @@ namespace Store.WEB.Controllers
         {
             //DropDownListFor 
             var ddl = _orderManager.GetDeliveryTypes();
-            //ViewBag.dtl = new SelectList(_orderManager.GetDeliveryTypes(), "Id", "Name");
             ViewBag.dtl = new SelectList(ddl, "Id", "Name");
             //Validation
             if (string.IsNullOrEmpty(model.Name))
@@ -46,15 +44,8 @@ namespace Store.WEB.Controllers
                 ModelState.AddModelError("deliveryTypeID", "Select delivery type");
             if (string.IsNullOrEmpty(model.Address))
                 ModelState.AddModelError("Adress", "Fill your adress");
-            if (model.email != null && !new Regex(@"\b[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(model.email))
+            if (model.Email != null && !new Regex(@"\b[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b").IsMatch(model.Email))
                 ModelState.AddModelError("Adress", "Email empty or wrong");
-
-
-         
-
-
-
-
 
             //Validation Check
             if (ModelState.IsValid)
@@ -67,12 +58,12 @@ namespace Store.WEB.Controllers
                     currentOrderInfo.Name = model.Name;
                     currentOrderInfo.Lname = model.Lname;
                     currentOrderInfo.Phone = model.Phone;
-                    currentOrderInfo.deliveryTypeID = model.deliveryTypeID;
+                    currentOrderInfo.DeliveryTypeID = model.deliveryTypeID;
                     currentOrderInfo.Address = model.Address;
                     currentOrderInfo.Comment = model.Comment;
-                    currentOrderInfo.data = DateTime.Now;
-                    currentOrderInfo.statusID = _orderManager.GetStatusIDByName("New");
-                    currentOrderInfo.email = model.email;
+                    currentOrderInfo.Date = DateTime.Now;
+                    currentOrderInfo.StatusID = _orderManager.GetStatusIDByName("New");
+                    currentOrderInfo.Email = model.Email;
 
                     if (User.Identity.IsAuthenticated)
                     {
@@ -81,12 +72,12 @@ namespace Store.WEB.Controllers
                     var orderItemeList = new List<OrderItemDTO>();
                     foreach (var orderItem in cart.GetOrderItems())
                     {
-                        var temp = new OrderItemDTO();
-                        temp.ItemId = orderItem.ItemId;
-                        temp.PurposePriceId = orderItem.PurposePriceId;
-                        temp.PurposeId = orderItem.PurposeId;
-                        temp.Count = orderItem.Count;
-                        orderItemeList.Add(temp);
+                        var buff = new OrderItemDTO();
+                        buff.ItemId = orderItem.ItemId;
+                        buff.PurposePriceId = orderItem.PurposePriceId;
+                        buff.PurposeId = orderItem.PurposeId;
+                        buff.Count = orderItem.Count;
+                        orderItemeList.Add(buff);
                     }
                  
                     _orderManager.SaveOrder(currentOrderInfo, orderItemeList);

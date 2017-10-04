@@ -11,13 +11,13 @@ namespace Store.BLL.DTO
     {
         #region DropDownListFor 
         //DropDownListFor 
-        public Nullable<Guid> deliveryTypeID { get; set; }
-        public DeliveryTypesDTO deliveryTypes { get; set; }
+        public Nullable<Guid> DeliveryTypeID { get; set; }
+        public DeliveryTypesDTO DeliveryTypes { get; set; }
         #endregion
         public Guid Id { get; set; }
         public string UserId { get; set; }
-        public Nullable<Guid> statusID { get; set; }
-        public DateTime? data { get; set; }
+        public Nullable<Guid> StatusID { get; set; }
+        public DateTime? Date { get; set; }
 
         public string Name { get; set; }
 
@@ -26,10 +26,9 @@ namespace Store.BLL.DTO
         public string Phone { get; set; }
 
         public string Address { get; set; }
-        public string email { get; set; }
+        public string Email { get; set; }
         public string Comment { get; set; }
 
-        //
         public string Status { get; set; }
         public Guid? ContactId { get; set; }
         public int Number { get; set; }

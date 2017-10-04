@@ -13,8 +13,6 @@ namespace Store.DAL.Infrastructure
 {
     public class InjectionModuleData : NinjectModule
     {
-
-
         public override void Load()
         {
             Kernel.Bind(typeof(IRepository<>)).To(typeof(EFRepository<>)).InRequestScope();

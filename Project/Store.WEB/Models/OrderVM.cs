@@ -15,8 +15,8 @@ namespace Store.WEB.Models
         public SelectList deliveryTypes { get; set; }
         #endregion
 
-        public Nullable<Guid> statusID { get; set; }
-        public DateTime? data { get; set; }
+        public Nullable<Guid> StatusId { get; set; }
+        public DateTime? Date { get; set; }
         [StringLength(50), Required]
         public string Name { get; set; }
         [StringLength(50), Required]
@@ -25,7 +25,7 @@ namespace Store.WEB.Models
         public string Phone { get; set; }
         [StringLength(50), Required]
         public string Address { get; set; }
-        public string email { get; set; }
+        public string Email { get; set; }
         public string Comment { get; set; }
 
         //

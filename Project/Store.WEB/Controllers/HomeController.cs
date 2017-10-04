@@ -22,7 +22,6 @@ namespace Store.WEB.Controllers
         public ActionResult Index()
         {
             return View();
-           // return RedirectToAction("Categories", "Catalog");
         }
         public ActionResult News()
         {
@@ -82,7 +81,6 @@ namespace Store.WEB.Controllers
             {
                 var userIdentity = (ClaimsIdentity)User.Identity;
                 var claims = userIdentity.Claims;
-                //var roleClaimType = userIdentity.RoleClaimType;
                 var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
                 currentUserRole = roles.FirstOrDefault().Value;
             }
@@ -100,7 +98,6 @@ namespace Store.WEB.Controllers
             {
                 var userIdentity = (ClaimsIdentity)User.Identity;
                 var claims = userIdentity.Claims;
-                //var roleClaimType = userIdentity.RoleClaimType;
                 var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
                 currentUserRole = roles.FirstOrDefault().Value;
             }

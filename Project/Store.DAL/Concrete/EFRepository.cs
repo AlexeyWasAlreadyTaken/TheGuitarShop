@@ -17,7 +17,6 @@ namespace Store.DAL.Concrete
 
         public EFRepository()
         {
-            //to do
             _context = new ApplicationContext("StoreCS");
             _dbSet = _context.Set<T>();
         }
@@ -25,7 +24,6 @@ namespace Store.DAL.Concrete
         public IEnumerable<T> Get()
         {
             return _dbSet.AsNoTracking().ToList();
-            //return _dbSet.ToList();
         }
 
         public IEnumerable<T> Get(Func<T, bool> predicate)
@@ -60,7 +58,6 @@ namespace Store.DAL.Concrete
             _dbSet.Remove(item);
             _context.SaveChanges();
         }
-        // before all ok
         public IEnumerable<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties)
         {
             return Include(includeProperties).ToList();
@@ -79,11 +76,5 @@ namespace Store.DAL.Concrete
             return includeProperties
                 .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
-
-        // after all ok
-        //public void Dispose()
-        //{
-        //    _context.Dispose();
-        //}
     }
 }

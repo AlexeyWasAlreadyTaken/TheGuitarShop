@@ -14,38 +14,30 @@ namespace Store.WEB.Infrastructure
 {
     public class NinjectDependencyResolver : IDependencyResolver
     {
-        private IKernel kernel;
-
-        //public static NinjectDependencyResolver Instance;
-
+        private IKernel _kernel;
 
         public NinjectDependencyResolver(IKernel kernelParam)
         {
-            kernel = kernelParam;
+            _kernel = kernelParam;
             AddBindings();
-            //Instance = this;
         }
 
         public object GetService(Type serviceType)
         {
-            return kernel.TryGet(serviceType);
+            return _kernel.TryGet(serviceType);
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return kernel.GetAll(serviceType);
+            return _kernel.GetAll(serviceType);
         }
 
         private void AddBindings()
         {
-            // Здесь размещаются привязки
-            
-            //kernel.Bind(typeof(IRepository<>)).To(typeof(EFRepository<>));
-            kernel.Bind<ICatalog>().To<Catalog>();
-            //kernel.Bind<ICart>().To<Cart>();
-            kernel.Bind<IOrderManager>().To<OrderManager>();
-            kernel.Bind<INewsManager>().To<NewsManager>();
-            kernel.Bind<ICart>().To<Cart>();
+            _kernel.Bind<ICatalog>().To<Catalog>();
+            _kernel.Bind<IOrderManager>().To<OrderManager>();
+            _kernel.Bind<INewsManager>().To<NewsManager>();
+            _kernel.Bind<ICart>().To<Cart>();
 
         }
     }
