@@ -555,15 +555,37 @@ namespace Store.WEB.Controllers
         [HttpPost]
         public ActionResult CreatePurpose(UltimatePurposeVM ultimatePurposeVM)
         {
-            var ultPurposeDTO = new UltimatePurposeDTO();
-            ultPurposeDTO.ItemId = ultimatePurposeVM.ItemId;
-            ultPurposeDTO.Price = ultimatePurposeVM.Price;
-            ultPurposeDTO.IsPromo = ultimatePurposeVM.IsPromo;
-            ultPurposeDTO.AvailabilityTypeID = ultimatePurposeVM.AvailabilityTypeID;
-            ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
+            if (string.IsNullOrEmpty(ultimatePurposeVM.ItemId.ToString()))
+                ModelState.AddModelError("ItemId", "Item must be chosen!");
+            if (string.IsNullOrEmpty(ultimatePurposeVM.Price.ToString()))
+                ModelState.AddModelError("Price", "Fill price");
+            if (string.IsNullOrEmpty(ultimatePurposeVM.AvailabilityTypeID.ToString()))
+                ModelState.AddModelError("AvailabilityTypeID", "Choose availability type");
+            if (string.IsNullOrEmpty(ultimatePurposeVM.CurencyID.ToString()))
+                ModelState.AddModelError("CurencyID", "Choose currency");
 
-            _catalog.CreateUltimatePurpose(ultPurposeDTO);
-            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.CategoryId });
+            if (ModelState.IsValid)
+            {
+                var ultPurposeDTO = new UltimatePurposeDTO();
+                ultPurposeDTO.ItemId = ultimatePurposeVM.ItemId;
+                ultPurposeDTO.Price = ultimatePurposeVM.Price;
+                ultPurposeDTO.IsPromo = ultimatePurposeVM.IsPromo;
+                ultPurposeDTO.AvailabilityTypeID = ultimatePurposeVM.AvailabilityTypeID;
+                ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
+
+                _catalog.CreateUltimatePurpose(ultPurposeDTO);
+                return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.CategoryId });
+            }
+            
+            ultimatePurposeVM.AvailabilityTypes = new SelectList(_catalog.GetAvailabilityTypeList(), "Id", "Name");
+            ultimatePurposeVM.CurrencyList = new SelectList(_catalog.GetCurrencyList(), "Id", "Name");
+            if (ultimatePurposeVM.ItemId != null)
+            {
+                var item = _catalog.GetItemById((Guid)ultimatePurposeVM.ItemId);
+                ultimatePurposeVM.ItemName = item.Name;
+                ultimatePurposeVM.ItemBrand = _catalog.GetBrandById((Guid)item.BrandID).Name;
+            }
+            return View(ultimatePurposeVM);
         }
         public ActionResult SelectItemToPurpose(Guid categoryId)
         {
@@ -603,16 +625,38 @@ namespace Store.WEB.Controllers
         [HttpPost]
         public ActionResult EditPurpose(UltimatePurposeVM ultimatePurposeVM)
         {
-            var ultPurposeDTO = new UltimatePurposeDTO();
-            ultPurposeDTO.PurposeId = ultimatePurposeVM.PurposeId;
-            ultPurposeDTO.ItemId = ultimatePurposeVM.ItemId;
-            ultPurposeDTO.Price = ultimatePurposeVM.Price;
-            ultPurposeDTO.IsPromo = ultimatePurposeVM.IsPromo;
-            ultPurposeDTO.AvailabilityTypeID = ultimatePurposeVM.AvailabilityTypeID;
-            ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
+            if (string.IsNullOrEmpty(ultimatePurposeVM.ItemId.ToString()))
+                ModelState.AddModelError("ItemId", "Item must be chosen!");
+            if (string.IsNullOrEmpty(ultimatePurposeVM.Price.ToString()))
+                ModelState.AddModelError("Price", "Fill price");
+            if (string.IsNullOrEmpty(ultimatePurposeVM.AvailabilityTypeID.ToString()))
+                ModelState.AddModelError("AvailabilityTypeID", "Choose availability type");
+            if (string.IsNullOrEmpty(ultimatePurposeVM.CurencyID.ToString()))
+                ModelState.AddModelError("CurencyID", "Choose currency");
 
-            _catalog.UpdateUltimatePurpose(ultPurposeDTO);
-            return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.CategoryId });
+            if (ModelState.IsValid)
+            {
+                var ultPurposeDTO = new UltimatePurposeDTO();
+                ultPurposeDTO.PurposeId = ultimatePurposeVM.PurposeId;
+                ultPurposeDTO.ItemId = ultimatePurposeVM.ItemId;
+                ultPurposeDTO.Price = ultimatePurposeVM.Price;
+                ultPurposeDTO.IsPromo = ultimatePurposeVM.IsPromo;
+                ultPurposeDTO.AvailabilityTypeID = ultimatePurposeVM.AvailabilityTypeID;
+                ultPurposeDTO.CurencyID = ultimatePurposeVM.CurencyID;
+
+                _catalog.UpdateUltimatePurpose(ultPurposeDTO);
+                return RedirectToAction("PurposesEditor", new { categoryId = ultimatePurposeVM.CategoryId });
+            }
+
+            ultimatePurposeVM.AvailabilityTypes = new SelectList(_catalog.GetAvailabilityTypeList(), "Id", "Name");
+            ultimatePurposeVM.CurrencyList = new SelectList(_catalog.GetCurrencyList(), "Id", "Name");
+            if (ultimatePurposeVM.ItemId != null)
+            {
+                var item = _catalog.GetItemById((Guid)ultimatePurposeVM.ItemId);
+                ultimatePurposeVM.ItemName = item.Name;
+                ultimatePurposeVM.ItemBrand = _catalog.GetBrandById((Guid)item.BrandID).Name;
+            }
+            return View(ultimatePurposeVM);
         }
         public ActionResult DeletePurpose(Guid purposeId)
         {

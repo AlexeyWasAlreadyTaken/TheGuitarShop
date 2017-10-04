@@ -8,8 +8,7 @@
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        //TO DO
+        
         @Html.Hidden("id", ViewContext.RouteData.Values["id"] ?? Request.Params["id"])
         @Html.Hidden("st", Request.Params["st"])
 
@@ -18,20 +17,20 @@
             <tr>
                 <td>
                     <b>
-                        @Html.DisplayFor(modelItem => Model[i].characteristicName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.HiddenFor(modelItem => Model[i].characteristicId)
+                        @Html.DisplayFor(modelItem => Model[i].CharacteristicName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(modelItem => Model[i].CharacteristicId)
                     </b>
                     <br />
-                    @for (int j = 0; j < Model[i].valuesList.Count; j++)
+                    @for (int j = 0; j < Model[i].ValuesList.Count; j++)
                     {
-                        @Html.DisplayFor(iItem => Model[i].valuesList[j].IntVal, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.DisplayFor(iItem => Model[i].valuesList[j].FloatVal, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.DisplayFor(iItem => Model[i].valuesList[j].StrVal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DisplayFor(iItem => Model[i].ValuesList[j].IntVal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DisplayFor(iItem => Model[i].ValuesList[j].FloatVal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DisplayFor(iItem => Model[i].ValuesList[j].StrVal, new { htmlAttributes = new { @class = "form-control" } })
                         <span>&#160;</span>
-                        @Html.CheckBoxFor(iItem => Model[i].valuesList[j].isApplied, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.CheckBoxFor(iItem => Model[i].ValuesList[j].isApplied, new { htmlAttributes = new { @class = "form-control" } })
 
-                        @Html.HiddenFor(iItem => Model[i].valuesList[j].Id)
-                        @Html.HiddenFor(iItem => Model[i].valuesList[j].CharacteristicId)
+                        @Html.HiddenFor(iItem => Model[i].ValuesList[j].Id)
+                        @Html.HiddenFor(iItem => Model[i].ValuesList[j].CharacteristicId)
                         <br />
                     }
                 </td>

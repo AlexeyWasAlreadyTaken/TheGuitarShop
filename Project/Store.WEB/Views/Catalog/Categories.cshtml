@@ -5,7 +5,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.categoryName)
+            @Html.DisplayNameFor(model => model.CategoryName)
         </th>
         <th></th>
     </tr>
@@ -14,10 +14,10 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.categoryName)
+                @Html.DisplayFor(modelItem => item.CategoryName)
             </td>
             <td>
-                @Html.ActionLink("GO TO", "SubCategories", "Catalog", new { id = item.categoryid }, null)
+                @Html.ActionLink("GO TO", "SubCategories", "Catalog", new { id = item.CategoryId }, null)
             </td>
         </tr>
     }

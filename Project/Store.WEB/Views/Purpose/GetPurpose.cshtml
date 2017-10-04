@@ -11,11 +11,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.purposeID)
+            @Html.DisplayNameFor(model => model.PurposeID)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.purposeID)
+            @Html.DisplayFor(model => model.PurposeID)
         </dd>
 
         <dt>
@@ -43,19 +43,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Curency)
+            @Html.DisplayNameFor(model => model.Currency)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Curency)
+            @Html.DisplayFor(model => model.Currency)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.description)
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.description)
+            @Html.DisplayFor(model => model.Description)
         </dd>
 
         <dt>
@@ -71,9 +71,9 @@
     <hr>
     <h3>Characteristics</h3>
     <br>
-    @for (int i = 0; i < Model.charname.Count; i++)
+    @for (int i = 0; i < Model.CharName.Count; i++)
     {
-        <b>@Model.charname[i] :</b> @Model.charvalue[i] <br>
+        <b>@Model.CharName[i] :</b> @Model.CharValue[i] <br>
     }
     <br>
 
@@ -82,5 +82,5 @@
 
 </div>
 <p>
-    @Html.ActionLink("ADD TO CART", "AddPurpose", "Cart", new { purposeId = Model.purposeID, returnUrl = "" }, null)
+    @Html.ActionLink("ADD TO CART", "AddPurpose", "Cart", new { purposeId = Model.PurposeID, returnUrl = "" }, null)
 </p>

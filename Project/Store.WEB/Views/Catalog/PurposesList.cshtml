@@ -12,9 +12,9 @@
     @{ if (Model.Any())
         {
             <b>SORT TYPE:</b>
-            @Html.ActionLink("ByName", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByName" }, null) <span> | </span>
-            @Html.ActionLink("ByPrice", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByPrice" }, null) <span> | </span>
-            @Html.ActionLink("ByBrand", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().categoryID, st = "ByBrand" }, null)
+            @Html.ActionLink("ByName", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().CategoryID, st = "ByName" }, null) <span> | </span>
+            @Html.ActionLink("ByPrice", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().CategoryID, st = "ByPrice" }, null) <span> | </span>
+            @Html.ActionLink("ByBrand", "PurposesList", "Catalog", new { id = Model.ToList().FirstOrDefault().CategoryID, st = "ByBrand" }, null)
             
         }
         else
@@ -67,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.Category)
                 </td>
                 <td>
-                    @Html.ActionLink("Show details", "GetPurpose", "Purpose", new { id = item.purposeID }, null)
+                    @Html.ActionLink("Show details", "GetPurpose", "Purpose", new { id = item.PurposeID }, null)
                 </td>
             </tr>
         }

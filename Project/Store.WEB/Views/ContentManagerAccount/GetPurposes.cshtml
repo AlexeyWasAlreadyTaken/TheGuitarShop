@@ -5,9 +5,6 @@
     ViewBag.Title = "GetPurposes";
 }
 
-@*<h4>Items:</h4>*@
-
-
 <table class="table">
     <tr>
         <th>
@@ -41,8 +38,8 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Edit purpose", "EditPurpose", new { purposeId = item.PurposeId })|
-                @Html.ActionLink("Delete purpose", "DeletePurpose", new { purposeId = item.PurposeId })
+                @Html.ActionLink("Edit purpose", "EditPurpose", new { purposeId = item.PurposeId }) <span> | </span>
+                @Html.ActionLink("Delete purpose ", "DeletePurpose", new { purposeId = item.PurposeId })
             </td>
         </tr>
     }

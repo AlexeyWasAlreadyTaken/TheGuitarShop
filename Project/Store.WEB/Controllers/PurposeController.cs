@@ -12,9 +12,9 @@ namespace Store.WEB.Controllers
     public class PurposeController : Controller
     {
         ICatalog _catalog;
-        public PurposeController(ICatalog cata)
+        public PurposeController(ICatalog catalog)
         {
-            _catalog = cata;
+            _catalog = catalog;
         }
         public ActionResult GetPurpose(Guid id)
         {
