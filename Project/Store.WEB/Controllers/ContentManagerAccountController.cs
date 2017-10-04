@@ -545,11 +545,13 @@ namespace Store.WEB.Controllers
 
             purposeVM.AvailabilityTypes = new SelectList(_catalog.GetAvailabilityTypeList(), "Id", "Name");
             purposeVM.CurrencyList = new SelectList(_catalog.GetCurrencyList(), "Id", "Name");
-
-            var item = _catalog.GetItemById((Guid)itemId);
-            purposeVM.ItemId = item.Id;
-            purposeVM.ItemName = item.Name;
-            purposeVM.ItemBrand = _catalog.GetBrandById((Guid)item.BrandID).Name;
+            if (itemId != null)
+            {
+                var item = _catalog.GetItemById((Guid)itemId);
+                purposeVM.ItemId = item.Id;
+                purposeVM.ItemName = item.Name;
+                purposeVM.ItemBrand = _catalog.GetBrandById((Guid)item.BrandID).Name;
+            }
             return View(purposeVM);
         }
         [HttpPost]
