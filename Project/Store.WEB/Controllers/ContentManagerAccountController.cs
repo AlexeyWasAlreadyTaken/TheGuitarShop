@@ -489,7 +489,6 @@ namespace Store.WEB.Controllers
         #region Purposes
         public ActionResult PurposesEditor(Guid? categoryId)
         {
-            //TO DO
             var categories = categoryId == null ? _catalog.GetGeneralCategoryList() : _catalog.GetChildCategoryByParentID((Guid)categoryId);
             var selectList = new SelectList(categories, "Id", "Name", new { Id = "", Name = "Select Category " });
 
@@ -500,7 +499,7 @@ namespace Store.WEB.Controllers
             return View(selectList);
         }
         [HttpPost]
-        public ActionResult PurposesEditorPost(Guid? categoryId) // Delete me later too
+        public ActionResult PurposesEditorPost(Guid? categoryId) 
         {
             if (categoryId == null)
                 return Redirect(Request.UrlReferrer.ToString());
@@ -516,7 +515,7 @@ namespace Store.WEB.Controllers
                 var ultPurposeVM = new UltimatePurposeVM();
                 ultPurposeVM.PurposeId = i.PurposeId;
 
-                if (i.ItemId != null)//delete me
+                if (i.ItemId != null)
                 {
                     ultPurposeVM.ItemId = i.ItemId;
                     var currItem = _catalog.GetItemById((Guid)i.ItemId);
