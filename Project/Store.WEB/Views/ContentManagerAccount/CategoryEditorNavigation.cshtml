@@ -2,7 +2,7 @@
 
 <p>
     <h1>
-        @Html.ActionLink("+", "CreateCategory", "ContentManagerAccount", new { id = Model.FirstOrDefault().parentCategoryId }, null)
+        @Html.ActionLink("+", "CreateCategory", "ContentManagerAccount", new { id = Model.FirstOrDefault().ParentCategoryId }, null)
             
          </h1>
     
@@ -10,7 +10,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.categoryName)
+            @Html.DisplayNameFor(model => model.CategoryName)
         </th>
         <th></th>
     </tr>
@@ -20,11 +20,11 @@
         <tr>
             <td>
                 @*@Html.DisplayFor(modelItem => item.categoryName)*@
-                @Html.ActionLink("" + item.categoryName, "CategoryEditorNavigation", "ContentManagerAccount", new { id = item.categoryid }, null)
+                @Html.ActionLink("" + item.CategoryName, "CategoryEditorNavigation", "ContentManagerAccount", new { id = item.CategoryId }, null)
             </td>
             <td>
-                @Html.ActionLink("Add sub Category", "CreateCategory", "ContentManagerAccount", new { id = item.categoryid }, null) |
-                @Html.ActionLink("Edit Category","CategoryEditor", "ContentManagerAccount", new { id = item.categoryid }, null) |
+                @Html.ActionLink("Add sub Category", "CreateCategory", "ContentManagerAccount", new { id = item.CategoryId }, null) |
+                @Html.ActionLink("Edit Category","CategoryEditor", "ContentManagerAccount", new { id = item.CategoryId }, null) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>

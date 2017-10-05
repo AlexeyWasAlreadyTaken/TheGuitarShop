@@ -22,11 +22,11 @@
     <tr>
         <td>
 
-            @Html.ActionLink(item.Name, "GetCharacteristicsValues", "ContentManagerAccount", new { CharacteristicId = item.id }, null)
+            @Html.ActionLink(item.Name, "GetCharacteristicsValues", "ContentManagerAccount", new { CharacteristicId = item.Id }, null)
 
         </td>
         <td>
-            @Html.ActionLink("ADD", "AddCategoryCharacteristic", "ContentManagerAccount", new { categoryID = Request.Params["categoryID"] , charID = item.id },null) 
+            @Html.ActionLink("ADD", "AddCategoryCharacteristic", "ContentManagerAccount", new { categoryID = Request.Params["categoryID"] , charID = item.Id },null) 
         </td>
     </tr>
 }
