@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Store.WEB.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ContentManagerAccountController : Controller
     {
         #region Init

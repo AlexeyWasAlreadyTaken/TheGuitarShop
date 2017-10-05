@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace Store.WEB.Controllers
 {
+    [Authorize(Roles = "admin,manager")]
     public class OrderManagerController : Controller
     {
         private IOrderManager _orderManager;
